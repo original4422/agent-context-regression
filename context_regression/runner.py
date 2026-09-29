@@ -12,7 +12,7 @@ import tempfile
 import threading
 import time
 
-from .checks import run_checks
+from .checks import VERIFICATION_TIMEOUT, run_checks
 from .tasks import recent_turns, render_history, task_digest
 
 STRATEGIES = ("full", "recent", "structured")
@@ -52,6 +52,17 @@ def schedule(tasks, repetitions, seed):
             order.reverse()
         result.extend((task, repeat, strategy) for strategy in order)
     return result
+
+
+def execution_plan(tasks, config):
+    runs = schedule(tasks, config["repetitions"], config["seed"])
+    summaries = sum(strategy == "structured" for _, _, strategy in runs)
+    model_limit = len(runs) * config["timeout"] + summaries * config["summary_timeout"]
+    return {"runs": runs, "task_ids": [task["spec"]["id"] for task in tasks],
+            "strategies": STRATEGIES, "continuations": len(runs), "summaries": summaries,
+            "verification_timeout": VERIFICATION_TIMEOUT,
+            "model_timeout_budget": model_limit,
+            "phase_timeout_budget": model_limit + len(runs) * VERIFICATION_TIMEOUT}
 
 
 def codex_args(config, workspace, output, *, task=None, schema=None):
@@ -196,7 +207,7 @@ def run_batch(tasks, config, private):
     private = Path(private).resolve()
     private.mkdir(parents=True, mode=0o700, exist_ok=False)
     os.chmod(private, 0o700)
-    planned = schedule(tasks, config["repetitions"], config["seed"])
+    planned = execution_plan(tasks, config)["runs"]
     report = {"schema_version": 1, "status": "running", "config": {k: v for k, v in config.items() if k != "codex"},
               "codex_version": subprocess.check_output([config["codex"], "--version"], text=True).strip(),
               "scope": "Controlled reconstructed contexts; not native Codex compaction. Hand-authored coding tasks.",

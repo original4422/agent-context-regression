@@ -5,7 +5,10 @@ import sys
 from .verify import WORKER, evaluate
 
 
-def run_checks(task_path, workspace, mode, codex="codex", timeout=15):
+VERIFICATION_TIMEOUT = 15
+
+
+def run_checks(task_path, workspace, mode, codex="codex", timeout=VERIFICATION_TIMEOUT):
     spec = json.loads((Path(task_path) / "task.json").read_text())
     # CHECKS and final verdicts stay in the trusted process. Only candidate code
     # enters the read-only sandbox, returning JSON values rather than verdicts.
