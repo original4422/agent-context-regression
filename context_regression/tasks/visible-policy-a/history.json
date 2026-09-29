@@ -1,0 +1,30 @@
+[
+  {
+    "role": "user",
+    "content": "Implement select_plan(jobs, completed, capacity) for our release planner. It returns ordered selected job ids without modifying inputs. Job ids are unique strings, needs is a list of prerequisite ids, priority is an integer (larger first), cost is a nonnegative integer, manual/approved are booleans. completed contains ids successfully deployed before this call; capacity is a nonnegative shared budget. These input fields are schema-valid."
+  },
+  {
+    "role": "assistant",
+    "content": "The same schema can serve two products: a wave of jobs safe to start concurrently now, or an ordered execution plan whose runner waits for each selected job to succeed. These have different dependency rules. Which semantics should this helper use?"
+  },
+  {
+    "role": "user",
+    "content": "Choose the concurrent launch wave. A dependency is satisfied only if its id is in completed before this call. A prerequisite selected earlier in this plan is not yet complete, so its dependent must wait for a later call. This helper feeds a launcher that starts every returned job immediately; treating selection as completion would launch dependents too soon."
+  },
+  {
+    "role": "assistant",
+    "content": "The shared admission routine is implemented in the checkpoint; only _dependencies_satisfied is unfinished. The file includes the entire shared contract."
+  },
+  {
+    "role": "tool",
+    "content": "Checkpoint probe: an independent automatic job with cost 1 is rejected at capacity 1 because the pending dependency predicate returns False."
+  },
+  {
+    "role": "user",
+    "content": "Implement the missing dependency predicate in plan.py from the earlier decision. Keep the shared admission routine and run the public smoke checks."
+  },
+  {
+    "role": "assistant",
+    "content": "I will complete the missing predicate using the supplied checkpoint."
+  }
+]

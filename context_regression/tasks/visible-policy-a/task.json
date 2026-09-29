@@ -1,0 +1,16 @@
+{
+  "id": "visible-policy-a",
+  "title": "Complete release dependency selection",
+  "module": "plan.py",
+  "editable": [
+    "plan.py"
+  ],
+  "request": "Implement the missing dependency predicate in plan.py using the earlier decision. Run the public checks.",
+  "regression_checks": [
+    "dependency_policy"
+  ],
+  "provenance": {
+    "kind": "reconstructed",
+    "description": "Original controlled release-policy pair with a shared executable admission contract. Reconstructed conversation, not a production transcript."
+  }
+}

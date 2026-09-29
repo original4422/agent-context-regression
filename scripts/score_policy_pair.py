@@ -18,7 +18,9 @@ from context_regression.tasks import BUILTIN_TASKS, load_task
 def score(results_path):
     results_path = Path(results_path).resolve()
     report = json.loads(results_path.read_text())
-    pair = audit()
+    prefix = report['tasks'][0]['id'].rsplit('-', 1)[0]
+    assert prefix in {'wave-policy', 'visible-policy'}
+    pair = audit(prefix)
     tasks = {name:load_task(BUILTIN_TASKS / name) for name in pair['pair']}
     assert report['status'] == 'completed'
     assert report['planned_runs'] == len(report['rows']) == 12
@@ -48,7 +50,10 @@ def score(results_path):
         candidates.append({
             'index':row['index'], 'task':row['task'], 'strategy':row['strategy'], 'repeat':row['repeat'],
             'source_sha256':hashlib.sha256((attempt / 'candidate/plan.py').read_bytes()).hexdigest(),
-            'classification':classification, 'cross_verification':verdicts,
+            'classification':classification,
+            'shared_rules_pass':all(c['passed'] for c in verdicts[row['task']]['checks'] if c['name'] != 'dependency_policy'),
+            'policy_discriminator':{name:next(c['passed'] for c in verdict['checks'] if c['name'] == 'dependency_policy') for name,verdict in verdicts.items()},
+            'cross_verification':verdicts,
         })
     assert phases == 16
     assert len(recent_prompts) == 4

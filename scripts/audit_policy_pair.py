@@ -18,8 +18,8 @@ def encode(value):
     return json.dumps(value, sort_keys=True, separators=(',', ':')).encode()
 
 
-def audit():
-    tasks = [load_task(BUILTIN_TASKS / f'wave-policy-{version}') for version in ('a', 'b')]
+def audit(prefix="wave-policy"):
+    tasks = [load_task(BUILTIN_TASKS / f'{prefix}-{version}') for version in ('a', 'b')]
     common = []
     for task in tasks:
         history = task['history']
@@ -37,7 +37,7 @@ def audit():
     assert tasks[0]['history'][2]['role'] == tasks[1]['history'][2]['role'] == 'user'
     assert tasks[0]['history'][2] != tasks[1]['history'][2]
     return {
-        'pair': ['wave-policy-a', 'wave-policy-b'],
+        'pair': [t['spec']['id'] for t in tasks],
         'only_differing_history_message_index': 2,
         'common_inputs_sha256': {name:digest(value) for name,value in common[0].items()},
         'policy_decision_sha256': {t['spec']['id']:digest(encode(t['history'][2])) for t in tasks},
@@ -47,4 +47,4 @@ def audit():
 
 
 if __name__ == '__main__':
-    print(json.dumps(audit(), indent=2))
+    print(json.dumps(audit(sys.argv[1] if len(sys.argv) > 1 else "wave-policy"), indent=2))

@@ -12,8 +12,10 @@ from test_regression import direct_checks
 
 
 class PairedTaskTests(unittest.TestCase):
+    solutions = SOLUTIONS
+
     def setUp(self):
-        self.tasks = [t for t in tasks_in(BUILTIN_TASKS) if t['spec']['id'] in SOLUTIONS]
+        self.tasks = [t for t in tasks_in(BUILTIN_TASKS) if t['spec']['id'] in self.solutions]
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
         self.root = Path(self.temp.name)
@@ -40,7 +42,7 @@ class PairedTaskTests(unittest.TestCase):
         for selected in self.tasks:
             workspace=self.root/selected['spec']['id']
             workspace.mkdir()
-            (workspace/'plan.py').write_text(SOLUTIONS[selected['spec']['id']])
+            (workspace/'plan.py').write_text(self.solutions[selected['spec']['id']])
             for oracle in self.tasks:
                 with self.subTest(candidate=selected['spec']['id'], oracle=oracle['spec']['id']):
                     self.assertTrue(direct_checks(oracle['path'], workspace, 'public')['passed'])
