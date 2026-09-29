@@ -6,6 +6,20 @@ This CLI resumes small coding tasks from fixed source checkpoints under three co
 
 The built-in suite contains **four hand-authored Python microtasks with reconstructed conversations**. It tests controlled context reconstruction, not Codex's native compaction or production conversation memory.
 
+## Measured pilot
+
+Codex CLI 0.155.1, `gpt-6-sol`, low reasoning, two repetitions per task:
+
+| Strategy | Tasks passed | Input + output tokens, including summary | Median end-to-end time |
+| --- | ---: | ---: | ---: |
+| Full history | 8/8 | 780,797 | 26.41 s |
+| Recent user turn | 2/8 | 768,542 | 30.10 s |
+| Automatic structured summary | 8/8 | 899,098 | 43.87 s |
+
+On these short histories, the automatic summary preserved correctness but **increased total tokens and latency**. Truncation lost casing, window-boundary and retry-policy requirements; both truncation runs passed the configuration task. One slug failure concerned separator handling rather than the designated corrected requirement.
+
+[Full results and accounting](reports/README.md) include all 24 continuations, all 8 summary generations, input/cached-input/output breakdowns, and the initial aborted integration batch. The 17 deterministic tests cover candidate outcomes, task isolation, usage accounting, failure handling and sandbox protection of acceptance files.
+
 ## Run
 
 Requires Python 3.11+, a logged-in Codex CLI supporting `exec --ignore-user-config`, and its working OS sandbox. The measured platform is macOS; Linux execution has not been measured. Python code uses only the standard library.
