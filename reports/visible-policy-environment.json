@@ -1,0 +1,10 @@
+{
+  "measured_commit": "63f6054c1e50da605eef3093a8244f8ac25afdc3",
+  "platform": "Darwin",
+  "os_version": "15.7.8",
+  "architecture": "arm64",
+  "python": "3.14.7",
+  "codex": "codex-cli 0.155.1",
+  "isolation": "Serial exclusive model window; no concurrent browser benchmark, learn-codex live exercise or local MLX model.",
+  "validation": "12 candidates re-evaluated against both oracles with identical own verdicts. All shared rules pass. 16 single turn.completed usage records reconciled; actual recent prompts byte-identical; frozen task and runner fingerprints matched."
+}

@@ -4,6 +4,47 @@ The first counterfactual pair lost shared ordering rules in every recent-turn co
 
 This narrows the task from implementing the full admission routine to **recovering a historical decision in a small predicate**. Its success rates are reported separately from the earlier pair.
 
+## Measured outcome
+
+The fixed batch completed **12 continuations and 4 summaries** at [`63f6054`](https://github.com/original4422/agent-context-regression/tree/63f6054), using Codex CLI 0.155.1, `gpt-6-sol`, low reasoning. No attempt was replaced. [Environment](visible-policy-environment.json), [results JSON](visible-policy-results.json), [all own-policy outcomes](visible-policy-outcomes.md), and [complete cross-scores](visible-policy-cross-scores.json) are public.
+
+| Strategy | Shared rules pass | Requested policy passes | Both A/B pass per repetition | Input + output tokens | Median end-to-end seconds |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Full | 4/4 | 4/4 | 2/2 | 402,402 | 33.71 |
+| Recent | 4/4 | 2/4 | 0/2 | 396,578 | 34.06 |
+| Structured | 4/4 | 4/4 | 2/2 | 460,968 | 48.73 |
+
+All twelve candidates satisfied every shared external check. All four recent candidates implemented policy B, which allows an earlier selected prerequisite to satisfy a dependency. They therefore passed the two B attempts and failed only `dependency_policy` on the two A attempts. Cross-scoring classifies the latter as **opposite policy**, not invalid shared implementations.
+
+| Strategy | Requested-policy implementation | Opposite-policy implementation | Neither complete policy |
+| --- | ---: | ---: | ---: |
+| Full | 4 | 0 | 0 |
+| Recent | 2 | 2 | 0 |
+| Structured | 4 | 0 | 0 |
+
+Full and structured followed both explicit historical decisions. The recent arm had identical observations across A/B and consistently selected the sequential interpretation in these four samples. The result demonstrates this controlled distinction between policy recovery and shared-code correctness. It does not estimate real-world compaction performance, and its smaller predicate-edit task is not pooled with the earlier full-implementation pair.
+
+Every saved candidate was rerun against both oracles under the real read-only sandbox. All original own-policy verdicts matched. Four actual recent prompt files were byte-identical and matched the frozen input hash; every task and runner fingerprint matched. All sixteen private phase traces had exactly one `turn.completed` record, matching the published usage. No extra model runs were used for this validation.
+
+### Phase accounting
+
+| Strategy | Phase | Count | Input | Cached input (subset) | Output | Median phase seconds |
+| --- | --- | ---: | ---: | ---: | ---: | ---: |
+| Full | Continuation | 4 | 399,712 | 333,824 | 2,690 | 33.21 |
+| Recent | Continuation | 4 | 393,794 | 356,352 | 2,784 | 33.58 |
+| Structured | Summary | 4 | 62,396 | 16,128 | 1,212 | 15.84 |
+| Structured | Continuation | 4 | 394,588 | 348,544 | 2,772 | 31.72 |
+
+Mean retained context lengths were 1,629 characters (full), 236 (recent) and 1,476 (structured); the identical source checkpoint is also available through file tools in every arm. Summary generation is included once in each structured total. Cached input is part of input, not an additional quantity. These are CLI token counts, not subscription allowance units. End-to-end time includes setup and external verification; phase medians are not additive to the median of total attempt times.
+
+To recheck your own private run with the same task definitions and runner:
+
+```sh
+python3 scripts/score_policy_pair.py /path/to/private/batch/results.json
+```
+
+This completes the planned policy-isolation follow-up. Further work should improve selecting, running and reproducing these comparisons rather than add samples of this same policy.
+
 ## Shared implementation and opposite decision
 
 Both tasks expose the same `plan.py`. Its docstring specifies the full shared contract, and its existing `select_plan` function implements stable descending priority, input-order ties, one pass without revisiting skipped jobs, manual approval, all-prerequisite gating, a shared capacity budget, skip-and-continue, exact fits, zero-cost jobs, admission order, and no input mutation. Only `_dependencies_satisfied(needs, completed, selected)` returns the placeholder `False`.

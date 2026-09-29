@@ -1,0 +1,1133 @@
+{
+  "schema_version": 1,
+  "status": "completed",
+  "config": {
+    "model": "gpt-6-sol",
+    "effort": "low",
+    "repetitions": 2,
+    "seed": 20260930,
+    "recent_turns": 1,
+    "summary_chars": 4096,
+    "timeout": 180,
+    "summary_timeout": 90,
+    "max_tools": 16
+  },
+  "codex_version": "codex-cli 0.155.1",
+  "scope": "Controlled reconstructed contexts; not native Codex compaction. Hand-authored coding tasks.",
+  "tasks": [
+    {
+      "id": "visible-policy-a",
+      "sha256": "a9315bdb24bfae2739dccc5493c8ad0fdf172bcc097394463c444d60dbe755de",
+      "provenance": {
+        "kind": "reconstructed",
+        "description": "Original controlled release-policy pair with a shared executable admission contract. Reconstructed conversation, not a production transcript."
+      }
+    },
+    {
+      "id": "visible-policy-b",
+      "sha256": "6b670ec3e5e85ccb217e373ec3102c93114d4269c2a860c4e4776e4b65d9142a",
+      "provenance": {
+        "kind": "reconstructed",
+        "description": "Original controlled release-policy pair with a shared executable admission contract. Reconstructed conversation, not a production transcript."
+      }
+    }
+  ],
+  "planned_runs": 12,
+  "rows": [
+    {
+      "index": 1,
+      "task": "visible-policy-a",
+      "repeat": 2,
+      "strategy": "structured",
+      "status": "completed",
+      "phases": {
+        "summary": {
+          "elapsed_seconds": 18.568,
+          "usage": {
+            "input_tokens": 15635,
+            "cached_input_tokens": 0,
+            "output_tokens": 258
+          },
+          "tool_calls": 0,
+          "exit_code": 0,
+          "status": "completed"
+        },
+        "continuation": {
+          "elapsed_seconds": 31.922,
+          "usage": {
+            "input_tokens": 99583,
+            "cached_input_tokens": 65920,
+            "output_tokens": 759
+          },
+          "tool_calls": 4,
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "retained_context_chars": 1236,
+      "retained_context_sha256": "b5440e0b5c798c14525ab77ddc66aeac02bebb7ab6532276cead62801d5c3dc3",
+      "verification": {
+        "status": "completed",
+        "passed": true,
+        "checks": [
+          {
+            "name": "no_revisit",
+            "passed": true
+          },
+          {
+            "name": "blocked_prerequisite",
+            "passed": true
+          },
+          {
+            "name": "unknown_dependency",
+            "passed": true
+          },
+          {
+            "name": "all_dependencies_required",
+            "passed": true
+          },
+          {
+            "name": "previously_completed",
+            "passed": true
+          },
+          {
+            "name": "manual_gate",
+            "passed": true
+          },
+          {
+            "name": "stable_priority_budget",
+            "passed": true
+          },
+          {
+            "name": "skip_and_exact_fit",
+            "passed": true
+          },
+          {
+            "name": "zero_capacity",
+            "passed": true
+          },
+          {
+            "name": "empty",
+            "passed": true
+          },
+          {
+            "name": "dependency_policy",
+            "passed": true
+          }
+        ]
+      },
+      "regressions": [],
+      "total": {
+        "usage": {
+          "input_tokens": 115218,
+          "cached_input_tokens": 65920,
+          "output_tokens": 1017
+        },
+        "elapsed_seconds": 50.49
+      },
+      "wall_seconds": 50.973
+    },
+    {
+      "index": 2,
+      "task": "visible-policy-a",
+      "repeat": 2,
+      "strategy": "recent",
+      "status": "completed",
+      "phases": {
+        "continuation": {
+          "elapsed_seconds": 35.789,
+          "usage": {
+            "input_tokens": 98521,
+            "cached_input_tokens": 94464,
+            "output_tokens": 659
+          },
+          "tool_calls": 4,
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "retained_context_chars": 236,
+      "retained_context_sha256": "b15e4d65167d6e00c1eddc75d496623b4f0c24f88e99e85d2ed2264cdc69b8fa",
+      "verification": {
+        "status": "completed",
+        "passed": false,
+        "checks": [
+          {
+            "name": "no_revisit",
+            "passed": true
+          },
+          {
+            "name": "blocked_prerequisite",
+            "passed": true
+          },
+          {
+            "name": "unknown_dependency",
+            "passed": true
+          },
+          {
+            "name": "all_dependencies_required",
+            "passed": true
+          },
+          {
+            "name": "previously_completed",
+            "passed": true
+          },
+          {
+            "name": "manual_gate",
+            "passed": true
+          },
+          {
+            "name": "stable_priority_budget",
+            "passed": true
+          },
+          {
+            "name": "skip_and_exact_fit",
+            "passed": true
+          },
+          {
+            "name": "zero_capacity",
+            "passed": true
+          },
+          {
+            "name": "empty",
+            "passed": true
+          },
+          {
+            "name": "dependency_policy",
+            "passed": false
+          }
+        ]
+      },
+      "regressions": [
+        "dependency_policy"
+      ],
+      "total": {
+        "usage": {
+          "input_tokens": 98521,
+          "cached_input_tokens": 94464,
+          "output_tokens": 659
+        },
+        "elapsed_seconds": 35.789
+      },
+      "wall_seconds": 36.246
+    },
+    {
+      "index": 3,
+      "task": "visible-policy-a",
+      "repeat": 2,
+      "strategy": "full",
+      "status": "completed",
+      "phases": {
+        "continuation": {
+          "elapsed_seconds": 30.082,
+          "usage": {
+            "input_tokens": 99790,
+            "cached_input_tokens": 93056,
+            "output_tokens": 683
+          },
+          "tool_calls": 4,
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "retained_context_chars": 1631,
+      "retained_context_sha256": "1ba1b637e189fa9fb9fa1bac0ed176f3f68ef70bca8c30e25af8c577a330419f",
+      "verification": {
+        "status": "completed",
+        "passed": true,
+        "checks": [
+          {
+            "name": "no_revisit",
+            "passed": true
+          },
+          {
+            "name": "blocked_prerequisite",
+            "passed": true
+          },
+          {
+            "name": "unknown_dependency",
+            "passed": true
+          },
+          {
+            "name": "all_dependencies_required",
+            "passed": true
+          },
+          {
+            "name": "previously_completed",
+            "passed": true
+          },
+          {
+            "name": "manual_gate",
+            "passed": true
+          },
+          {
+            "name": "stable_priority_budget",
+            "passed": true
+          },
+          {
+            "name": "skip_and_exact_fit",
+            "passed": true
+          },
+          {
+            "name": "zero_capacity",
+            "passed": true
+          },
+          {
+            "name": "empty",
+            "passed": true
+          },
+          {
+            "name": "dependency_policy",
+            "passed": true
+          }
+        ]
+      },
+      "regressions": [],
+      "total": {
+        "usage": {
+          "input_tokens": 99790,
+          "cached_input_tokens": 93056,
+          "output_tokens": 683
+        },
+        "elapsed_seconds": 30.082
+      },
+      "wall_seconds": 30.59
+    },
+    {
+      "index": 4,
+      "task": "visible-policy-a",
+      "repeat": 1,
+      "strategy": "recent",
+      "status": "completed",
+      "phases": {
+        "continuation": {
+          "elapsed_seconds": 35.321,
+          "usage": {
+            "input_tokens": 98379,
+            "cached_input_tokens": 88192,
+            "output_tokens": 731
+          },
+          "tool_calls": 4,
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "retained_context_chars": 236,
+      "retained_context_sha256": "b15e4d65167d6e00c1eddc75d496623b4f0c24f88e99e85d2ed2264cdc69b8fa",
+      "verification": {
+        "status": "completed",
+        "passed": false,
+        "checks": [
+          {
+            "name": "no_revisit",
+            "passed": true
+          },
+          {
+            "name": "blocked_prerequisite",
+            "passed": true
+          },
+          {
+            "name": "unknown_dependency",
+            "passed": true
+          },
+          {
+            "name": "all_dependencies_required",
+            "passed": true
+          },
+          {
+            "name": "previously_completed",
+            "passed": true
+          },
+          {
+            "name": "manual_gate",
+            "passed": true
+          },
+          {
+            "name": "stable_priority_budget",
+            "passed": true
+          },
+          {
+            "name": "skip_and_exact_fit",
+            "passed": true
+          },
+          {
+            "name": "zero_capacity",
+            "passed": true
+          },
+          {
+            "name": "empty",
+            "passed": true
+          },
+          {
+            "name": "dependency_policy",
+            "passed": false
+          }
+        ]
+      },
+      "regressions": [
+        "dependency_policy"
+      ],
+      "total": {
+        "usage": {
+          "input_tokens": 98379,
+          "cached_input_tokens": 88192,
+          "output_tokens": 731
+        },
+        "elapsed_seconds": 35.321
+      },
+      "wall_seconds": 35.775
+    },
+    {
+      "index": 5,
+      "task": "visible-policy-a",
+      "repeat": 1,
+      "strategy": "structured",
+      "status": "completed",
+      "phases": {
+        "summary": {
+          "elapsed_seconds": 15.726,
+          "usage": {
+            "input_tokens": 15591,
+            "cached_input_tokens": 8064,
+            "output_tokens": 292
+          },
+          "tool_calls": 0,
+          "exit_code": 0,
+          "status": "completed"
+        },
+        "continuation": {
+          "elapsed_seconds": 33.299,
+          "usage": {
+            "input_tokens": 98392,
+            "cached_input_tokens": 94208,
+            "output_tokens": 689
+          },
+          "tool_calls": 4,
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "retained_context_chars": 1389,
+      "retained_context_sha256": "fab8e364ca451f030531990d50d298531450409b70da94483d67b6f809a4fac4",
+      "verification": {
+        "status": "completed",
+        "passed": true,
+        "checks": [
+          {
+            "name": "no_revisit",
+            "passed": true
+          },
+          {
+            "name": "blocked_prerequisite",
+            "passed": true
+          },
+          {
+            "name": "unknown_dependency",
+            "passed": true
+          },
+          {
+            "name": "all_dependencies_required",
+            "passed": true
+          },
+          {
+            "name": "previously_completed",
+            "passed": true
+          },
+          {
+            "name": "manual_gate",
+            "passed": true
+          },
+          {
+            "name": "stable_priority_budget",
+            "passed": true
+          },
+          {
+            "name": "skip_and_exact_fit",
+            "passed": true
+          },
+          {
+            "name": "zero_capacity",
+            "passed": true
+          },
+          {
+            "name": "empty",
+            "passed": true
+          },
+          {
+            "name": "dependency_policy",
+            "passed": true
+          }
+        ]
+      },
+      "regressions": [],
+      "total": {
+        "usage": {
+          "input_tokens": 113983,
+          "cached_input_tokens": 102272,
+          "output_tokens": 981
+        },
+        "elapsed_seconds": 49.025
+      },
+      "wall_seconds": 49.512
+    },
+    {
+      "index": 6,
+      "task": "visible-policy-a",
+      "repeat": 1,
+      "strategy": "full",
+      "status": "completed",
+      "phases": {
+        "continuation": {
+          "elapsed_seconds": 35.535,
+          "usage": {
+            "input_tokens": 100055,
+            "cached_input_tokens": 72576,
+            "output_tokens": 649
+          },
+          "tool_calls": 4,
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "retained_context_chars": 1631,
+      "retained_context_sha256": "1ba1b637e189fa9fb9fa1bac0ed176f3f68ef70bca8c30e25af8c577a330419f",
+      "verification": {
+        "status": "completed",
+        "passed": true,
+        "checks": [
+          {
+            "name": "no_revisit",
+            "passed": true
+          },
+          {
+            "name": "blocked_prerequisite",
+            "passed": true
+          },
+          {
+            "name": "unknown_dependency",
+            "passed": true
+          },
+          {
+            "name": "all_dependencies_required",
+            "passed": true
+          },
+          {
+            "name": "previously_completed",
+            "passed": true
+          },
+          {
+            "name": "manual_gate",
+            "passed": true
+          },
+          {
+            "name": "stable_priority_budget",
+            "passed": true
+          },
+          {
+            "name": "skip_and_exact_fit",
+            "passed": true
+          },
+          {
+            "name": "zero_capacity",
+            "passed": true
+          },
+          {
+            "name": "empty",
+            "passed": true
+          },
+          {
+            "name": "dependency_policy",
+            "passed": true
+          }
+        ]
+      },
+      "regressions": [],
+      "total": {
+        "usage": {
+          "input_tokens": 100055,
+          "cached_input_tokens": 72576,
+          "output_tokens": 649
+        },
+        "elapsed_seconds": 35.535
+      },
+      "wall_seconds": 36.033
+    },
+    {
+      "index": 7,
+      "task": "visible-policy-b",
+      "repeat": 1,
+      "strategy": "structured",
+      "status": "completed",
+      "phases": {
+        "summary": {
+          "elapsed_seconds": 15.274,
+          "usage": {
+            "input_tokens": 15583,
+            "cached_input_tokens": 0,
+            "output_tokens": 321
+          },
+          "tool_calls": 0,
+          "exit_code": 0,
+          "status": "completed"
+        },
+        "continuation": {
+          "elapsed_seconds": 29.43,
+          "usage": {
+            "input_tokens": 98206,
+            "cached_input_tokens": 94208,
+            "output_tokens": 636
+          },
+          "tool_calls": 4,
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "retained_context_chars": 1586,
+      "retained_context_sha256": "55a9db257008fc2824eb032d3b3b34228f935c0569be273c72516a355e3cde9f",
+      "verification": {
+        "status": "completed",
+        "passed": true,
+        "checks": [
+          {
+            "name": "no_revisit",
+            "passed": true
+          },
+          {
+            "name": "blocked_prerequisite",
+            "passed": true
+          },
+          {
+            "name": "unknown_dependency",
+            "passed": true
+          },
+          {
+            "name": "all_dependencies_required",
+            "passed": true
+          },
+          {
+            "name": "previously_completed",
+            "passed": true
+          },
+          {
+            "name": "manual_gate",
+            "passed": true
+          },
+          {
+            "name": "stable_priority_budget",
+            "passed": true
+          },
+          {
+            "name": "skip_and_exact_fit",
+            "passed": true
+          },
+          {
+            "name": "zero_capacity",
+            "passed": true
+          },
+          {
+            "name": "empty",
+            "passed": true
+          },
+          {
+            "name": "dependency_policy",
+            "passed": true
+          }
+        ]
+      },
+      "regressions": [],
+      "total": {
+        "usage": {
+          "input_tokens": 113789,
+          "cached_input_tokens": 94208,
+          "output_tokens": 957
+        },
+        "elapsed_seconds": 44.704
+      },
+      "wall_seconds": 45.193
+    },
+    {
+      "index": 8,
+      "task": "visible-policy-b",
+      "repeat": 1,
+      "strategy": "full",
+      "status": "completed",
+      "phases": {
+        "continuation": {
+          "elapsed_seconds": 30.888,
+          "usage": {
+            "input_tokens": 100095,
+            "cached_input_tokens": 88320,
+            "output_tokens": 698
+          },
+          "tool_calls": 4,
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "retained_context_chars": 1627,
+      "retained_context_sha256": "d2837701faf6832f2152d3b786922cf8bfab641af03178209a491c0548a77fa9",
+      "verification": {
+        "status": "completed",
+        "passed": true,
+        "checks": [
+          {
+            "name": "no_revisit",
+            "passed": true
+          },
+          {
+            "name": "blocked_prerequisite",
+            "passed": true
+          },
+          {
+            "name": "unknown_dependency",
+            "passed": true
+          },
+          {
+            "name": "all_dependencies_required",
+            "passed": true
+          },
+          {
+            "name": "previously_completed",
+            "passed": true
+          },
+          {
+            "name": "manual_gate",
+            "passed": true
+          },
+          {
+            "name": "stable_priority_budget",
+            "passed": true
+          },
+          {
+            "name": "skip_and_exact_fit",
+            "passed": true
+          },
+          {
+            "name": "zero_capacity",
+            "passed": true
+          },
+          {
+            "name": "empty",
+            "passed": true
+          },
+          {
+            "name": "dependency_policy",
+            "passed": true
+          }
+        ]
+      },
+      "regressions": [],
+      "total": {
+        "usage": {
+          "input_tokens": 100095,
+          "cached_input_tokens": 88320,
+          "output_tokens": 698
+        },
+        "elapsed_seconds": 30.888
+      },
+      "wall_seconds": 31.39
+    },
+    {
+      "index": 9,
+      "task": "visible-policy-b",
+      "repeat": 1,
+      "strategy": "recent",
+      "status": "completed",
+      "phases": {
+        "continuation": {
+          "elapsed_seconds": 31.845,
+          "usage": {
+            "input_tokens": 98641,
+            "cached_input_tokens": 94464,
+            "output_tokens": 725
+          },
+          "tool_calls": 4,
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "retained_context_chars": 236,
+      "retained_context_sha256": "b15e4d65167d6e00c1eddc75d496623b4f0c24f88e99e85d2ed2264cdc69b8fa",
+      "verification": {
+        "status": "completed",
+        "passed": true,
+        "checks": [
+          {
+            "name": "no_revisit",
+            "passed": true
+          },
+          {
+            "name": "blocked_prerequisite",
+            "passed": true
+          },
+          {
+            "name": "unknown_dependency",
+            "passed": true
+          },
+          {
+            "name": "all_dependencies_required",
+            "passed": true
+          },
+          {
+            "name": "previously_completed",
+            "passed": true
+          },
+          {
+            "name": "manual_gate",
+            "passed": true
+          },
+          {
+            "name": "stable_priority_budget",
+            "passed": true
+          },
+          {
+            "name": "skip_and_exact_fit",
+            "passed": true
+          },
+          {
+            "name": "zero_capacity",
+            "passed": true
+          },
+          {
+            "name": "empty",
+            "passed": true
+          },
+          {
+            "name": "dependency_policy",
+            "passed": true
+          }
+        ]
+      },
+      "regressions": [],
+      "total": {
+        "usage": {
+          "input_tokens": 98641,
+          "cached_input_tokens": 94464,
+          "output_tokens": 725
+        },
+        "elapsed_seconds": 31.845
+      },
+      "wall_seconds": 32.345
+    },
+    {
+      "index": 10,
+      "task": "visible-policy-b",
+      "repeat": 2,
+      "strategy": "structured",
+      "status": "completed",
+      "phases": {
+        "summary": {
+          "elapsed_seconds": 15.944,
+          "usage": {
+            "input_tokens": 15587,
+            "cached_input_tokens": 8064,
+            "output_tokens": 341
+          },
+          "tool_calls": 0,
+          "exit_code": 0,
+          "status": "completed"
+        },
+        "continuation": {
+          "elapsed_seconds": 31.517,
+          "usage": {
+            "input_tokens": 98407,
+            "cached_input_tokens": 94208,
+            "output_tokens": 688
+          },
+          "tool_calls": 4,
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "retained_context_chars": 1693,
+      "retained_context_sha256": "aa45e50e100294bec7d79a465cf41cb03a524648e7aca885fa68e24004fcdb7d",
+      "verification": {
+        "status": "completed",
+        "passed": true,
+        "checks": [
+          {
+            "name": "no_revisit",
+            "passed": true
+          },
+          {
+            "name": "blocked_prerequisite",
+            "passed": true
+          },
+          {
+            "name": "unknown_dependency",
+            "passed": true
+          },
+          {
+            "name": "all_dependencies_required",
+            "passed": true
+          },
+          {
+            "name": "previously_completed",
+            "passed": true
+          },
+          {
+            "name": "manual_gate",
+            "passed": true
+          },
+          {
+            "name": "stable_priority_budget",
+            "passed": true
+          },
+          {
+            "name": "skip_and_exact_fit",
+            "passed": true
+          },
+          {
+            "name": "zero_capacity",
+            "passed": true
+          },
+          {
+            "name": "empty",
+            "passed": true
+          },
+          {
+            "name": "dependency_policy",
+            "passed": true
+          }
+        ]
+      },
+      "regressions": [],
+      "total": {
+        "usage": {
+          "input_tokens": 113994,
+          "cached_input_tokens": 102272,
+          "output_tokens": 1029
+        },
+        "elapsed_seconds": 47.461
+      },
+      "wall_seconds": 47.951
+    },
+    {
+      "index": 11,
+      "task": "visible-policy-b",
+      "repeat": 2,
+      "strategy": "recent",
+      "status": "completed",
+      "phases": {
+        "continuation": {
+          "elapsed_seconds": 30.489,
+          "usage": {
+            "input_tokens": 98253,
+            "cached_input_tokens": 79232,
+            "output_tokens": 669
+          },
+          "tool_calls": 4,
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "retained_context_chars": 236,
+      "retained_context_sha256": "b15e4d65167d6e00c1eddc75d496623b4f0c24f88e99e85d2ed2264cdc69b8fa",
+      "verification": {
+        "status": "completed",
+        "passed": true,
+        "checks": [
+          {
+            "name": "no_revisit",
+            "passed": true
+          },
+          {
+            "name": "blocked_prerequisite",
+            "passed": true
+          },
+          {
+            "name": "unknown_dependency",
+            "passed": true
+          },
+          {
+            "name": "all_dependencies_required",
+            "passed": true
+          },
+          {
+            "name": "previously_completed",
+            "passed": true
+          },
+          {
+            "name": "manual_gate",
+            "passed": true
+          },
+          {
+            "name": "stable_priority_budget",
+            "passed": true
+          },
+          {
+            "name": "skip_and_exact_fit",
+            "passed": true
+          },
+          {
+            "name": "zero_capacity",
+            "passed": true
+          },
+          {
+            "name": "empty",
+            "passed": true
+          },
+          {
+            "name": "dependency_policy",
+            "passed": true
+          }
+        ]
+      },
+      "regressions": [],
+      "total": {
+        "usage": {
+          "input_tokens": 98253,
+          "cached_input_tokens": 79232,
+          "output_tokens": 669
+        },
+        "elapsed_seconds": 30.489
+      },
+      "wall_seconds": 30.984
+    },
+    {
+      "index": 12,
+      "task": "visible-policy-b",
+      "repeat": 2,
+      "strategy": "full",
+      "status": "completed",
+      "phases": {
+        "continuation": {
+          "elapsed_seconds": 36.194,
+          "usage": {
+            "input_tokens": 99772,
+            "cached_input_tokens": 79872,
+            "output_tokens": 660
+          },
+          "tool_calls": 4,
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "retained_context_chars": 1627,
+      "retained_context_sha256": "d2837701faf6832f2152d3b786922cf8bfab641af03178209a491c0548a77fa9",
+      "verification": {
+        "status": "completed",
+        "passed": true,
+        "checks": [
+          {
+            "name": "no_revisit",
+            "passed": true
+          },
+          {
+            "name": "blocked_prerequisite",
+            "passed": true
+          },
+          {
+            "name": "unknown_dependency",
+            "passed": true
+          },
+          {
+            "name": "all_dependencies_required",
+            "passed": true
+          },
+          {
+            "name": "previously_completed",
+            "passed": true
+          },
+          {
+            "name": "manual_gate",
+            "passed": true
+          },
+          {
+            "name": "stable_priority_budget",
+            "passed": true
+          },
+          {
+            "name": "skip_and_exact_fit",
+            "passed": true
+          },
+          {
+            "name": "zero_capacity",
+            "passed": true
+          },
+          {
+            "name": "empty",
+            "passed": true
+          },
+          {
+            "name": "dependency_policy",
+            "passed": true
+          }
+        ]
+      },
+      "regressions": [],
+      "total": {
+        "usage": {
+          "input_tokens": 99772,
+          "cached_input_tokens": 79872,
+          "output_tokens": 660
+        },
+        "elapsed_seconds": 36.194
+      },
+      "wall_seconds": 36.689
+    }
+  ],
+  "runner_sha256": "6c86cf39090af5f1739b3a467bf146f87491ced0d3faba3cc8d330214076591f",
+  "order": [
+    {
+      "task": "visible-policy-a",
+      "repeat": 2,
+      "strategy": "structured"
+    },
+    {
+      "task": "visible-policy-a",
+      "repeat": 2,
+      "strategy": "recent"
+    },
+    {
+      "task": "visible-policy-a",
+      "repeat": 2,
+      "strategy": "full"
+    },
+    {
+      "task": "visible-policy-a",
+      "repeat": 1,
+      "strategy": "recent"
+    },
+    {
+      "task": "visible-policy-a",
+      "repeat": 1,
+      "strategy": "structured"
+    },
+    {
+      "task": "visible-policy-a",
+      "repeat": 1,
+      "strategy": "full"
+    },
+    {
+      "task": "visible-policy-b",
+      "repeat": 1,
+      "strategy": "structured"
+    },
+    {
+      "task": "visible-policy-b",
+      "repeat": 1,
+      "strategy": "full"
+    },
+    {
+      "task": "visible-policy-b",
+      "repeat": 1,
+      "strategy": "recent"
+    },
+    {
+      "task": "visible-policy-b",
+      "repeat": 2,
+      "strategy": "structured"
+    },
+    {
+      "task": "visible-policy-b",
+      "repeat": 2,
+      "strategy": "recent"
+    },
+    {
+      "task": "visible-policy-b",
+      "repeat": 2,
+      "strategy": "full"
+    }
+  ]
+}

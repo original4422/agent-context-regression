@@ -28,6 +28,8 @@ Two additional tasks cover deployment admission and scoped authorization. In a s
 
 A second fixed batch holds the checkpoint, schema, latest request and public checks identical while reversing an earlier decision: concurrent release wave versus sequential plan. Full and structured passed both versions in both repetitions; recent passed neither complete contract. Cross-scoring shows the recent candidates chose sequential dependency behavior but also violated shared ordering rules. [The paired report](reports/paired-policy.md) includes input fingerprints, every cross-score, costs, and the remaining causal distinction.
 
+The [visible-contract follow-up](reports/visible-policy.md) keeps all shared rules executable and asks the agent to fill only the historical policy predicate. All 12 candidates pass shared rules; full and structured recover both policies (4/4 each), while recent chooses sequential behavior throughout (2/4 requested policies, 0/2 pairs). This separates an opposite-policy implementation from broken shared code.
+
 ## Run
 
 Requires Python 3.11+, a logged-in Codex CLI supporting `exec --ignore-user-config`, and its working OS sandbox. The measured platform is macOS; Linux execution has not been measured. Python code uses only the standard library.
