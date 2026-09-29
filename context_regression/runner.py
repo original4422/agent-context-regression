@@ -64,6 +64,9 @@ def codex_args(config, workspace, output, *, task=None, schema=None):
               "features.shell_tool": False, "features.multi_agent": False}
     if task:
         values["mcp_servers.acr.command"] = sys.executable
+        # These four local fixture tools are explicitly authorized by `run`.
+        # Other MCP servers and native commands receive no approval override.
+        values["mcp_servers.acr.default_tools_approval_mode"] = "approve"
         values["mcp_servers.acr.args"] = ["-I", "-B", str(BRIDGE), str(task["path"]),
                                            str(workspace), config["codex"], str(os.getpid())]
     for key, value in values.items():
@@ -126,6 +129,11 @@ def run_codex(args, prompt, private, timeout, max_tools):
                 if event.get("type") == "turn.failed":
                     failure = "turn_failed"
                     break
+                item = event.get("item", {})
+                if event.get("type") == "item.completed" and item.get("type") == "mcp_tool_call":
+                    if item.get("status") == "failed" or (item.get("result") or {}).get("isError"):
+                        failure = "tool_failure"
+                        break
                 if event.get("type") == "item.started" and event.get("item", {}).get("type") == "mcp_tool_call":
                     tool_calls += 1
                     if tool_calls > max_tools:
@@ -135,6 +143,12 @@ def run_codex(args, prompt, private, timeout, max_tools):
                 stop_process(proc)
             else:
                 proc.wait(timeout=max(0.1, timeout - (time.monotonic() - started)))
+        except KeyboardInterrupt:
+            failure = "interrupted"
+            stop_process(proc)
+        except (json.JSONDecodeError, BrokenPipeError, subprocess.TimeoutExpired) as error:
+            failure = type(error).__name__
+            stop_process(proc)
         except BaseException:
             stop_process(proc)
             raise

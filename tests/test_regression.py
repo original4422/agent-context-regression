@@ -149,6 +149,15 @@ class RunnerTests(unittest.TestCase):
             run_codex(args, "fixture", self.root / "private", 5, 2)
         self.assertEqual(caught.exception.phase["status"], "tool_budget")
 
+    def test_rejected_tool_aborts_before_candidate_scoring(self):
+        args = self.fake('import json,time\nprint(json.dumps({"type":"item.completed","item":{"type":"mcp_tool_call","status":"failed","error":{"message":"approval required"}}}),flush=True)\ntime.sleep(20)\n')
+        with self.assertRaises(RunFailure) as caught:
+            run_codex(args, "fixture", self.root / "private", 5, 2)
+        self.assertEqual(caught.exception.phase["status"], "tool_failure")
+
+    def test_no_phase_does_not_report_zero_usage(self):
+        self.assertIsNone(phase_total({})["usage"])
+
     def test_batch_three_strategies_and_private_outputs(self):
         task = tasks_in(BUILTIN_TASKS)[0]
         config = {"codex": "codex", "model": "fake", "effort": "low", "repetitions": 1,
