@@ -35,6 +35,12 @@ The retained context averaged 1,259 characters for full history, 172 for recent,
 
 After the batch, all 24 saved candidate modules were independently re-evaluated under the read-only sandbox, matching the recorded outcomes. All 32 phase usage records were reconciled against private JSONL, and runtime/task fingerprints matched the frozen sources. These rechecks are verification of saved candidates, not additional model samples.
 
+An independent review then found that the original verifier imported candidate code into the same interpreter as its checks. A candidate could replace the in-memory check dictionary through stack inspection, and `SystemExit(0)` was misclassified as a harness failure. The current verifier keeps acceptance logic in its own process and evaluates JSON values returned by fresh sandboxed candidate workers. Both cases, plus hard exits and stdout spoofing, now have regression coverage.
+
+All **24 archived candidates were rechecked with the isolated verifier**, preserving every recorded check outcome: [recheck record](isolated-verifier-recheck.json). That file fingerprints the new verifier, each saved candidate and the original results file. No model calls were added, and the historical measurement files remain unchanged. The old token/time numbers describe `d6274f6`; they are not performance measurements of the new per-call worker implementation.
+
+These commands reproduce the historical runner. Use current `main` for process-isolated verification:
+
 ```sh
 git checkout d6274f6
 python3 -m unittest discover -s tests -v

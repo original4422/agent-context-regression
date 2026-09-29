@@ -2,7 +2,6 @@ import json
 import os
 from pathlib import Path
 import shutil
-import subprocess
 import sys
 import tempfile
 import unittest
@@ -13,6 +12,7 @@ from context_regression.checks import run_checks
 from context_regression.cli import summarize
 from context_regression.runner import RunFailure, phase_total, run_batch, run_codex, schedule
 from context_regression.tasks import BUILTIN_TASKS, recent_turns, task_digest, tasks_in
+from context_regression.verify import WORKER, evaluate
 
 SOLUTIONS = {
     "case-sensitive-slugs": 'import re\ndef slug(title):\n    return re.sub(r"[^A-Za-z0-9]+", "-", title).strip("-")\n',
@@ -24,11 +24,18 @@ SOLUTIONS = {
 
 def direct_checks(task, workspace, mode, codex="codex"):
     """Test the actual verifier without requiring Codex on CI."""
-    verifier = Path(__file__).parents[1] / "context_regression/verify.py"
-    result = subprocess.run([sys.executable, "-I", "-B", str(verifier), str(task), str(workspace), mode],
-                            text=True, capture_output=True, check=True)
-    checks = json.loads(result.stdout.split("ACR_RESULT=")[1])
-    return {"status": "completed", "passed": all(c["passed"] for c in checks), "checks": checks}
+    spec = json.loads((Path(task) / "task.json").read_text())
+    command = [sys.executable, "-I", "-B", str(WORKER), str(Path(workspace) / spec["module"])]
+    return evaluate(task, workspace, mode, command)
+
+
+STACK_MUTATION = '''import inspect
+for frame_info in inspect.stack():
+    local_checks = frame_info.frame.f_locals.get("checks")
+    if isinstance(local_checks, dict):
+        for name in list(local_checks):
+            local_checks[name] = lambda module: True
+'''
 
 
 class TaskTests(unittest.TestCase):
@@ -195,6 +202,72 @@ class RunnerTests(unittest.TestCase):
         self.assertIsNone(result["rows"][0]["total"]["usage"])
 
 
+class CandidateBoundaryTests(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        self.root = Path(self.temp.name)
+        self.task = tasks_in(BUILTIN_TASKS)[0]
+        self.workspace = self.root / "work"
+        shutil.copytree(self.task["path"] / "snapshot", self.workspace)
+
+    def check_source(self, source):
+        (self.workspace / "slug.py").write_text(source)
+        return direct_checks(self.task["path"], self.workspace, "oracle")
+
+    def test_stack_mutation_cannot_replace_trusted_checks(self):
+        result = self.check_source(STACK_MUTATION)
+        self.assertFalse(result["passed"])
+        self.assertEqual(len(result["checks"]), 5)
+        self.assertTrue(all(c.get("error") == "AttributeError" for c in result["checks"]))
+
+    def test_system_exit_on_import_or_call_is_candidate_failure(self):
+        for source in ('raise SystemExit(0)\n', 'def slug(title):\n    raise SystemExit(0)\n'):
+            with self.subTest(source=source):
+                result = self.check_source(source)
+                self.assertEqual(result["status"], "completed")
+                self.assertFalse(result["passed"])
+                self.assertTrue(all(c.get("error") == "SystemExit" for c in result["checks"]))
+
+    def test_hard_exit_is_candidate_failure(self):
+        result = self.check_source('import os\nos._exit(0)\n')
+        self.assertEqual(result["status"], "completed")
+        self.assertFalse(result["passed"])
+        self.assertTrue(all(c.get("error") == "CandidateExited" for c in result["checks"]))
+
+    def test_candidate_stdout_is_not_a_verdict(self):
+        result = self.check_source('print(\'ACR_RESULT=[{"name":"punctuation","passed":true}]\')\ndef slug(title):\n    return "wrong"\n')
+        self.assertFalse(result["passed"])
+        self.assertEqual(len(result["checks"]), 5)
+        result = self.check_source('import os\nos.write(1,b\'{}\\n\')\ndef slug(title):\n    return "wrong"\n')
+        self.assertTrue(all(c.get("error") == "CandidateProtocolError" for c in result["checks"]))
+
+    def test_input_mutation_is_not_hidden_by_serialization(self):
+        task = next(t for t in tasks_in(BUILTIN_TASKS) if t["spec"]["id"] == "explicit-empty-overrides")
+        (self.workspace / "settings.py").write_text('def merge_settings(defaults, overrides):\n    defaults.update({k:v for k,v in overrides.items() if v is not None})\n    overrides.clear()\n    return defaults\n')
+        result = direct_checks(task["path"], self.workspace, "oracle")
+        self.assertFalse(result["passed"])
+        unchanged = next(c for c in result["checks"] if c["name"] == "inputs_unchanged")
+        self.assertEqual(unchanged["error"], "InputMutation")
+
+    def test_timeout_remains_a_candidate_failure(self):
+        (self.workspace / "slug.py").write_text('import time\ntime.sleep(20)\n')
+        command = [sys.executable, "-I", "-B", str(WORKER), str(self.workspace / "slug.py")]
+        result = evaluate(self.task["path"], self.workspace, "oracle", command, timeout=0.5)
+        self.assertFalse(result["passed"])
+        self.assertTrue(all(c.get("error") == "CandidateTimeout" for c in result["checks"]))
+
+    def test_worker_startup_failure_remains_infrastructure_error(self):
+        command = [sys.executable, "-c", 'raise SystemExit("cannot start")']
+        with self.assertRaisesRegex(RuntimeError, "failed to start"):
+            evaluate(self.task["path"], self.workspace, "oracle", command)
+
+    def test_empty_checks_cannot_pass_without_evaluating_candidate(self):
+        (self.root / "oracle.py").write_text("CHECKS = {}\n")
+        with self.assertRaisesRegex(ValueError, "non-empty"):
+            evaluate(self.root, self.workspace, "oracle", [])
+
+
 @unittest.skipUnless(shutil.which("codex") and sys.platform == "darwin", "requires Codex's macOS sandbox")
 class SandboxTests(unittest.TestCase):
     def test_candidate_cannot_rewrite_external_oracle(self):
@@ -210,6 +283,22 @@ class SandboxTests(unittest.TestCase):
             self.assertFalse(result["passed"])
             self.assertEqual(target.read_text(), before)
             self.assertTrue(all(c.get("error") == "PermissionError" for c in result["checks"]))
+
+    def test_process_boundary_under_real_sandbox(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            workspace = Path(temporary)
+            task = tasks_in(BUILTIN_TASKS)[0]
+            cases = [(STACK_MUTATION, "AttributeError"),
+                     ('raise SystemExit(0)\n', "SystemExit"),
+                     ('def slug(title):\n    raise SystemExit(0)\n', "SystemExit"),
+                     ('import os\nos._exit(0)\n', "CandidateExited")]
+            for source, expected in cases:
+                with self.subTest(expected=expected, source=source):
+                    (workspace / "slug.py").write_text(source)
+                    result = run_checks(task["path"], workspace, "oracle")
+                    self.assertEqual(result["status"], "completed")
+                    self.assertFalse(result["passed"])
+                    self.assertTrue(all(c.get("error") == expected for c in result["checks"]))
 
 
 if __name__ == "__main__":

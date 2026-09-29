@@ -18,7 +18,7 @@ Codex CLI 0.155.1, `gpt-6-sol`, low reasoning, two repetitions per task:
 
 On these short histories, the automatic summary preserved correctness but **increased total tokens and latency**. Truncation lost casing, window-boundary and retry-policy requirements; both truncation runs passed the configuration task. One slug failure concerned separator handling rather than the designated corrected requirement.
 
-[Full results and accounting](reports/README.md) include all 24 continuations, all 8 summary generations, input/cached-input/output breakdowns, and the initial aborted integration batch. The 17 deterministic tests cover candidate outcomes, task isolation, usage accounting, failure handling and sandbox protection of acceptance files.
+[Full results and accounting](reports/README.md) include all 24 continuations, all 8 summary generations, input/cached-input/output breakdowns, and the initial aborted integration batch. All 24 saved candidates were subsequently [rechecked with process-isolated verification](reports/isolated-verifier-recheck.json), with identical outcomes. The timing table records the original runner. The 26 deterministic tests cover candidate outcomes, process isolation, usage accounting, failure handling and sandbox protection of acceptance files.
 
 ## Run
 
@@ -59,7 +59,9 @@ The current request is identical across strategies. Each attempt starts from a f
 
 The agent has four MCP tools: list files, read a listed file, replace a listed file, and run public smoke checks. Native shell and web search are disabled. This is a constrained coding loop: the agent edits and executes actual Python code, with the same capabilities in every arm.
 
-Public checks are deliberately incomplete. Acceptance scripts stay outside the candidate workspace and run afterward under Codex's read-only OS sandbox. Neither file tools nor executed candidate code can rewrite those scripts. A sandbox regression test verifies an attempted overwrite is denied. The harness also fingerprints task files before and after each attempt.
+Public checks are deliberately incomplete. Acceptance scripts stay outside the candidate workspace and execute in the trusted verifier process. Each candidate function call runs in a fresh Python process under Codex's read-only OS sandbox. The verifier sends JSON arguments, receives JSON values, and computes every pass/fail decision itself; acceptance functions and verdict memory never enter the candidate process. Input mutations, candidate exceptions, `SystemExit`, hard exits and malformed replies produce failed checks. A worker that cannot start is a harness error and aborts the batch.
+
+The file tools and sandbox prevent candidates from rewriting acceptance scripts; task fingerprints are also checked before and after each attempt. Regression tests reproduce attempted file overwrites, stack-based check replacement and abrupt candidate termination. Filesystem read access follows Codex's sandbox policy; test secrecy is not part of this adapter's contract.
 
 ## Tasks and outcomes
 
@@ -87,7 +89,7 @@ my-task/
   oracle.py        # same interface; independent acceptance checks
 ```
 
-Copy a [built-in task](context_regression/tasks/explicit-empty-overrides) for the exact schema. Use trusted Python check scripts; task definitions are executable code. The current adapter loads one Python module and exposes only the files listed in `editable`. Changing strategy logic is a small edit to `runner.py`; adding general agent/provider adapters is outside this first version.
+Copy a [built-in task](context_regression/tasks/explicit-empty-overrides) for the exact schema. Use trusted Python check scripts; task definitions are executable code. `candidate_module` is a proxy for **pure functions with JSON-compatible arguments and return values**: strings, numbers, booleans, null, lists and dictionaries with string keys. Every call imports a fresh candidate module, and changed arguments fail verification. Module state, Python object identity and non-JSON return types are outside this adapter. The agent can edit only files listed in `editable`. Changing strategy logic is a small edit to `runner.py`; adding general agent/provider adapters is outside this first version.
 
 Useful controls:
 

@@ -1,0 +1,848 @@
+{
+  "scope": "Re-evaluation of 24 saved pilot candidates with process-isolated JSON value checks. No new model calls or performance measurements.",
+  "historical_results_sha256": "d925c387336e93222298d7a9b5f695a768610889bad13ab00dbc936aacb54c84",
+  "verifier_sha256": "b9f4aff76367c0048f771e10f9f4156fc4e318c419eb316a7a1c5b22567ccf81",
+  "all_outcomes_match": true,
+  "rows": [
+    {
+      "index": 1,
+      "task": "case-sensitive-slugs",
+      "repeat": 1,
+      "strategy": "full",
+      "matches_historical": true,
+      "verification": {
+        "status": "completed",
+        "passed": true,
+        "checks": [
+          {
+            "name": "punctuation",
+            "passed": true
+          },
+          {
+            "name": "rejected_lowercasing",
+            "passed": true
+          },
+          {
+            "name": "existing_separator",
+            "passed": true
+          },
+          {
+            "name": "empty",
+            "passed": true
+          },
+          {
+            "name": "digits",
+            "passed": true
+          }
+        ]
+      },
+      "candidate_sha256": "1ec491f391db0325c9906029e980ae6090ec3077aff2ef300367c4a22a45e58a"
+    },
+    {
+      "index": 2,
+      "task": "case-sensitive-slugs",
+      "repeat": 1,
+      "strategy": "recent",
+      "matches_historical": true,
+      "verification": {
+        "status": "completed",
+        "passed": false,
+        "checks": [
+          {
+            "name": "punctuation",
+            "passed": true
+          },
+          {
+            "name": "rejected_lowercasing",
+            "passed": false
+          },
+          {
+            "name": "existing_separator",
+            "passed": false
+          },
+          {
+            "name": "empty",
+            "passed": true
+          },
+          {
+            "name": "digits",
+            "passed": false
+          }
+        ]
+      },
+      "candidate_sha256": "c140a46eb39632a340507f29895ec0fd96860d851d8271bfebbf00fcade4d9e3"
+    },
+    {
+      "index": 3,
+      "task": "case-sensitive-slugs",
+      "repeat": 1,
+      "strategy": "structured",
+      "matches_historical": true,
+      "verification": {
+        "status": "completed",
+        "passed": true,
+        "checks": [
+          {
+            "name": "punctuation",
+            "passed": true
+          },
+          {
+            "name": "rejected_lowercasing",
+            "passed": true
+          },
+          {
+            "name": "existing_separator",
+            "passed": true
+          },
+          {
+            "name": "empty",
+            "passed": true
+          },
+          {
+            "name": "digits",
+            "passed": true
+          }
+        ]
+      },
+      "candidate_sha256": "e17aa38d4ad8ea79776523c3e6343d493fea7fbd9f29d56f1912face671634dd"
+    },
+    {
+      "index": 4,
+      "task": "case-sensitive-slugs",
+      "repeat": 2,
+      "strategy": "full",
+      "matches_historical": true,
+      "verification": {
+        "status": "completed",
+        "passed": true,
+        "checks": [
+          {
+            "name": "punctuation",
+            "passed": true
+          },
+          {
+            "name": "rejected_lowercasing",
+            "passed": true
+          },
+          {
+            "name": "existing_separator",
+            "passed": true
+          },
+          {
+            "name": "empty",
+            "passed": true
+          },
+          {
+            "name": "digits",
+            "passed": true
+          }
+        ]
+      },
+      "candidate_sha256": "1ec491f391db0325c9906029e980ae6090ec3077aff2ef300367c4a22a45e58a"
+    },
+    {
+      "index": 5,
+      "task": "case-sensitive-slugs",
+      "repeat": 2,
+      "strategy": "structured",
+      "matches_historical": true,
+      "verification": {
+        "status": "completed",
+        "passed": true,
+        "checks": [
+          {
+            "name": "punctuation",
+            "passed": true
+          },
+          {
+            "name": "rejected_lowercasing",
+            "passed": true
+          },
+          {
+            "name": "existing_separator",
+            "passed": true
+          },
+          {
+            "name": "empty",
+            "passed": true
+          },
+          {
+            "name": "digits",
+            "passed": true
+          }
+        ]
+      },
+      "candidate_sha256": "57de20f4068214e587cd677a5c20670369e824597030a3225f8ff9c92eef3e25"
+    },
+    {
+      "index": 6,
+      "task": "case-sensitive-slugs",
+      "repeat": 2,
+      "strategy": "recent",
+      "matches_historical": true,
+      "verification": {
+        "status": "completed",
+        "passed": false,
+        "checks": [
+          {
+            "name": "punctuation",
+            "passed": true
+          },
+          {
+            "name": "rejected_lowercasing",
+            "passed": true
+          },
+          {
+            "name": "existing_separator",
+            "passed": false
+          },
+          {
+            "name": "empty",
+            "passed": true
+          },
+          {
+            "name": "digits",
+            "passed": true
+          }
+        ]
+      },
+      "candidate_sha256": "3a3d018b06d713d353b85de8f3552e7c2de3db4eabc5d391b43723382461a231"
+    },
+    {
+      "index": 7,
+      "task": "explicit-empty-overrides",
+      "repeat": 2,
+      "strategy": "recent",
+      "matches_historical": true,
+      "verification": {
+        "status": "completed",
+        "passed": true,
+        "checks": [
+          {
+            "name": "inherit_none",
+            "passed": true
+          },
+          {
+            "name": "rejected_truthiness",
+            "passed": true
+          },
+          {
+            "name": "new_none_omitted",
+            "passed": true
+          },
+          {
+            "name": "new_key",
+            "passed": true
+          },
+          {
+            "name": "inputs_unchanged",
+            "passed": true
+          }
+        ]
+      },
+      "candidate_sha256": "b210a1166584e936890aac5cd0271e148be8dce6fbb39855c707b9decc28217e"
+    },
+    {
+      "index": 8,
+      "task": "explicit-empty-overrides",
+      "repeat": 2,
+      "strategy": "full",
+      "matches_historical": true,
+      "verification": {
+        "status": "completed",
+        "passed": true,
+        "checks": [
+          {
+            "name": "inherit_none",
+            "passed": true
+          },
+          {
+            "name": "rejected_truthiness",
+            "passed": true
+          },
+          {
+            "name": "new_none_omitted",
+            "passed": true
+          },
+          {
+            "name": "new_key",
+            "passed": true
+          },
+          {
+            "name": "inputs_unchanged",
+            "passed": true
+          }
+        ]
+      },
+      "candidate_sha256": "74d86b4a17536d69b31e751dd8f60e481086df3b37f898ee5cfc06fc78693db1"
+    },
+    {
+      "index": 9,
+      "task": "explicit-empty-overrides",
+      "repeat": 2,
+      "strategy": "structured",
+      "matches_historical": true,
+      "verification": {
+        "status": "completed",
+        "passed": true,
+        "checks": [
+          {
+            "name": "inherit_none",
+            "passed": true
+          },
+          {
+            "name": "rejected_truthiness",
+            "passed": true
+          },
+          {
+            "name": "new_none_omitted",
+            "passed": true
+          },
+          {
+            "name": "new_key",
+            "passed": true
+          },
+          {
+            "name": "inputs_unchanged",
+            "passed": true
+          }
+        ]
+      },
+      "candidate_sha256": "74d86b4a17536d69b31e751dd8f60e481086df3b37f898ee5cfc06fc78693db1"
+    },
+    {
+      "index": 10,
+      "task": "explicit-empty-overrides",
+      "repeat": 1,
+      "strategy": "full",
+      "matches_historical": true,
+      "verification": {
+        "status": "completed",
+        "passed": true,
+        "checks": [
+          {
+            "name": "inherit_none",
+            "passed": true
+          },
+          {
+            "name": "rejected_truthiness",
+            "passed": true
+          },
+          {
+            "name": "new_none_omitted",
+            "passed": true
+          },
+          {
+            "name": "new_key",
+            "passed": true
+          },
+          {
+            "name": "inputs_unchanged",
+            "passed": true
+          }
+        ]
+      },
+      "candidate_sha256": "74d86b4a17536d69b31e751dd8f60e481086df3b37f898ee5cfc06fc78693db1"
+    },
+    {
+      "index": 11,
+      "task": "explicit-empty-overrides",
+      "repeat": 1,
+      "strategy": "recent",
+      "matches_historical": true,
+      "verification": {
+        "status": "completed",
+        "passed": true,
+        "checks": [
+          {
+            "name": "inherit_none",
+            "passed": true
+          },
+          {
+            "name": "rejected_truthiness",
+            "passed": true
+          },
+          {
+            "name": "new_none_omitted",
+            "passed": true
+          },
+          {
+            "name": "new_key",
+            "passed": true
+          },
+          {
+            "name": "inputs_unchanged",
+            "passed": true
+          }
+        ]
+      },
+      "candidate_sha256": "716a1305bee31114151b18a2f338a781bf8d156e4ecdd26f768093fa69dd788e"
+    },
+    {
+      "index": 12,
+      "task": "explicit-empty-overrides",
+      "repeat": 1,
+      "strategy": "structured",
+      "matches_historical": true,
+      "verification": {
+        "status": "completed",
+        "passed": true,
+        "checks": [
+          {
+            "name": "inherit_none",
+            "passed": true
+          },
+          {
+            "name": "rejected_truthiness",
+            "passed": true
+          },
+          {
+            "name": "new_none_omitted",
+            "passed": true
+          },
+          {
+            "name": "new_key",
+            "passed": true
+          },
+          {
+            "name": "inputs_unchanged",
+            "passed": true
+          }
+        ]
+      },
+      "candidate_sha256": "74d86b4a17536d69b31e751dd8f60e481086df3b37f898ee5cfc06fc78693db1"
+    },
+    {
+      "index": 13,
+      "task": "event-window-order",
+      "repeat": 1,
+      "strategy": "recent",
+      "matches_historical": true,
+      "verification": {
+        "status": "completed",
+        "passed": false,
+        "checks": [
+          {
+            "name": "deduplicate",
+            "passed": true
+          },
+          {
+            "name": "rejected_closed_boundary",
+            "passed": false
+          },
+          {
+            "name": "ingestion_order",
+            "passed": true
+          },
+          {
+            "name": "filter_before_dedup",
+            "passed": true
+          },
+          {
+            "name": "inputs_unchanged",
+            "passed": true
+          }
+        ]
+      },
+      "candidate_sha256": "a71e74b6113abdf582b6484ee467d6f3cd2bad46d3cc26df3c6b28040bb69437"
+    },
+    {
+      "index": 14,
+      "task": "event-window-order",
+      "repeat": 1,
+      "strategy": "structured",
+      "matches_historical": true,
+      "verification": {
+        "status": "completed",
+        "passed": true,
+        "checks": [
+          {
+            "name": "deduplicate",
+            "passed": true
+          },
+          {
+            "name": "rejected_closed_boundary",
+            "passed": true
+          },
+          {
+            "name": "ingestion_order",
+            "passed": true
+          },
+          {
+            "name": "filter_before_dedup",
+            "passed": true
+          },
+          {
+            "name": "inputs_unchanged",
+            "passed": true
+          }
+        ]
+      },
+      "candidate_sha256": "99d8b9f9bf1a9b118d9c669aa82846b9a417e57244a4e20de615650faebed19a"
+    },
+    {
+      "index": 15,
+      "task": "event-window-order",
+      "repeat": 1,
+      "strategy": "full",
+      "matches_historical": true,
+      "verification": {
+        "status": "completed",
+        "passed": true,
+        "checks": [
+          {
+            "name": "deduplicate",
+            "passed": true
+          },
+          {
+            "name": "rejected_closed_boundary",
+            "passed": true
+          },
+          {
+            "name": "ingestion_order",
+            "passed": true
+          },
+          {
+            "name": "filter_before_dedup",
+            "passed": true
+          },
+          {
+            "name": "inputs_unchanged",
+            "passed": true
+          }
+        ]
+      },
+      "candidate_sha256": "29456631be27e9dbd4864c8d1b2f5c9257fa83076482b9ef808ec8126dbdcf19"
+    },
+    {
+      "index": 16,
+      "task": "event-window-order",
+      "repeat": 2,
+      "strategy": "recent",
+      "matches_historical": true,
+      "verification": {
+        "status": "completed",
+        "passed": false,
+        "checks": [
+          {
+            "name": "deduplicate",
+            "passed": true
+          },
+          {
+            "name": "rejected_closed_boundary",
+            "passed": false
+          },
+          {
+            "name": "ingestion_order",
+            "passed": true
+          },
+          {
+            "name": "filter_before_dedup",
+            "passed": true
+          },
+          {
+            "name": "inputs_unchanged",
+            "passed": true
+          }
+        ]
+      },
+      "candidate_sha256": "b318689a304c0940c04178e02ad94ee1e2b01012b7793c37ccabe21d21bbf749"
+    },
+    {
+      "index": 17,
+      "task": "event-window-order",
+      "repeat": 2,
+      "strategy": "full",
+      "matches_historical": true,
+      "verification": {
+        "status": "completed",
+        "passed": true,
+        "checks": [
+          {
+            "name": "deduplicate",
+            "passed": true
+          },
+          {
+            "name": "rejected_closed_boundary",
+            "passed": true
+          },
+          {
+            "name": "ingestion_order",
+            "passed": true
+          },
+          {
+            "name": "filter_before_dedup",
+            "passed": true
+          },
+          {
+            "name": "inputs_unchanged",
+            "passed": true
+          }
+        ]
+      },
+      "candidate_sha256": "29456631be27e9dbd4864c8d1b2f5c9257fa83076482b9ef808ec8126dbdcf19"
+    },
+    {
+      "index": 18,
+      "task": "event-window-order",
+      "repeat": 2,
+      "strategy": "structured",
+      "matches_historical": true,
+      "verification": {
+        "status": "completed",
+        "passed": true,
+        "checks": [
+          {
+            "name": "deduplicate",
+            "passed": true
+          },
+          {
+            "name": "rejected_closed_boundary",
+            "passed": true
+          },
+          {
+            "name": "ingestion_order",
+            "passed": true
+          },
+          {
+            "name": "filter_before_dedup",
+            "passed": true
+          },
+          {
+            "name": "inputs_unchanged",
+            "passed": true
+          }
+        ]
+      },
+      "candidate_sha256": "29456631be27e9dbd4864c8d1b2f5c9257fa83076482b9ef808ec8126dbdcf19"
+    },
+    {
+      "index": 19,
+      "task": "retry-method-policy",
+      "repeat": 1,
+      "strategy": "full",
+      "matches_historical": true,
+      "verification": {
+        "status": "completed",
+        "passed": true,
+        "checks": [
+          {
+            "name": "rate_limit",
+            "passed": true
+          },
+          {
+            "name": "server_error",
+            "passed": true
+          },
+          {
+            "name": "rejected_post_retry",
+            "passed": true
+          },
+          {
+            "name": "exact_allowed_methods",
+            "passed": true
+          },
+          {
+            "name": "case_insensitive_method",
+            "passed": true
+          },
+          {
+            "name": "exact_status_set",
+            "passed": true
+          }
+        ]
+      },
+      "candidate_sha256": "4f90101d0bfea7c5fd7e9671d19d1aa48a307ec88d941e7ad04993e5f3b64cac"
+    },
+    {
+      "index": 20,
+      "task": "retry-method-policy",
+      "repeat": 1,
+      "strategy": "recent",
+      "matches_historical": true,
+      "verification": {
+        "status": "completed",
+        "passed": false,
+        "checks": [
+          {
+            "name": "rate_limit",
+            "passed": true
+          },
+          {
+            "name": "server_error",
+            "passed": true
+          },
+          {
+            "name": "rejected_post_retry",
+            "passed": false
+          },
+          {
+            "name": "exact_allowed_methods",
+            "passed": false
+          },
+          {
+            "name": "case_insensitive_method",
+            "passed": true
+          },
+          {
+            "name": "exact_status_set",
+            "passed": true
+          }
+        ]
+      },
+      "candidate_sha256": "b4b614e0f413dfa136f69a5c51ccb36c2679c7371501292a65cee5eddfbb1537"
+    },
+    {
+      "index": 21,
+      "task": "retry-method-policy",
+      "repeat": 1,
+      "strategy": "structured",
+      "matches_historical": true,
+      "verification": {
+        "status": "completed",
+        "passed": true,
+        "checks": [
+          {
+            "name": "rate_limit",
+            "passed": true
+          },
+          {
+            "name": "server_error",
+            "passed": true
+          },
+          {
+            "name": "rejected_post_retry",
+            "passed": true
+          },
+          {
+            "name": "exact_allowed_methods",
+            "passed": true
+          },
+          {
+            "name": "case_insensitive_method",
+            "passed": true
+          },
+          {
+            "name": "exact_status_set",
+            "passed": true
+          }
+        ]
+      },
+      "candidate_sha256": "4f6cc5ead79d282ba2908cda896c4732170abbd672fe1cc426e057236bbb4f61"
+    },
+    {
+      "index": 22,
+      "task": "retry-method-policy",
+      "repeat": 2,
+      "strategy": "full",
+      "matches_historical": true,
+      "verification": {
+        "status": "completed",
+        "passed": true,
+        "checks": [
+          {
+            "name": "rate_limit",
+            "passed": true
+          },
+          {
+            "name": "server_error",
+            "passed": true
+          },
+          {
+            "name": "rejected_post_retry",
+            "passed": true
+          },
+          {
+            "name": "exact_allowed_methods",
+            "passed": true
+          },
+          {
+            "name": "case_insensitive_method",
+            "passed": true
+          },
+          {
+            "name": "exact_status_set",
+            "passed": true
+          }
+        ]
+      },
+      "candidate_sha256": "00f7a007d57642f57424bac617a71f1cd265c7468e8584fbedacaa4b4cb5551f"
+    },
+    {
+      "index": 23,
+      "task": "retry-method-policy",
+      "repeat": 2,
+      "strategy": "structured",
+      "matches_historical": true,
+      "verification": {
+        "status": "completed",
+        "passed": true,
+        "checks": [
+          {
+            "name": "rate_limit",
+            "passed": true
+          },
+          {
+            "name": "server_error",
+            "passed": true
+          },
+          {
+            "name": "rejected_post_retry",
+            "passed": true
+          },
+          {
+            "name": "exact_allowed_methods",
+            "passed": true
+          },
+          {
+            "name": "case_insensitive_method",
+            "passed": true
+          },
+          {
+            "name": "exact_status_set",
+            "passed": true
+          }
+        ]
+      },
+      "candidate_sha256": "00f7a007d57642f57424bac617a71f1cd265c7468e8584fbedacaa4b4cb5551f"
+    },
+    {
+      "index": 24,
+      "task": "retry-method-policy",
+      "repeat": 2,
+      "strategy": "recent",
+      "matches_historical": true,
+      "verification": {
+        "status": "completed",
+        "passed": false,
+        "checks": [
+          {
+            "name": "rate_limit",
+            "passed": true
+          },
+          {
+            "name": "server_error",
+            "passed": true
+          },
+          {
+            "name": "rejected_post_retry",
+            "passed": true
+          },
+          {
+            "name": "exact_allowed_methods",
+            "passed": false
+          },
+          {
+            "name": "case_insensitive_method",
+            "passed": true
+          },
+          {
+            "name": "exact_status_set",
+            "passed": true
+          }
+        ]
+      },
+      "candidate_sha256": "78c2a2e0db3e2330ea27378116c1f7e28a15b0f75f6d97535dd058d783275068"
+    }
+  ]
+}
