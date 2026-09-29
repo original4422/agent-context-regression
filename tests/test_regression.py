@@ -7,6 +7,8 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
+from policy_fixtures import SOLUTIONS as POLICY_SOLUTIONS
+
 from context_regression.bridge import Workspace
 from context_regression.checks import run_checks
 from context_regression.cli import summarize
@@ -20,6 +22,8 @@ SOLUTIONS = {
     "retry-method-policy": 'def should_retry(status, method):\n    return status in {429,500,502,503,504} and method.upper() in {"GET","HEAD","PUT"}\n',
     "event-window-order": 'def select_events(events, start, end):\n    seen = set()\n    selected = []\n    for event in events:\n        if start <= event["timestamp"] < end and event["id"] not in seen:\n            selected.append(event)\n            seen.add(event["id"])\n    return selected\n',
 }
+
+SOLUTIONS.update(POLICY_SOLUTIONS)
 
 
 def direct_checks(task, workspace, mode, codex="codex"):
@@ -45,8 +49,8 @@ class TaskTests(unittest.TestCase):
         self.addCleanup(self.temp.cleanup)
         self.root = Path(self.temp.name)
 
-    def test_four_broken_checkpoints_and_correct_solutions(self):
-        self.assertEqual(len(self.tasks), 4)
+    def test_broken_checkpoints_and_correct_solutions(self):
+        self.assertEqual(len(self.tasks), 6)
         for task in self.tasks:
             with self.subTest(task=task["spec"]["id"]):
                 workspace = self.root / task["spec"]["id"]
@@ -111,11 +115,11 @@ class TaskTests(unittest.TestCase):
         Workspace(task, self.root / "a").call("write_file", {"path": "slug.py", "content": "changed"})
         self.assertEqual((self.root / "b/slug.py").read_text(), (task["path"] / "snapshot/slug.py").read_text())
 
-    def test_schedule_is_seeded_and_covers_24_cells(self):
+    def test_schedule_is_seeded_and_covers_every_cell(self):
         first = schedule(self.tasks, 2, 17)
         self.assertEqual(first, schedule(self.tasks, 2, 17))
         self.assertNotEqual(first, schedule(self.tasks, 2, 18))
-        self.assertEqual(len({(t["spec"]["id"], r, s) for t, r, s in first}), 24)
+        self.assertEqual(len({(t["spec"]["id"], r, s) for t, r, s in first}), 6 * 3 * 2)
 
 
 class RunnerTests(unittest.TestCase):

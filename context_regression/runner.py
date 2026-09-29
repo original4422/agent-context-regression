@@ -199,7 +199,7 @@ def run_batch(tasks, config, private):
     planned = schedule(tasks, config["repetitions"], config["seed"])
     report = {"schema_version": 1, "status": "running", "config": {k: v for k, v in config.items() if k != "codex"},
               "codex_version": subprocess.check_output([config["codex"], "--version"], text=True).strip(),
-              "scope": "Controlled reconstructed contexts; not native Codex compaction. Hand-authored microtasks.",
+              "scope": "Controlled reconstructed contexts; not native Codex compaction. Hand-authored coding tasks.",
               "tasks": [{"id": t["spec"]["id"], "sha256": t["digest"], "provenance": t["spec"]["provenance"]} for t in tasks],
               "planned_runs": len(planned), "rows": []}
     source_files = sorted(Path(__file__).parent.glob("*.py"))

@@ -1,0 +1,38 @@
+[
+  {
+    "role": "user",
+    "content": "Implement select_batch(jobs, completed, capacity). Jobs have unique string id, a list of dependency ids in needs, integer priority (larger first), nonnegative integer cost, boolean manual and boolean approved. completed is a list of ids already successfully deployed. capacity is a nonnegative integer. Return selected ids; do not mutate inputs. For now use priority order and only approved manual jobs. Non-manual jobs do not need approval."
+  },
+  {
+    "role": "assistant",
+    "content": "I propose treating jobs selected earlier in this batch as completed, so a service and its dependent consumer can launch together."
+  },
+  {
+    "role": "user",
+    "content": "Correction: dependencies must all be in completed BEFORE this batch starts. Selecting a prerequisite does not complete it. Unknown dependency ids also block admission. Approval only opens the manual gate; it never bypasses dependencies or capacity. Non-manual jobs remain eligible even with approved=False."
+  },
+  {
+    "role": "assistant",
+    "content": "Understood. The checkpoint only sorts and returns job ids; these eligibility gates are still pending."
+  },
+  {
+    "role": "tool",
+    "content": "Checkpoint probe: a selected prerequisite and its dependent are both returned, even when completed is empty. This is the known dependency bug."
+  },
+  {
+    "role": "user",
+    "content": "A second correction: preserve input order for equal priorities; do not sort ties by id. Walk eligible jobs in that stable priority order, subtracting admitted costs from one shared budget. If a job does not fit, skip it and continue: a later smaller job may fit. A cost equal to remaining capacity fits; zero-cost jobs can fit even when capacity is zero. Return admission order, not the original full input order."
+  },
+  {
+    "role": "assistant",
+    "content": "This is one admission pass, not a topological scheduler or a knapsack optimizer. I will not reorder jobs to maximize utilization."
+  },
+  {
+    "role": "user",
+    "content": "Finish the capacity-budget change in rollout.py and run the public smoke checks. Keep the helper pure; deployment execution is outside this function."
+  },
+  {
+    "role": "assistant",
+    "content": "I will complete select_batch against the supplied checkpoint."
+  }
+]

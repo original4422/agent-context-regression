@@ -1,0 +1,19 @@
+{
+  "id": "scoped-policy-precedence",
+  "title": "Preserve tenant and deny boundaries while adding expiring grants",
+  "module": "policy.py",
+  "editable": [
+    "policy.py"
+  ],
+  "request": "Finish authorize in policy.py using the retained requirements. Run the public checks.",
+  "regression_checks": [
+    "deny_overrides_specific_allow",
+    "tenant_isolation",
+    "empty_roles_match_nobody",
+    "half_open_validity"
+  ],
+  "provenance": {
+    "kind": "reconstructed",
+    "description": "Original hand-authored software-policy task and reconstructed conversation; not a production transcript. Tool observations describe the supplied checkpoint."
+  }
+}

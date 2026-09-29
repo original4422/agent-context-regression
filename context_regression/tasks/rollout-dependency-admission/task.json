@@ -1,0 +1,19 @@
+{
+  "id": "rollout-dependency-admission",
+  "title": "Admit a deployment batch without inventing dependency completion",
+  "module": "rollout.py",
+  "editable": [
+    "rollout.py"
+  ],
+  "request": "Finish the deployment batch selector in rollout.py using the retained requirements. Run the public checks.",
+  "regression_checks": [
+    "completed_before_batch",
+    "approval_does_not_bypass_dependencies",
+    "stable_priority_ties",
+    "skip_oversized_without_stopping"
+  ],
+  "provenance": {
+    "kind": "reconstructed",
+    "description": "Original hand-authored software-policy task and reconstructed conversation; not a production transcript. Tool observations describe the supplied checkpoint."
+  }
+}
