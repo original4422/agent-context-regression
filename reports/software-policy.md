@@ -2,6 +2,37 @@
 
 This extension adds two hand-authored tasks with reconstructed engineering conversations. Both are pure Python functions over JSON values. The conversations contain concrete design proposals, rejected alternatives, checkpoint observations, and pending changes; they do not come from native Codex compaction.
 
+## Measured outcome
+
+The frozen batch completed all **12 continuations and 4 summaries** at [`af4840c`](https://github.com/original4422/agent-context-regression/tree/af4840c). No attempts were replaced. Codex CLI 0.155.1 used `gpt-6-sol` with low reasoning. [Environment](software-policy-environment.json), [machine-readable results](software-policy-results.json), [every outcome](software-policy-outcomes.md), and [independent recheck](software-policy-recheck.json) are available.
+
+| Strategy | Passed | Designated correction failures | Input + output tokens | Median end-to-end seconds |
+| --- | ---: | ---: | ---: | ---: |
+| Full | 4/4 | 0 | 397,160 | 31.91 |
+| Recent | 3/4 | 0 | 386,616 | 32.48 |
+| Structured | 4/4 | 0 | 460,791 | 51.88 |
+
+All six deployment continuations passed. For authorization, one recent-turn candidate required exact tenant equality and therefore rejected a wildcard-tenant grant. Its resource/action and role wildcards worked; the failing independent check was `wildcard_scope`. This requirement appeared in the initial contract rather than a later correction, so it is an overall failure but not a designated correction regression. The other eleven candidates passed every check.
+
+Most constraints survived even the recent-turn condition. Inspection of the returned functions is consistent with agents reconstructing conventional scheduling and access-control rules from the checkpoint schema; this is an interpretation, not direct evidence about internal memory. Increased rule complexity alone did not yield a strong discriminator for corrected-requirement retention. The structured arm passed, while adding summary time and tokens.
+
+### Phase accounting
+
+| Strategy | Phase | Count | Input | Cached input (subset) | Output | Median phase seconds |
+| --- | --- | ---: | ---: | ---: | ---: | ---: |
+| Full | Continuation | 4 | 395,083 | 345,472 | 2,077 | 31.30 |
+| Recent | Continuation | 4 | 384,133 | 364,160 | 2,483 | 32.05 |
+| Structured | Summary | 4 | 62,744 | 28,160 | 1,538 | 20.30 |
+| Structured | Continuation | 4 | 394,469 | 329,472 | 2,040 | 33.20 |
+
+Each of the 16 private phase traces contained exactly one `turn.completed` event, and each recorded input/cached-input/output tuple matched that event. Cached input is not added to input again. Summary costs are included once per structured attempt. Total tokens are CLI counts, not subscription allowance units. End-to-end time includes setup and process-isolated verification; phase medians should not be added to reconstruct the median of per-attempt totals.
+
+Mean retained context sizes were 1,979 characters (full), 233 (recent) and 1,851.5 (structured). No history was extended with filler. The measurement ran serially after the browser experiment and the local MLX service finished. All twelve saved candidates were subsequently rechecked under the real read-only sandbox with identical named outcomes; task and runner fingerprints still matched the frozen batch.
+
+### Next experiment suggested by this result
+
+A stronger retention test would pair tasks with identical source checkpoints, schemas and final requests but opposing explicit policy choices in their earlier histories. Such pairs would make a default coding convention insufficient to pass both versions. This batch does not contain those pairs, and its existing tasks and samples will remain unchanged.
+
 ## Requirements and retained context
 
 | Task | Earlier requirements and corrections | Final incremental request | Independent outcomes |

@@ -20,6 +20,10 @@ On these short histories, the automatic summary preserved correctness but **incr
 
 [Full results and accounting](reports/README.md) include all 24 continuations, all 8 summary generations, input/cached-input/output breakdowns, and the initial aborted integration batch. All 24 saved candidates were subsequently [rechecked with process-isolated verification](reports/isolated-verifier-recheck.json), with identical outcomes. The timing table records the original runner. The 28 deterministic tests cover candidate outcomes, process isolation, usage accounting, failure handling and sandbox protection of acceptance files.
 
+## Software-policy extension
+
+Two additional tasks cover deployment admission and scoped authorization. In a separate fixed batch, **full passed 4/4, recent 3/4, and structured 4/4**. All designated historical corrections passed; the one failure omitted wildcard-tenant matching. More business rules did not by themselves create a strong retention discriminator. Summary generation again added time and tokens. [Protocol, complete results and phase accounting](reports/software-policy.md) explain the near-saturated outcome and a proposed paired-policy follow-up.
+
 ## Run
 
 Requires Python 3.11+, a logged-in Codex CLI supporting `exec --ignore-user-config`, and its working OS sandbox. The measured platform is macOS; Linux execution has not been measured. Python code uses only the standard library.

@@ -1,0 +1,1081 @@
+{
+  "schema_version": 1,
+  "status": "completed",
+  "config": {
+    "model": "gpt-6-sol",
+    "effort": "low",
+    "repetitions": 2,
+    "seed": 20260930,
+    "recent_turns": 1,
+    "summary_chars": 4096,
+    "timeout": 180,
+    "summary_timeout": 90,
+    "max_tools": 16
+  },
+  "codex_version": "codex-cli 0.155.1",
+  "scope": "Controlled reconstructed contexts; not native Codex compaction. Hand-authored coding tasks.",
+  "tasks": [
+    {
+      "id": "rollout-dependency-admission",
+      "sha256": "7144252202c3be74275285a160f13ca16ddefde07564950286460d8a2f239035",
+      "provenance": {
+        "kind": "reconstructed",
+        "description": "Original hand-authored software-policy task and reconstructed conversation; not a production transcript. Tool observations describe the supplied checkpoint."
+      }
+    },
+    {
+      "id": "scoped-policy-precedence",
+      "sha256": "aa427000dd65163bda1a00d1bd8822029f48d0e63b30060dd7feeccdd1d1d4e6",
+      "provenance": {
+        "kind": "reconstructed",
+        "description": "Original hand-authored software-policy task and reconstructed conversation; not a production transcript. Tool observations describe the supplied checkpoint."
+      }
+    }
+  ],
+  "planned_runs": 12,
+  "rows": [
+    {
+      "index": 1,
+      "task": "rollout-dependency-admission",
+      "repeat": 2,
+      "strategy": "structured",
+      "status": "completed",
+      "phases": {
+        "summary": {
+          "elapsed_seconds": 21.454,
+          "usage": {
+            "input_tokens": 15710,
+            "cached_input_tokens": 0,
+            "output_tokens": 382
+          },
+          "tool_calls": 0,
+          "exit_code": 0,
+          "status": "completed"
+        },
+        "continuation": {
+          "elapsed_seconds": 27.494,
+          "usage": {
+            "input_tokens": 97381,
+            "cached_input_tokens": 79744,
+            "output_tokens": 414
+          },
+          "tool_calls": 4,
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "retained_context_chars": 1864,
+      "retained_context_sha256": "905df285176989e9331aae308a3715e73d57bda66d8dfdd07d112bde6d03cf07",
+      "verification": {
+        "status": "completed",
+        "passed": true,
+        "checks": [
+          {
+            "name": "shared_budget",
+            "passed": true
+          },
+          {
+            "name": "completed_before_batch",
+            "passed": true
+          },
+          {
+            "name": "all_dependencies_required",
+            "passed": true
+          },
+          {
+            "name": "approval_does_not_bypass_dependencies",
+            "passed": true
+          },
+          {
+            "name": "manual_gate",
+            "passed": true
+          },
+          {
+            "name": "stable_priority_ties",
+            "passed": true
+          },
+          {
+            "name": "skip_oversized_without_stopping",
+            "passed": true
+          },
+          {
+            "name": "zero_capacity_zero_cost",
+            "passed": true
+          },
+          {
+            "name": "combined_gates_and_budget",
+            "passed": true
+          },
+          {
+            "name": "empty_batch",
+            "passed": true
+          }
+        ]
+      },
+      "regressions": [],
+      "total": {
+        "usage": {
+          "input_tokens": 113091,
+          "cached_input_tokens": 79744,
+          "output_tokens": 796
+        },
+        "elapsed_seconds": 48.948
+      },
+      "wall_seconds": 49.356
+    },
+    {
+      "index": 2,
+      "task": "rollout-dependency-admission",
+      "repeat": 2,
+      "strategy": "recent",
+      "status": "completed",
+      "phases": {
+        "continuation": {
+          "elapsed_seconds": 31.93,
+          "usage": {
+            "input_tokens": 95633,
+            "cached_input_tokens": 86400,
+            "output_tokens": 624
+          },
+          "tool_calls": 4,
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "retained_context_chars": 231,
+      "retained_context_sha256": "74ab8060a5a26a0ce176c8e3d85e4ae626abb4e93e6ab055de3afc3a06b27ce6",
+      "verification": {
+        "status": "completed",
+        "passed": true,
+        "checks": [
+          {
+            "name": "shared_budget",
+            "passed": true
+          },
+          {
+            "name": "completed_before_batch",
+            "passed": true
+          },
+          {
+            "name": "all_dependencies_required",
+            "passed": true
+          },
+          {
+            "name": "approval_does_not_bypass_dependencies",
+            "passed": true
+          },
+          {
+            "name": "manual_gate",
+            "passed": true
+          },
+          {
+            "name": "stable_priority_ties",
+            "passed": true
+          },
+          {
+            "name": "skip_oversized_without_stopping",
+            "passed": true
+          },
+          {
+            "name": "zero_capacity_zero_cost",
+            "passed": true
+          },
+          {
+            "name": "combined_gates_and_budget",
+            "passed": true
+          },
+          {
+            "name": "empty_batch",
+            "passed": true
+          }
+        ]
+      },
+      "regressions": [],
+      "total": {
+        "usage": {
+          "input_tokens": 95633,
+          "cached_input_tokens": 86400,
+          "output_tokens": 624
+        },
+        "elapsed_seconds": 31.93
+      },
+      "wall_seconds": 32.358
+    },
+    {
+      "index": 3,
+      "task": "rollout-dependency-admission",
+      "repeat": 2,
+      "strategy": "full",
+      "status": "completed",
+      "phases": {
+        "continuation": {
+          "elapsed_seconds": 29.93,
+          "usage": {
+            "input_tokens": 98724,
+            "cached_input_tokens": 80896,
+            "output_tokens": 508
+          },
+          "tool_calls": 4,
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "retained_context_chars": 1970,
+      "retained_context_sha256": "02a50b6fc7097d117dd8c625c0b41c366555daa8a987df5749d094019d4fdfa1",
+      "verification": {
+        "status": "completed",
+        "passed": true,
+        "checks": [
+          {
+            "name": "shared_budget",
+            "passed": true
+          },
+          {
+            "name": "completed_before_batch",
+            "passed": true
+          },
+          {
+            "name": "all_dependencies_required",
+            "passed": true
+          },
+          {
+            "name": "approval_does_not_bypass_dependencies",
+            "passed": true
+          },
+          {
+            "name": "manual_gate",
+            "passed": true
+          },
+          {
+            "name": "stable_priority_ties",
+            "passed": true
+          },
+          {
+            "name": "skip_oversized_without_stopping",
+            "passed": true
+          },
+          {
+            "name": "zero_capacity_zero_cost",
+            "passed": true
+          },
+          {
+            "name": "combined_gates_and_budget",
+            "passed": true
+          },
+          {
+            "name": "empty_batch",
+            "passed": true
+          }
+        ]
+      },
+      "regressions": [],
+      "total": {
+        "usage": {
+          "input_tokens": 98724,
+          "cached_input_tokens": 80896,
+          "output_tokens": 508
+        },
+        "elapsed_seconds": 29.93
+      },
+      "wall_seconds": 30.35
+    },
+    {
+      "index": 4,
+      "task": "rollout-dependency-admission",
+      "repeat": 1,
+      "strategy": "recent",
+      "status": "completed",
+      "phases": {
+        "continuation": {
+          "elapsed_seconds": 32.177,
+          "usage": {
+            "input_tokens": 95297,
+            "cached_input_tokens": 92032,
+            "output_tokens": 592
+          },
+          "tool_calls": 4,
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "retained_context_chars": 231,
+      "retained_context_sha256": "74ab8060a5a26a0ce176c8e3d85e4ae626abb4e93e6ab055de3afc3a06b27ce6",
+      "verification": {
+        "status": "completed",
+        "passed": true,
+        "checks": [
+          {
+            "name": "shared_budget",
+            "passed": true
+          },
+          {
+            "name": "completed_before_batch",
+            "passed": true
+          },
+          {
+            "name": "all_dependencies_required",
+            "passed": true
+          },
+          {
+            "name": "approval_does_not_bypass_dependencies",
+            "passed": true
+          },
+          {
+            "name": "manual_gate",
+            "passed": true
+          },
+          {
+            "name": "stable_priority_ties",
+            "passed": true
+          },
+          {
+            "name": "skip_oversized_without_stopping",
+            "passed": true
+          },
+          {
+            "name": "zero_capacity_zero_cost",
+            "passed": true
+          },
+          {
+            "name": "combined_gates_and_budget",
+            "passed": true
+          },
+          {
+            "name": "empty_batch",
+            "passed": true
+          }
+        ]
+      },
+      "regressions": [],
+      "total": {
+        "usage": {
+          "input_tokens": 95297,
+          "cached_input_tokens": 92032,
+          "output_tokens": 592
+        },
+        "elapsed_seconds": 32.177
+      },
+      "wall_seconds": 32.595
+    },
+    {
+      "index": 5,
+      "task": "rollout-dependency-admission",
+      "repeat": 1,
+      "strategy": "structured",
+      "status": "completed",
+      "phases": {
+        "summary": {
+          "elapsed_seconds": 19.137,
+          "usage": {
+            "input_tokens": 15668,
+            "cached_input_tokens": 14080,
+            "output_tokens": 356
+          },
+          "tool_calls": 0,
+          "exit_code": 0,
+          "status": "completed"
+        },
+        "continuation": {
+          "elapsed_seconds": 33.107,
+          "usage": {
+            "input_tokens": 98515,
+            "cached_input_tokens": 73344,
+            "output_tokens": 434
+          },
+          "tool_calls": 4,
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "retained_context_chars": 1783,
+      "retained_context_sha256": "07ee0cee81f96723e0cc1042d435798055da207a37844ceeb3887f7920462e10",
+      "verification": {
+        "status": "completed",
+        "passed": true,
+        "checks": [
+          {
+            "name": "shared_budget",
+            "passed": true
+          },
+          {
+            "name": "completed_before_batch",
+            "passed": true
+          },
+          {
+            "name": "all_dependencies_required",
+            "passed": true
+          },
+          {
+            "name": "approval_does_not_bypass_dependencies",
+            "passed": true
+          },
+          {
+            "name": "manual_gate",
+            "passed": true
+          },
+          {
+            "name": "stable_priority_ties",
+            "passed": true
+          },
+          {
+            "name": "skip_oversized_without_stopping",
+            "passed": true
+          },
+          {
+            "name": "zero_capacity_zero_cost",
+            "passed": true
+          },
+          {
+            "name": "combined_gates_and_budget",
+            "passed": true
+          },
+          {
+            "name": "empty_batch",
+            "passed": true
+          }
+        ]
+      },
+      "regressions": [],
+      "total": {
+        "usage": {
+          "input_tokens": 114183,
+          "cached_input_tokens": 87424,
+          "output_tokens": 790
+        },
+        "elapsed_seconds": 52.244
+      },
+      "wall_seconds": 52.643
+    },
+    {
+      "index": 6,
+      "task": "rollout-dependency-admission",
+      "repeat": 1,
+      "strategy": "full",
+      "status": "completed",
+      "phases": {
+        "continuation": {
+          "elapsed_seconds": 34.132,
+          "usage": {
+            "input_tokens": 97528,
+            "cached_input_tokens": 79872,
+            "output_tokens": 479
+          },
+          "tool_calls": 4,
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "retained_context_chars": 1970,
+      "retained_context_sha256": "02a50b6fc7097d117dd8c625c0b41c366555daa8a987df5749d094019d4fdfa1",
+      "verification": {
+        "status": "completed",
+        "passed": true,
+        "checks": [
+          {
+            "name": "shared_budget",
+            "passed": true
+          },
+          {
+            "name": "completed_before_batch",
+            "passed": true
+          },
+          {
+            "name": "all_dependencies_required",
+            "passed": true
+          },
+          {
+            "name": "approval_does_not_bypass_dependencies",
+            "passed": true
+          },
+          {
+            "name": "manual_gate",
+            "passed": true
+          },
+          {
+            "name": "stable_priority_ties",
+            "passed": true
+          },
+          {
+            "name": "skip_oversized_without_stopping",
+            "passed": true
+          },
+          {
+            "name": "zero_capacity_zero_cost",
+            "passed": true
+          },
+          {
+            "name": "combined_gates_and_budget",
+            "passed": true
+          },
+          {
+            "name": "empty_batch",
+            "passed": true
+          }
+        ]
+      },
+      "regressions": [],
+      "total": {
+        "usage": {
+          "input_tokens": 97528,
+          "cached_input_tokens": 79872,
+          "output_tokens": 479
+        },
+        "elapsed_seconds": 34.132
+      },
+      "wall_seconds": 34.547
+    },
+    {
+      "index": 7,
+      "task": "scoped-policy-precedence",
+      "repeat": 1,
+      "strategy": "structured",
+      "status": "completed",
+      "phases": {
+        "summary": {
+          "elapsed_seconds": 16.995,
+          "usage": {
+            "input_tokens": 15683,
+            "cached_input_tokens": 0,
+            "output_tokens": 425
+          },
+          "tool_calls": 0,
+          "exit_code": 0,
+          "status": "completed"
+        },
+        "continuation": {
+          "elapsed_seconds": 33.288,
+          "usage": {
+            "input_tokens": 99353,
+            "cached_input_tokens": 81280,
+            "output_tokens": 529
+          },
+          "tool_calls": 4,
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "retained_context_chars": 1993,
+      "retained_context_sha256": "09467c0527a3fe76f447ec474cc0172a9815b88372237fd51f966f8d5b7f2d78",
+      "verification": {
+        "status": "completed",
+        "passed": true,
+        "checks": [
+          {
+            "name": "deny_overrides_specific_allow",
+            "passed": true
+          },
+          {
+            "name": "tenant_isolation",
+            "passed": true
+          },
+          {
+            "name": "empty_roles_match_nobody",
+            "passed": true
+          },
+          {
+            "name": "role_intersection_and_wildcard",
+            "passed": true
+          },
+          {
+            "name": "half_open_validity",
+            "passed": true
+          },
+          {
+            "name": "zero_is_a_timestamp",
+            "passed": true
+          },
+          {
+            "name": "inactive_deny_does_not_override",
+            "passed": true
+          },
+          {
+            "name": "wildcard_scope",
+            "passed": true
+          },
+          {
+            "name": "exact_case_and_action",
+            "passed": true
+          },
+          {
+            "name": "default_deny",
+            "passed": true
+          }
+        ]
+      },
+      "regressions": [],
+      "total": {
+        "usage": {
+          "input_tokens": 115036,
+          "cached_input_tokens": 81280,
+          "output_tokens": 954
+        },
+        "elapsed_seconds": 50.283
+      },
+      "wall_seconds": 51.121
+    },
+    {
+      "index": 8,
+      "task": "scoped-policy-precedence",
+      "repeat": 1,
+      "strategy": "full",
+      "status": "completed",
+      "phases": {
+        "continuation": {
+          "elapsed_seconds": 32.663,
+          "usage": {
+            "input_tokens": 99419,
+            "cached_input_tokens": 89472,
+            "output_tokens": 594
+          },
+          "tool_calls": 4,
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "retained_context_chars": 1988,
+      "retained_context_sha256": "2af64a18e82f5f1dbe99a398d16329e2fb3e0f7fb7cf311434de75d01250dd9b",
+      "verification": {
+        "status": "completed",
+        "passed": true,
+        "checks": [
+          {
+            "name": "deny_overrides_specific_allow",
+            "passed": true
+          },
+          {
+            "name": "tenant_isolation",
+            "passed": true
+          },
+          {
+            "name": "empty_roles_match_nobody",
+            "passed": true
+          },
+          {
+            "name": "role_intersection_and_wildcard",
+            "passed": true
+          },
+          {
+            "name": "half_open_validity",
+            "passed": true
+          },
+          {
+            "name": "zero_is_a_timestamp",
+            "passed": true
+          },
+          {
+            "name": "inactive_deny_does_not_override",
+            "passed": true
+          },
+          {
+            "name": "wildcard_scope",
+            "passed": true
+          },
+          {
+            "name": "exact_case_and_action",
+            "passed": true
+          },
+          {
+            "name": "default_deny",
+            "passed": true
+          }
+        ]
+      },
+      "regressions": [],
+      "total": {
+        "usage": {
+          "input_tokens": 99419,
+          "cached_input_tokens": 89472,
+          "output_tokens": 594
+        },
+        "elapsed_seconds": 32.663
+      },
+      "wall_seconds": 33.466
+    },
+    {
+      "index": 9,
+      "task": "scoped-policy-precedence",
+      "repeat": 1,
+      "strategy": "recent",
+      "status": "completed",
+      "phases": {
+        "continuation": {
+          "elapsed_seconds": 33.776,
+          "usage": {
+            "input_tokens": 95968,
+            "cached_input_tokens": 92416,
+            "output_tokens": 669
+          },
+          "tool_calls": 4,
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "retained_context_chars": 235,
+      "retained_context_sha256": "627b36e95452ecac51b4e6b9ee36e838381a9e840cf32ace4c12e5e03e6c3695",
+      "verification": {
+        "status": "completed",
+        "passed": true,
+        "checks": [
+          {
+            "name": "deny_overrides_specific_allow",
+            "passed": true
+          },
+          {
+            "name": "tenant_isolation",
+            "passed": true
+          },
+          {
+            "name": "empty_roles_match_nobody",
+            "passed": true
+          },
+          {
+            "name": "role_intersection_and_wildcard",
+            "passed": true
+          },
+          {
+            "name": "half_open_validity",
+            "passed": true
+          },
+          {
+            "name": "zero_is_a_timestamp",
+            "passed": true
+          },
+          {
+            "name": "inactive_deny_does_not_override",
+            "passed": true
+          },
+          {
+            "name": "wildcard_scope",
+            "passed": true
+          },
+          {
+            "name": "exact_case_and_action",
+            "passed": true
+          },
+          {
+            "name": "default_deny",
+            "passed": true
+          }
+        ]
+      },
+      "regressions": [],
+      "total": {
+        "usage": {
+          "input_tokens": 95968,
+          "cached_input_tokens": 92416,
+          "output_tokens": 669
+        },
+        "elapsed_seconds": 33.776
+      },
+      "wall_seconds": 34.592
+    },
+    {
+      "index": 10,
+      "task": "scoped-policy-precedence",
+      "repeat": 2,
+      "strategy": "structured",
+      "status": "completed",
+      "phases": {
+        "summary": {
+          "elapsed_seconds": 22.396,
+          "usage": {
+            "input_tokens": 15683,
+            "cached_input_tokens": 14080,
+            "output_tokens": 375
+          },
+          "tool_calls": 0,
+          "exit_code": 0,
+          "status": "completed"
+        },
+        "continuation": {
+          "elapsed_seconds": 35.192,
+          "usage": {
+            "input_tokens": 99220,
+            "cached_input_tokens": 95104,
+            "output_tokens": 663
+          },
+          "tool_calls": 4,
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "retained_context_chars": 1766,
+      "retained_context_sha256": "703eef16829c07b5f191a6f415ce01ed71d0ffee339a65bedd1448c1c6c1218e",
+      "verification": {
+        "status": "completed",
+        "passed": true,
+        "checks": [
+          {
+            "name": "deny_overrides_specific_allow",
+            "passed": true
+          },
+          {
+            "name": "tenant_isolation",
+            "passed": true
+          },
+          {
+            "name": "empty_roles_match_nobody",
+            "passed": true
+          },
+          {
+            "name": "role_intersection_and_wildcard",
+            "passed": true
+          },
+          {
+            "name": "half_open_validity",
+            "passed": true
+          },
+          {
+            "name": "zero_is_a_timestamp",
+            "passed": true
+          },
+          {
+            "name": "inactive_deny_does_not_override",
+            "passed": true
+          },
+          {
+            "name": "wildcard_scope",
+            "passed": true
+          },
+          {
+            "name": "exact_case_and_action",
+            "passed": true
+          },
+          {
+            "name": "default_deny",
+            "passed": true
+          }
+        ]
+      },
+      "regressions": [],
+      "total": {
+        "usage": {
+          "input_tokens": 114903,
+          "cached_input_tokens": 109184,
+          "output_tokens": 1038
+        },
+        "elapsed_seconds": 57.588
+      },
+      "wall_seconds": 58.417
+    },
+    {
+      "index": 11,
+      "task": "scoped-policy-precedence",
+      "repeat": 2,
+      "strategy": "recent",
+      "status": "completed",
+      "phases": {
+        "continuation": {
+          "elapsed_seconds": 29.878,
+          "usage": {
+            "input_tokens": 97235,
+            "cached_input_tokens": 93312,
+            "output_tokens": 598
+          },
+          "tool_calls": 4,
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "retained_context_chars": 235,
+      "retained_context_sha256": "627b36e95452ecac51b4e6b9ee36e838381a9e840cf32ace4c12e5e03e6c3695",
+      "verification": {
+        "status": "completed",
+        "passed": false,
+        "checks": [
+          {
+            "name": "deny_overrides_specific_allow",
+            "passed": true
+          },
+          {
+            "name": "tenant_isolation",
+            "passed": true
+          },
+          {
+            "name": "empty_roles_match_nobody",
+            "passed": true
+          },
+          {
+            "name": "role_intersection_and_wildcard",
+            "passed": true
+          },
+          {
+            "name": "half_open_validity",
+            "passed": true
+          },
+          {
+            "name": "zero_is_a_timestamp",
+            "passed": true
+          },
+          {
+            "name": "inactive_deny_does_not_override",
+            "passed": true
+          },
+          {
+            "name": "wildcard_scope",
+            "passed": false
+          },
+          {
+            "name": "exact_case_and_action",
+            "passed": true
+          },
+          {
+            "name": "default_deny",
+            "passed": true
+          }
+        ]
+      },
+      "regressions": [],
+      "total": {
+        "usage": {
+          "input_tokens": 97235,
+          "cached_input_tokens": 93312,
+          "output_tokens": 598
+        },
+        "elapsed_seconds": 29.878
+      },
+      "wall_seconds": 30.68
+    },
+    {
+      "index": 12,
+      "task": "scoped-policy-precedence",
+      "repeat": 2,
+      "strategy": "full",
+      "status": "completed",
+      "phases": {
+        "continuation": {
+          "elapsed_seconds": 29.367,
+          "usage": {
+            "input_tokens": 99412,
+            "cached_input_tokens": 95232,
+            "output_tokens": 496
+          },
+          "tool_calls": 4,
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "retained_context_chars": 1988,
+      "retained_context_sha256": "2af64a18e82f5f1dbe99a398d16329e2fb3e0f7fb7cf311434de75d01250dd9b",
+      "verification": {
+        "status": "completed",
+        "passed": true,
+        "checks": [
+          {
+            "name": "deny_overrides_specific_allow",
+            "passed": true
+          },
+          {
+            "name": "tenant_isolation",
+            "passed": true
+          },
+          {
+            "name": "empty_roles_match_nobody",
+            "passed": true
+          },
+          {
+            "name": "role_intersection_and_wildcard",
+            "passed": true
+          },
+          {
+            "name": "half_open_validity",
+            "passed": true
+          },
+          {
+            "name": "zero_is_a_timestamp",
+            "passed": true
+          },
+          {
+            "name": "inactive_deny_does_not_override",
+            "passed": true
+          },
+          {
+            "name": "wildcard_scope",
+            "passed": true
+          },
+          {
+            "name": "exact_case_and_action",
+            "passed": true
+          },
+          {
+            "name": "default_deny",
+            "passed": true
+          }
+        ]
+      },
+      "regressions": [],
+      "total": {
+        "usage": {
+          "input_tokens": 99412,
+          "cached_input_tokens": 95232,
+          "output_tokens": 496
+        },
+        "elapsed_seconds": 29.367
+      },
+      "wall_seconds": 30.182
+    }
+  ],
+  "runner_sha256": "3dfe8e7f324b01c4792fe3aeb55f4ac8f7f0359d49adeaf2504fbb190fbb144c",
+  "order": [
+    {
+      "task": "rollout-dependency-admission",
+      "repeat": 2,
+      "strategy": "structured"
+    },
+    {
+      "task": "rollout-dependency-admission",
+      "repeat": 2,
+      "strategy": "recent"
+    },
+    {
+      "task": "rollout-dependency-admission",
+      "repeat": 2,
+      "strategy": "full"
+    },
+    {
+      "task": "rollout-dependency-admission",
+      "repeat": 1,
+      "strategy": "recent"
+    },
+    {
+      "task": "rollout-dependency-admission",
+      "repeat": 1,
+      "strategy": "structured"
+    },
+    {
+      "task": "rollout-dependency-admission",
+      "repeat": 1,
+      "strategy": "full"
+    },
+    {
+      "task": "scoped-policy-precedence",
+      "repeat": 1,
+      "strategy": "structured"
+    },
+    {
+      "task": "scoped-policy-precedence",
+      "repeat": 1,
+      "strategy": "full"
+    },
+    {
+      "task": "scoped-policy-precedence",
+      "repeat": 1,
+      "strategy": "recent"
+    },
+    {
+      "task": "scoped-policy-precedence",
+      "repeat": 2,
+      "strategy": "structured"
+    },
+    {
+      "task": "scoped-policy-precedence",
+      "repeat": 2,
+      "strategy": "recent"
+    },
+    {
+      "task": "scoped-policy-precedence",
+      "repeat": 2,
+      "strategy": "full"
+    }
+  ]
+}
