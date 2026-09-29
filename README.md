@@ -24,6 +24,10 @@ On these short histories, the automatic summary preserved correctness but **incr
 
 Two additional tasks cover deployment admission and scoped authorization. In a separate fixed batch, **full passed 4/4, recent 3/4, and structured 4/4**. All designated historical corrections passed; the one failure omitted wildcard-tenant matching. More business rules did not by themselves create a strong retention discriminator. Summary generation again added time and tokens. [Protocol, complete results and phase accounting](reports/software-policy.md) explain the near-saturated outcome and a proposed paired-policy follow-up.
 
+## Counterfactual policy pair
+
+A second fixed batch holds the checkpoint, schema, latest request and public checks identical while reversing an earlier decision: concurrent release wave versus sequential plan. Full and structured passed both versions in both repetitions; recent passed neither complete contract. Cross-scoring shows the recent candidates chose sequential dependency behavior but also violated shared ordering rules. [The paired report](reports/paired-policy.md) includes input fingerprints, every cross-score, costs, and the remaining causal distinction.
+
 ## Run
 
 Requires Python 3.11+, a logged-in Codex CLI supporting `exec --ignore-user-config`, and its working OS sandbox. The measured platform is macOS; Linux execution has not been measured. Python code uses only the standard library.

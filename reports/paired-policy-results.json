@@ -1,0 +1,1085 @@
+{
+  "schema_version": 1,
+  "status": "completed",
+  "config": {
+    "model": "gpt-6-sol",
+    "effort": "low",
+    "repetitions": 2,
+    "seed": 20260930,
+    "recent_turns": 1,
+    "summary_chars": 4096,
+    "timeout": 180,
+    "summary_timeout": 90,
+    "max_tools": 16
+  },
+  "codex_version": "codex-cli 0.155.1",
+  "scope": "Controlled reconstructed contexts; not native Codex compaction. Hand-authored coding tasks.",
+  "tasks": [
+    {
+      "id": "wave-policy-a",
+      "sha256": "c073ca040f260db4ce49c3fa0d83974c18ab0f5ec7a2b03a063d8d3bf0bab8de",
+      "provenance": {
+        "kind": "reconstructed",
+        "description": "One member of an original counterfactual release-policy pair. Reconstructed conversation, not a production transcript."
+      }
+    },
+    {
+      "id": "wave-policy-b",
+      "sha256": "be45641792949080735602e55a2d590ac335b61a212552dc639780bf8209d5a0",
+      "provenance": {
+        "kind": "reconstructed",
+        "description": "One member of an original counterfactual release-policy pair. Reconstructed conversation, not a production transcript."
+      }
+    }
+  ],
+  "planned_runs": 12,
+  "rows": [
+    {
+      "index": 1,
+      "task": "wave-policy-a",
+      "repeat": 2,
+      "strategy": "structured",
+      "status": "completed",
+      "phases": {
+        "summary": {
+          "elapsed_seconds": 17.246,
+          "usage": {
+            "input_tokens": 15753,
+            "cached_input_tokens": 0,
+            "output_tokens": 310
+          },
+          "tool_calls": 0,
+          "exit_code": 0,
+          "status": "completed"
+        },
+        "continuation": {
+          "elapsed_seconds": 28.133,
+          "usage": {
+            "input_tokens": 98170,
+            "cached_input_tokens": 94208,
+            "output_tokens": 570
+          },
+          "tool_calls": 4,
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "retained_context_chars": 1564,
+      "retained_context_sha256": "a431ec363cf3fe31404b52c41fee4177134d144639a4f2c3634d2c81c6e6f097",
+      "verification": {
+        "status": "completed",
+        "passed": true,
+        "checks": [
+          {
+            "name": "dependency_policy",
+            "passed": true
+          },
+          {
+            "name": "no_revisit",
+            "passed": true
+          },
+          {
+            "name": "blocked_prerequisite",
+            "passed": true
+          },
+          {
+            "name": "unknown_dependency",
+            "passed": true
+          },
+          {
+            "name": "all_dependencies_required",
+            "passed": true
+          },
+          {
+            "name": "previously_completed",
+            "passed": true
+          },
+          {
+            "name": "manual_gate",
+            "passed": true
+          },
+          {
+            "name": "stable_priority_budget",
+            "passed": true
+          },
+          {
+            "name": "skip_and_exact_fit",
+            "passed": true
+          },
+          {
+            "name": "empty",
+            "passed": true
+          }
+        ]
+      },
+      "regressions": [],
+      "total": {
+        "usage": {
+          "input_tokens": 113923,
+          "cached_input_tokens": 94208,
+          "output_tokens": 880
+        },
+        "elapsed_seconds": 45.379
+      },
+      "wall_seconds": 45.829
+    },
+    {
+      "index": 2,
+      "task": "wave-policy-a",
+      "repeat": 2,
+      "strategy": "recent",
+      "status": "completed",
+      "phases": {
+        "continuation": {
+          "elapsed_seconds": 39.636,
+          "usage": {
+            "input_tokens": 111897,
+            "cached_input_tokens": 102144,
+            "output_tokens": 770
+          },
+          "tool_calls": 5,
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "retained_context_chars": 189,
+      "retained_context_sha256": "ec7b9e6509c013769d93c135d4f018331b1df4df9e240a2127fdcd4cecd107e2",
+      "verification": {
+        "status": "completed",
+        "passed": false,
+        "checks": [
+          {
+            "name": "dependency_policy",
+            "passed": false
+          },
+          {
+            "name": "no_revisit",
+            "passed": false
+          },
+          {
+            "name": "blocked_prerequisite",
+            "passed": true
+          },
+          {
+            "name": "unknown_dependency",
+            "passed": true
+          },
+          {
+            "name": "all_dependencies_required",
+            "passed": true
+          },
+          {
+            "name": "previously_completed",
+            "passed": true
+          },
+          {
+            "name": "manual_gate",
+            "passed": true
+          },
+          {
+            "name": "stable_priority_budget",
+            "passed": true
+          },
+          {
+            "name": "skip_and_exact_fit",
+            "passed": true
+          },
+          {
+            "name": "empty",
+            "passed": true
+          }
+        ]
+      },
+      "regressions": [
+        "dependency_policy"
+      ],
+      "total": {
+        "usage": {
+          "input_tokens": 111897,
+          "cached_input_tokens": 102144,
+          "output_tokens": 770
+        },
+        "elapsed_seconds": 39.636
+      },
+      "wall_seconds": 40.045
+    },
+    {
+      "index": 3,
+      "task": "wave-policy-a",
+      "repeat": 2,
+      "strategy": "full",
+      "status": "completed",
+      "phases": {
+        "continuation": {
+          "elapsed_seconds": 28.938,
+          "usage": {
+            "input_tokens": 99281,
+            "cached_input_tokens": 95360,
+            "output_tokens": 428
+          },
+          "tool_calls": 4,
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "retained_context_chars": 2242,
+      "retained_context_sha256": "a82c95fa0694e0afe2401482a0887628e1c7228d65dbf63d570b0e9f7fff8615",
+      "verification": {
+        "status": "completed",
+        "passed": true,
+        "checks": [
+          {
+            "name": "dependency_policy",
+            "passed": true
+          },
+          {
+            "name": "no_revisit",
+            "passed": true
+          },
+          {
+            "name": "blocked_prerequisite",
+            "passed": true
+          },
+          {
+            "name": "unknown_dependency",
+            "passed": true
+          },
+          {
+            "name": "all_dependencies_required",
+            "passed": true
+          },
+          {
+            "name": "previously_completed",
+            "passed": true
+          },
+          {
+            "name": "manual_gate",
+            "passed": true
+          },
+          {
+            "name": "stable_priority_budget",
+            "passed": true
+          },
+          {
+            "name": "skip_and_exact_fit",
+            "passed": true
+          },
+          {
+            "name": "empty",
+            "passed": true
+          }
+        ]
+      },
+      "regressions": [],
+      "total": {
+        "usage": {
+          "input_tokens": 99281,
+          "cached_input_tokens": 95360,
+          "output_tokens": 428
+        },
+        "elapsed_seconds": 28.938
+      },
+      "wall_seconds": 29.391
+    },
+    {
+      "index": 4,
+      "task": "wave-policy-a",
+      "repeat": 1,
+      "strategy": "recent",
+      "status": "completed",
+      "phases": {
+        "continuation": {
+          "elapsed_seconds": 45.751,
+          "usage": {
+            "input_tokens": 146362,
+            "cached_input_tokens": 133248,
+            "output_tokens": 1078
+          },
+          "tool_calls": 7,
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "retained_context_chars": 189,
+      "retained_context_sha256": "ec7b9e6509c013769d93c135d4f018331b1df4df9e240a2127fdcd4cecd107e2",
+      "verification": {
+        "status": "completed",
+        "passed": false,
+        "checks": [
+          {
+            "name": "dependency_policy",
+            "passed": false
+          },
+          {
+            "name": "no_revisit",
+            "passed": false
+          },
+          {
+            "name": "blocked_prerequisite",
+            "passed": true
+          },
+          {
+            "name": "unknown_dependency",
+            "passed": true
+          },
+          {
+            "name": "all_dependencies_required",
+            "passed": true
+          },
+          {
+            "name": "previously_completed",
+            "passed": true
+          },
+          {
+            "name": "manual_gate",
+            "passed": false
+          },
+          {
+            "name": "stable_priority_budget",
+            "passed": false
+          },
+          {
+            "name": "skip_and_exact_fit",
+            "passed": true
+          },
+          {
+            "name": "empty",
+            "passed": true
+          }
+        ]
+      },
+      "regressions": [
+        "dependency_policy"
+      ],
+      "total": {
+        "usage": {
+          "input_tokens": 146362,
+          "cached_input_tokens": 133248,
+          "output_tokens": 1078
+        },
+        "elapsed_seconds": 45.751
+      },
+      "wall_seconds": 46.211
+    },
+    {
+      "index": 5,
+      "task": "wave-policy-a",
+      "repeat": 1,
+      "strategy": "structured",
+      "status": "completed",
+      "phases": {
+        "summary": {
+          "elapsed_seconds": 18.894,
+          "usage": {
+            "input_tokens": 15707,
+            "cached_input_tokens": 0,
+            "output_tokens": 333
+          },
+          "tool_calls": 0,
+          "exit_code": 0,
+          "status": "completed"
+        },
+        "continuation": {
+          "elapsed_seconds": 27.886,
+          "usage": {
+            "input_tokens": 98385,
+            "cached_input_tokens": 94464,
+            "output_tokens": 467
+          },
+          "tool_calls": 4,
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "retained_context_chars": 1650,
+      "retained_context_sha256": "7801e4e0f43604d07151dba3bab49de57c060deb3232a50078f9fff8aab544ae",
+      "verification": {
+        "status": "completed",
+        "passed": true,
+        "checks": [
+          {
+            "name": "dependency_policy",
+            "passed": true
+          },
+          {
+            "name": "no_revisit",
+            "passed": true
+          },
+          {
+            "name": "blocked_prerequisite",
+            "passed": true
+          },
+          {
+            "name": "unknown_dependency",
+            "passed": true
+          },
+          {
+            "name": "all_dependencies_required",
+            "passed": true
+          },
+          {
+            "name": "previously_completed",
+            "passed": true
+          },
+          {
+            "name": "manual_gate",
+            "passed": true
+          },
+          {
+            "name": "stable_priority_budget",
+            "passed": true
+          },
+          {
+            "name": "skip_and_exact_fit",
+            "passed": true
+          },
+          {
+            "name": "empty",
+            "passed": true
+          }
+        ]
+      },
+      "regressions": [],
+      "total": {
+        "usage": {
+          "input_tokens": 114092,
+          "cached_input_tokens": 94464,
+          "output_tokens": 800
+        },
+        "elapsed_seconds": 46.78
+      },
+      "wall_seconds": 47.236
+    },
+    {
+      "index": 6,
+      "task": "wave-policy-a",
+      "repeat": 1,
+      "strategy": "full",
+      "status": "completed",
+      "phases": {
+        "continuation": {
+          "elapsed_seconds": 30.915,
+          "usage": {
+            "input_tokens": 99280,
+            "cached_input_tokens": 95360,
+            "output_tokens": 429
+          },
+          "tool_calls": 4,
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "retained_context_chars": 2242,
+      "retained_context_sha256": "a82c95fa0694e0afe2401482a0887628e1c7228d65dbf63d570b0e9f7fff8615",
+      "verification": {
+        "status": "completed",
+        "passed": true,
+        "checks": [
+          {
+            "name": "dependency_policy",
+            "passed": true
+          },
+          {
+            "name": "no_revisit",
+            "passed": true
+          },
+          {
+            "name": "blocked_prerequisite",
+            "passed": true
+          },
+          {
+            "name": "unknown_dependency",
+            "passed": true
+          },
+          {
+            "name": "all_dependencies_required",
+            "passed": true
+          },
+          {
+            "name": "previously_completed",
+            "passed": true
+          },
+          {
+            "name": "manual_gate",
+            "passed": true
+          },
+          {
+            "name": "stable_priority_budget",
+            "passed": true
+          },
+          {
+            "name": "skip_and_exact_fit",
+            "passed": true
+          },
+          {
+            "name": "empty",
+            "passed": true
+          }
+        ]
+      },
+      "regressions": [],
+      "total": {
+        "usage": {
+          "input_tokens": 99280,
+          "cached_input_tokens": 95360,
+          "output_tokens": 429
+        },
+        "elapsed_seconds": 30.915
+      },
+      "wall_seconds": 31.374
+    },
+    {
+      "index": 7,
+      "task": "wave-policy-b",
+      "repeat": 1,
+      "strategy": "structured",
+      "status": "completed",
+      "phases": {
+        "summary": {
+          "elapsed_seconds": 16.137,
+          "usage": {
+            "input_tokens": 15751,
+            "cached_input_tokens": 0,
+            "output_tokens": 328
+          },
+          "tool_calls": 0,
+          "exit_code": 0,
+          "status": "completed"
+        },
+        "continuation": {
+          "elapsed_seconds": 26.497,
+          "usage": {
+            "input_tokens": 96725,
+            "cached_input_tokens": 87296,
+            "output_tokens": 463
+          },
+          "tool_calls": 4,
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "retained_context_chars": 1570,
+      "retained_context_sha256": "ea8604564a6f1581cea3b3e64d532176e0545426e434d89383ed8786acc7ed03",
+      "verification": {
+        "status": "completed",
+        "passed": true,
+        "checks": [
+          {
+            "name": "dependency_policy",
+            "passed": true
+          },
+          {
+            "name": "no_revisit",
+            "passed": true
+          },
+          {
+            "name": "blocked_prerequisite",
+            "passed": true
+          },
+          {
+            "name": "unknown_dependency",
+            "passed": true
+          },
+          {
+            "name": "all_dependencies_required",
+            "passed": true
+          },
+          {
+            "name": "previously_completed",
+            "passed": true
+          },
+          {
+            "name": "manual_gate",
+            "passed": true
+          },
+          {
+            "name": "stable_priority_budget",
+            "passed": true
+          },
+          {
+            "name": "skip_and_exact_fit",
+            "passed": true
+          },
+          {
+            "name": "empty",
+            "passed": true
+          }
+        ]
+      },
+      "regressions": [],
+      "total": {
+        "usage": {
+          "input_tokens": 112476,
+          "cached_input_tokens": 87296,
+          "output_tokens": 791
+        },
+        "elapsed_seconds": 42.634
+      },
+      "wall_seconds": 43.083
+    },
+    {
+      "index": 8,
+      "task": "wave-policy-b",
+      "repeat": 1,
+      "strategy": "full",
+      "status": "completed",
+      "phases": {
+        "continuation": {
+          "elapsed_seconds": 34.144,
+          "usage": {
+            "input_tokens": 97532,
+            "cached_input_tokens": 93824,
+            "output_tokens": 468
+          },
+          "tool_calls": 4,
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "retained_context_chars": 2238,
+      "retained_context_sha256": "510722e236c463daaf270400702cbdb5b30628c701380b9fe3372212859f3011",
+      "verification": {
+        "status": "completed",
+        "passed": true,
+        "checks": [
+          {
+            "name": "dependency_policy",
+            "passed": true
+          },
+          {
+            "name": "no_revisit",
+            "passed": true
+          },
+          {
+            "name": "blocked_prerequisite",
+            "passed": true
+          },
+          {
+            "name": "unknown_dependency",
+            "passed": true
+          },
+          {
+            "name": "all_dependencies_required",
+            "passed": true
+          },
+          {
+            "name": "previously_completed",
+            "passed": true
+          },
+          {
+            "name": "manual_gate",
+            "passed": true
+          },
+          {
+            "name": "stable_priority_budget",
+            "passed": true
+          },
+          {
+            "name": "skip_and_exact_fit",
+            "passed": true
+          },
+          {
+            "name": "empty",
+            "passed": true
+          }
+        ]
+      },
+      "regressions": [],
+      "total": {
+        "usage": {
+          "input_tokens": 97532,
+          "cached_input_tokens": 93824,
+          "output_tokens": 468
+        },
+        "elapsed_seconds": 34.144
+      },
+      "wall_seconds": 34.587
+    },
+    {
+      "index": 9,
+      "task": "wave-policy-b",
+      "repeat": 1,
+      "strategy": "recent",
+      "status": "completed",
+      "phases": {
+        "continuation": {
+          "elapsed_seconds": 41.582,
+          "usage": {
+            "input_tokens": 113930,
+            "cached_input_tokens": 109696,
+            "output_tokens": 979
+          },
+          "tool_calls": 5,
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "retained_context_chars": 189,
+      "retained_context_sha256": "ec7b9e6509c013769d93c135d4f018331b1df4df9e240a2127fdcd4cecd107e2",
+      "verification": {
+        "status": "completed",
+        "passed": false,
+        "checks": [
+          {
+            "name": "dependency_policy",
+            "passed": true
+          },
+          {
+            "name": "no_revisit",
+            "passed": false
+          },
+          {
+            "name": "blocked_prerequisite",
+            "passed": true
+          },
+          {
+            "name": "unknown_dependency",
+            "passed": true
+          },
+          {
+            "name": "all_dependencies_required",
+            "passed": true
+          },
+          {
+            "name": "previously_completed",
+            "passed": true
+          },
+          {
+            "name": "manual_gate",
+            "passed": true
+          },
+          {
+            "name": "stable_priority_budget",
+            "passed": true
+          },
+          {
+            "name": "skip_and_exact_fit",
+            "passed": true
+          },
+          {
+            "name": "empty",
+            "passed": true
+          }
+        ]
+      },
+      "regressions": [],
+      "total": {
+        "usage": {
+          "input_tokens": 113930,
+          "cached_input_tokens": 109696,
+          "output_tokens": 979
+        },
+        "elapsed_seconds": 41.582
+      },
+      "wall_seconds": 42.024
+    },
+    {
+      "index": 10,
+      "task": "wave-policy-b",
+      "repeat": 2,
+      "strategy": "structured",
+      "status": "completed",
+      "phases": {
+        "summary": {
+          "elapsed_seconds": 18.122,
+          "usage": {
+            "input_tokens": 15751,
+            "cached_input_tokens": 8064,
+            "output_tokens": 325
+          },
+          "tool_calls": 0,
+          "exit_code": 0,
+          "status": "completed"
+        },
+        "continuation": {
+          "elapsed_seconds": 32.685,
+          "usage": {
+            "input_tokens": 97081,
+            "cached_input_tokens": 87680,
+            "output_tokens": 448
+          },
+          "tool_calls": 4,
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "retained_context_chars": 1638,
+      "retained_context_sha256": "aa39c5c0d9bf0330236f80576946219467982b7cc1315b19ec1f81e359ad6f9d",
+      "verification": {
+        "status": "completed",
+        "passed": true,
+        "checks": [
+          {
+            "name": "dependency_policy",
+            "passed": true
+          },
+          {
+            "name": "no_revisit",
+            "passed": true
+          },
+          {
+            "name": "blocked_prerequisite",
+            "passed": true
+          },
+          {
+            "name": "unknown_dependency",
+            "passed": true
+          },
+          {
+            "name": "all_dependencies_required",
+            "passed": true
+          },
+          {
+            "name": "previously_completed",
+            "passed": true
+          },
+          {
+            "name": "manual_gate",
+            "passed": true
+          },
+          {
+            "name": "stable_priority_budget",
+            "passed": true
+          },
+          {
+            "name": "skip_and_exact_fit",
+            "passed": true
+          },
+          {
+            "name": "empty",
+            "passed": true
+          }
+        ]
+      },
+      "regressions": [],
+      "total": {
+        "usage": {
+          "input_tokens": 112832,
+          "cached_input_tokens": 95744,
+          "output_tokens": 773
+        },
+        "elapsed_seconds": 50.807
+      },
+      "wall_seconds": 51.254
+    },
+    {
+      "index": 11,
+      "task": "wave-policy-b",
+      "repeat": 2,
+      "strategy": "recent",
+      "status": "completed",
+      "phases": {
+        "continuation": {
+          "elapsed_seconds": 42.853,
+          "usage": {
+            "input_tokens": 148461,
+            "cached_input_tokens": 140288,
+            "output_tokens": 1096
+          },
+          "tool_calls": 7,
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "retained_context_chars": 189,
+      "retained_context_sha256": "ec7b9e6509c013769d93c135d4f018331b1df4df9e240a2127fdcd4cecd107e2",
+      "verification": {
+        "status": "completed",
+        "passed": false,
+        "checks": [
+          {
+            "name": "dependency_policy",
+            "passed": true
+          },
+          {
+            "name": "no_revisit",
+            "passed": false
+          },
+          {
+            "name": "blocked_prerequisite",
+            "passed": true
+          },
+          {
+            "name": "unknown_dependency",
+            "passed": true
+          },
+          {
+            "name": "all_dependencies_required",
+            "passed": true
+          },
+          {
+            "name": "previously_completed",
+            "passed": true
+          },
+          {
+            "name": "manual_gate",
+            "passed": false
+          },
+          {
+            "name": "stable_priority_budget",
+            "passed": false
+          },
+          {
+            "name": "skip_and_exact_fit",
+            "passed": true
+          },
+          {
+            "name": "empty",
+            "passed": true
+          }
+        ]
+      },
+      "regressions": [],
+      "total": {
+        "usage": {
+          "input_tokens": 148461,
+          "cached_input_tokens": 140288,
+          "output_tokens": 1096
+        },
+        "elapsed_seconds": 42.853
+      },
+      "wall_seconds": 43.308
+    },
+    {
+      "index": 12,
+      "task": "wave-policy-b",
+      "repeat": 2,
+      "strategy": "full",
+      "status": "completed",
+      "phases": {
+        "continuation": {
+          "elapsed_seconds": 26.591,
+          "usage": {
+            "input_tokens": 99034,
+            "cached_input_tokens": 95104,
+            "output_tokens": 472
+          },
+          "tool_calls": 4,
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "retained_context_chars": 2238,
+      "retained_context_sha256": "510722e236c463daaf270400702cbdb5b30628c701380b9fe3372212859f3011",
+      "verification": {
+        "status": "completed",
+        "passed": true,
+        "checks": [
+          {
+            "name": "dependency_policy",
+            "passed": true
+          },
+          {
+            "name": "no_revisit",
+            "passed": true
+          },
+          {
+            "name": "blocked_prerequisite",
+            "passed": true
+          },
+          {
+            "name": "unknown_dependency",
+            "passed": true
+          },
+          {
+            "name": "all_dependencies_required",
+            "passed": true
+          },
+          {
+            "name": "previously_completed",
+            "passed": true
+          },
+          {
+            "name": "manual_gate",
+            "passed": true
+          },
+          {
+            "name": "stable_priority_budget",
+            "passed": true
+          },
+          {
+            "name": "skip_and_exact_fit",
+            "passed": true
+          },
+          {
+            "name": "empty",
+            "passed": true
+          }
+        ]
+      },
+      "regressions": [],
+      "total": {
+        "usage": {
+          "input_tokens": 99034,
+          "cached_input_tokens": 95104,
+          "output_tokens": 472
+        },
+        "elapsed_seconds": 26.591
+      },
+      "wall_seconds": 27.041
+    }
+  ],
+  "runner_sha256": "3dfe8e7f324b01c4792fe3aeb55f4ac8f7f0359d49adeaf2504fbb190fbb144c",
+  "order": [
+    {
+      "task": "wave-policy-a",
+      "repeat": 2,
+      "strategy": "structured"
+    },
+    {
+      "task": "wave-policy-a",
+      "repeat": 2,
+      "strategy": "recent"
+    },
+    {
+      "task": "wave-policy-a",
+      "repeat": 2,
+      "strategy": "full"
+    },
+    {
+      "task": "wave-policy-a",
+      "repeat": 1,
+      "strategy": "recent"
+    },
+    {
+      "task": "wave-policy-a",
+      "repeat": 1,
+      "strategy": "structured"
+    },
+    {
+      "task": "wave-policy-a",
+      "repeat": 1,
+      "strategy": "full"
+    },
+    {
+      "task": "wave-policy-b",
+      "repeat": 1,
+      "strategy": "structured"
+    },
+    {
+      "task": "wave-policy-b",
+      "repeat": 1,
+      "strategy": "full"
+    },
+    {
+      "task": "wave-policy-b",
+      "repeat": 1,
+      "strategy": "recent"
+    },
+    {
+      "task": "wave-policy-b",
+      "repeat": 2,
+      "strategy": "structured"
+    },
+    {
+      "task": "wave-policy-b",
+      "repeat": 2,
+      "strategy": "recent"
+    },
+    {
+      "task": "wave-policy-b",
+      "repeat": 2,
+      "strategy": "full"
+    }
+  ]
+}
