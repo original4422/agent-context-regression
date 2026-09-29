@@ -4,7 +4,7 @@ Does a coding agent still produce the correct change after its context is shorte
 
 This CLI resumes small coding tasks from fixed source checkpoints under three context strategies. Independent executable checks evaluate the resulting code. It measures corrected requirements that were lost, task success, total tokens, and elapsed time—including automatic summary generation.
 
-The built-in suite contains **six hand-authored Python tasks with reconstructed conversations**: four microtasks and two software-policy checkpoints. It tests controlled context reconstruction, not Codex's native compaction or production conversation memory.
+The built-in suite contains **eight hand-authored Python tasks with reconstructed conversations**: four microtasks, two software-policy checkpoints and one counterfactual policy pair. It tests controlled context reconstruction, not Codex's native compaction or production conversation memory.
 
 ## Measured pilot
 
@@ -18,7 +18,7 @@ Codex CLI 0.155.1, `gpt-6-sol`, low reasoning, two repetitions per task:
 
 On these short histories, the automatic summary preserved correctness but **increased total tokens and latency**. Truncation lost casing, window-boundary and retry-policy requirements; both truncation runs passed the configuration task. One slug failure concerned separator handling rather than the designated corrected requirement.
 
-[Full results and accounting](reports/README.md) include all 24 continuations, all 8 summary generations, input/cached-input/output breakdowns, and the initial aborted integration batch. All 24 saved candidates were subsequently [rechecked with process-isolated verification](reports/isolated-verifier-recheck.json), with identical outcomes. The timing table records the original runner. The 28 deterministic tests cover candidate outcomes, process isolation, usage accounting, failure handling and sandbox protection of acceptance files.
+[Full results and accounting](reports/README.md) include all 24 continuations, all 8 summary generations, input/cached-input/output breakdowns, and the initial aborted integration batch. All 24 saved candidates were subsequently [rechecked with process-isolated verification](reports/isolated-verifier-recheck.json), with identical outcomes. The timing table records the original runner. The 30 deterministic tests cover candidate outcomes, process isolation, usage accounting, failure handling and sandbox protection of acceptance files.
 
 ## Software-policy extension
 
@@ -39,7 +39,7 @@ python3 -m unittest discover -s tests -v
 python3 -m context_regression run --model gpt-6-sol
 ```
 
-Defaults run 6 tasks × 3 strategies × 2 repetitions: **36 continuations plus 12 summary generations**, serially. Each continuation has a 180-second timeout and 16-tool-call budget; each summary has 90 seconds and a 4,096-character limit. Infrastructure failures abort the batch; failed code checks remain valid outcomes and do not stop it.
+Defaults run 8 tasks × 3 strategies × 2 repetitions: **48 continuations plus 16 summary generations**, serially. Each continuation has a 180-second timeout and 16-tool-call budget; each summary has 90 seconds and a 4,096-character limit. Infrastructure failures abort the batch; failed code checks remain valid outcomes and do not stop it.
 
 The CLI prints a private result directory under `~/.local/state/agent-context-regression/`. Raw prompts, events, summaries and candidate files stay there, behind a mode-0700 directory. To render the metrics:
 
@@ -77,6 +77,9 @@ The file tools and sandbox prevent candidates from rewriting acceptance scripts;
 | Event window order | Add deduplication and finish window selection | Exclude the right endpoint; keep ingestion order |
 | Rollout dependency admission | Finish shared capacity budget | Completed-before-batch dependencies, approval scope, stable priority, skip-and-continue |
 | Scoped policy precedence | Finish expiration support | Tenant boundaries, deny precedence, empty roles, half-open validity |
+| Release-policy pair (A/B) | Finish a shared capacity budget | Explicit concurrent-wave versus sequential-plan dependency semantics |
+
+[Counterfactual pair protocol](reports/paired-policy.md) holds the model-visible recent input fixed while reversing one earlier business decision.
 
 [Software-policy protocol](reports/software-policy.md) distinguishes the final incremental request from earlier corrections and documents the counterexamples used to validate acceptance checks.
 

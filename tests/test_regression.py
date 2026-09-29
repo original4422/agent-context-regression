@@ -8,6 +8,7 @@ import unittest
 from unittest.mock import patch
 
 from policy_fixtures import SOLUTIONS as POLICY_SOLUTIONS
+from paired_fixtures import SOLUTIONS as PAIRED_SOLUTIONS
 
 from context_regression.bridge import Workspace
 from context_regression.checks import run_checks
@@ -24,6 +25,7 @@ SOLUTIONS = {
 }
 
 SOLUTIONS.update(POLICY_SOLUTIONS)
+SOLUTIONS.update(PAIRED_SOLUTIONS)
 
 
 def direct_checks(task, workspace, mode, codex="codex"):
@@ -50,7 +52,7 @@ class TaskTests(unittest.TestCase):
         self.root = Path(self.temp.name)
 
     def test_broken_checkpoints_and_correct_solutions(self):
-        self.assertEqual(len(self.tasks), 6)
+        self.assertEqual(len(self.tasks), 8)
         for task in self.tasks:
             with self.subTest(task=task["spec"]["id"]):
                 workspace = self.root / task["spec"]["id"]
@@ -119,7 +121,7 @@ class TaskTests(unittest.TestCase):
         first = schedule(self.tasks, 2, 17)
         self.assertEqual(first, schedule(self.tasks, 2, 17))
         self.assertNotEqual(first, schedule(self.tasks, 2, 18))
-        self.assertEqual(len({(t["spec"]["id"], r, s) for t, r, s in first}), 6 * 3 * 2)
+        self.assertEqual(len({(t["spec"]["id"], r, s) for t, r, s in first}), 8 * 3 * 2)
 
 
 class RunnerTests(unittest.TestCase):

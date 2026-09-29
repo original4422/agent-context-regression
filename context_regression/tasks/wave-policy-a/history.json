@@ -1,0 +1,38 @@
+[
+  {
+    "role": "user",
+    "content": "Implement select_plan(jobs, completed, capacity) for our release planner. It returns ordered selected job ids without modifying inputs. Job ids are unique strings, needs is a list of prerequisite ids, priority is an integer (larger first), cost is a nonnegative integer, manual/approved are booleans. completed contains ids successfully deployed before this call; capacity is a nonnegative shared budget. These input fields are schema-valid."
+  },
+  {
+    "role": "assistant",
+    "content": "The same schema can serve two products: a wave of jobs safe to start concurrently now, or an ordered execution plan whose runner waits for each selected job to succeed. These have different dependency rules. Which semantics should this helper use?"
+  },
+  {
+    "role": "user",
+    "content": "Choose the concurrent launch wave. A dependency is satisfied only if its id is in completed before this call. A prerequisite selected earlier in this plan is not yet complete, so its dependent must wait for a later call. This helper feeds a launcher that starts every returned job immediately; treating selection as completion would launch dependents too soon."
+  },
+  {
+    "role": "assistant",
+    "content": "I will implement the chosen dependency rule. The supplied checkpoint still returns an empty list, so it does not yet encode either policy."
+  },
+  {
+    "role": "tool",
+    "content": "Checkpoint probe: select_plan([an independent automatic job with cost 1], [], 1) returns [], which is unfinished under either policy."
+  },
+  {
+    "role": "user",
+    "content": "For either execution style, do exactly one pass over jobs in descending priority with input-order ties. Do not revisit earlier skipped jobs. A manual job needs approved=True; an automatic job does not. All prerequisites must be satisfied under the chosen rule. Unknown prerequisites block selection. Approval cannot bypass dependencies or budget. Skip an oversized job and continue. Subtract selected costs from a shared remaining capacity; exact fits and zero-cost jobs are allowed. No knapsack optimization or actual deployment belongs here."
+  },
+  {
+    "role": "assistant",
+    "content": "The dependency policy and these admission rules define the contract. The budget logic remains pending in plan.py."
+  },
+  {
+    "role": "user",
+    "content": "Finish the capacity-budget change in plan.py, preserve the earlier decisions, and run the public smoke checks."
+  },
+  {
+    "role": "assistant",
+    "content": "I will complete select_plan using the supplied checkpoint."
+  }
+]

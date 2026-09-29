@@ -1,0 +1,16 @@
+{
+  "id": "wave-policy-a",
+  "title": "Finish release planning",
+  "module": "plan.py",
+  "editable": [
+    "plan.py"
+  ],
+  "request": "Finish select_plan in plan.py using the retained requirements. Run the public checks.",
+  "regression_checks": [
+    "dependency_policy"
+  ],
+  "provenance": {
+    "kind": "reconstructed",
+    "description": "One member of an original counterfactual release-policy pair. Reconstructed conversation, not a production transcript."
+  }
+}
