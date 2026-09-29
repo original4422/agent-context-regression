@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agent-context-regression"
+version = "0.1.0"
+description = "Executable regression checks for coding agents after controlled context compression"
+requires-python = ">=3.11"
+license = "MIT"
+authors = [{name = "Daniel Peng"}]
+dependencies = []
+
+[project.scripts]
+acr = "context_regression.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["context_regression*"]
+
+[tool.setuptools.package-data]
+context_regression = ["tasks/*/*.json", "tasks/*/*.py", "tasks/*/snapshot/*"]

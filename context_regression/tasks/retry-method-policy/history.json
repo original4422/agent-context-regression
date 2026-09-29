@@ -1,0 +1,42 @@
+[
+  {
+    "role": "user",
+    "content": "Implement retry decisions for an internal HTTP client. Retry only status 429, 500, 502, 503 and 504. Our product policy allows only GET, HEAD and PUT; method names should be case-insensitive."
+  },
+  {
+    "role": "assistant",
+    "content": "The first draft checks the common retryable server statuses. I suggested allowing every method on a server error."
+  },
+  {
+    "role": "user",
+    "content": "Reject retries for every method. POST can duplicate side effects. DELETE is also excluded by our product policy, even if a generic HTTP reference treats it as idempotent. The allowlist is exactly GET, HEAD and PUT."
+  },
+  {
+    "role": "assistant",
+    "content": "The current checkpoint still has only the status check; I have not added the method gate or 429 yet."
+  },
+  {
+    "role": "tool",
+    "content": "Checkpoint probe: should_retry(503,\"POST\") -> True (known incorrect); should_retry(429,\"GET\") -> False (pending change)."
+  },
+  {
+    "role": "user",
+    "content": "Use integer status codes and string methods; no networking or delay logic belongs in this helper."
+  },
+  {
+    "role": "assistant",
+    "content": "The function is pure. The public smoke can check a rate-limit response and a missing resource."
+  },
+  {
+    "role": "tool",
+    "content": "Checkpoint probe: should_retry(404,\"GET\") -> False."
+  },
+  {
+    "role": "user",
+    "content": "Finish the pending retry policy change in retry.py. Add the rate-limit status and run the public smoke checks."
+  },
+  {
+    "role": "assistant",
+    "content": "I will finish should_retry without implementing an HTTP client."
+  }
+]

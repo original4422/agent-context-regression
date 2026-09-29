@@ -1,0 +1,17 @@
+{
+  "id": "retry-method-policy",
+  "title": "Retain a safety correction while adding a new retry status",
+  "module": "retry.py",
+  "editable": [
+    "retry.py"
+  ],
+  "request": "Finish the pending retry helper change. Preserve the requirements in the retained context.",
+  "regression_checks": [
+    "rejected_post_retry",
+    "exact_allowed_methods"
+  ],
+  "provenance": {
+    "kind": "reconstructed",
+    "description": "Hand-authored engineering microtask and reconstructed conversation; not a production transcript. Tool observations describe the supplied checkpoint."
+  }
+}

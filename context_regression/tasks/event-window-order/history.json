@@ -1,0 +1,42 @@
+[
+  {
+    "role": "user",
+    "content": "Implement select_events(events, start, end) for replay windows. Each event has an id and integer timestamp. Keep original ingestion order and return the first in-window occurrence of each id. Do not change input records or the input list."
+  },
+  {
+    "role": "assistant",
+    "content": "The first draft uses a closed interval and has no deduplication. I considered sorting by timestamp when dropping duplicate ids."
+  },
+  {
+    "role": "user",
+    "content": "Correction: adjacent replay windows must not overlap. Use [start,end), excluding the right endpoint. Do not sort: timestamps can arrive late and ingestion order is part of the API. Filter to the window before deduplicating."
+  },
+  {
+    "role": "assistant",
+    "content": "The checkpoint still uses <= end; that boundary correction is pending along with deduplication."
+  },
+  {
+    "role": "tool",
+    "content": "Checkpoint probe: select_events([{\"id\":\"a\",\"timestamp\":10}],0,10) -> [{\"id\":\"a\",\"timestamp\":10}] (known incorrect)."
+  },
+  {
+    "role": "user",
+    "content": "The smoke example can use id a twice inside a single window; keep the first copy."
+  },
+  {
+    "role": "assistant",
+    "content": "The current list comprehension returns both copies. We need to track ids already emitted."
+  },
+  {
+    "role": "tool",
+    "content": "Checkpoint probe: select_events([{\"id\":\"a\",\"timestamp\":2},{\"id\":\"a\",\"timestamp\":3}],0,10) -> both events."
+  },
+  {
+    "role": "user",
+    "content": "Finish the pending event selector change in events.py and run the public smoke checks."
+  },
+  {
+    "role": "assistant",
+    "content": "I will add deduplication to select_events."
+  }
+]

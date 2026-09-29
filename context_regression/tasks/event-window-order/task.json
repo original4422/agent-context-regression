@@ -1,0 +1,17 @@
+{
+  "id": "event-window-order",
+  "title": "Preserve corrected boundary and ordering during deduplication",
+  "module": "events.py",
+  "editable": [
+    "events.py"
+  ],
+  "request": "Finish the pending event selector change. Preserve the requirements in the retained context.",
+  "regression_checks": [
+    "rejected_closed_boundary",
+    "ingestion_order"
+  ],
+  "provenance": {
+    "kind": "reconstructed",
+    "description": "Hand-authored engineering microtask and reconstructed conversation; not a production transcript. Tool observations describe the supplied checkpoint."
+  }
+}
