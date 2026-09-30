@@ -1,0 +1,42 @@
+[
+  {
+    "role": "user",
+    "content": "Implement URL slugs for our documentation importer. Keep ASCII letters and digits; every run of other characters becomes one dash. Trim leading and trailing dashes. Casing is significant: API and api refer to different existing documents."
+  },
+  {
+    "role": "assistant",
+    "content": "A conventional slug helper would lowercase text. I initially proposed lowercasing before stripping punctuation."
+  },
+  {
+    "role": "user",
+    "content": "Reject the lowercasing proposal. Existing URLs are case-sensitive. For example, API / v2 Guide must produce API-v2-Guide, not api-v2-guide. Keep this requirement when you finish punctuation handling."
+  },
+  {
+    "role": "assistant",
+    "content": "I removed the lowercase call. The checkpoint now only joins whitespace. Punctuation handling is still pending."
+  },
+  {
+    "role": "tool",
+    "content": "Checkpoint probe: slug(\"API Guide\") -> \"API-Guide\"; slug(\"release / notes\") -> \"release-/-notes\"."
+  },
+  {
+    "role": "user",
+    "content": "Check the current behavior on extra whitespace before continuing."
+  },
+  {
+    "role": "assistant",
+    "content": "Whitespace is collapsed already. I will fix punctuation without replacing the whole importer."
+  },
+  {
+    "role": "tool",
+    "content": "Checkpoint probe: slug(\"  release   notes  \") -> \"release-notes\"."
+  },
+  {
+    "role": "user",
+    "content": "Finish the remaining punctuation handling in slug.py. Run the public smoke checks."
+  },
+  {
+    "role": "assistant",
+    "content": "The remaining edit is in slug(); there are no dependencies or extra files to change."
+  }
+]

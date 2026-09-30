@@ -1,0 +1,313 @@
+{
+  "schema_version": 1,
+  "status": "aborted",
+  "config": {
+    "model": "gpt-6-sol",
+    "effort": "low",
+    "repetitions": 2,
+    "seed": 20260930,
+    "recent_turns": 1,
+    "summary_chars": 4096,
+    "timeout": 180,
+    "summary_timeout": 90,
+    "max_tools": 16
+  },
+  "codex_version": "codex-cli 0.155.1",
+  "scope": "Controlled reconstructed contexts; not native Codex compaction. Hand-authored microtasks.",
+  "tasks": [
+    {
+      "id": "case-sensitive-slugs",
+      "sha256": "24aa3356f4ada95ad8f212ad98fc392f7ab463de95b8fc28bb7b3a8db92fed42",
+      "provenance": {
+        "kind": "reconstructed",
+        "description": "Hand-authored engineering microtask and reconstructed conversation; not a production transcript. Tool observations describe the supplied checkpoint."
+      }
+    },
+    {
+      "id": "event-window-order",
+      "sha256": "0903b84adb4b7e0895834c1b05ee34f17d093f73307f7699f0e9758b38d85e83",
+      "provenance": {
+        "kind": "reconstructed",
+        "description": "Hand-authored engineering microtask and reconstructed conversation; not a production transcript. Tool observations describe the supplied checkpoint."
+      }
+    },
+    {
+      "id": "explicit-empty-overrides",
+      "sha256": "fed0f007f240aefc7fe275bfdb131de0fd0b751a65124bdac98aca5fd44f0fbc",
+      "provenance": {
+        "kind": "reconstructed",
+        "description": "Hand-authored engineering microtask and reconstructed conversation; not a production transcript. Tool observations describe the supplied checkpoint."
+      }
+    },
+    {
+      "id": "retry-method-policy",
+      "sha256": "e4ab21448285594aaae1ee5da1563a7b8ea513ad4aba77e627b00688b41a90b8",
+      "provenance": {
+        "kind": "reconstructed",
+        "description": "Hand-authored engineering microtask and reconstructed conversation; not a production transcript. Tool observations describe the supplied checkpoint."
+      }
+    }
+  ],
+  "planned_runs": 24,
+  "rows": [
+    {
+      "index": 1,
+      "task": "case-sensitive-slugs",
+      "repeat": 1,
+      "strategy": "full",
+      "status": "completed",
+      "phases": {
+        "continuation": {
+          "elapsed_seconds": 20.932,
+          "usage": {
+            "input_tokens": 47474,
+            "cached_input_tokens": 31104,
+            "output_tokens": 186
+          },
+          "tool_calls": 1,
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "retained_context_chars": 1252,
+      "retained_context_sha256": "cc599cdf6dbd11527d4ed7de6aac9e6d3db1ded049d8218b01b953c878806e6a",
+      "verification": {
+        "status": "completed",
+        "passed": false,
+        "checks": [
+          {
+            "name": "punctuation",
+            "passed": false
+          },
+          {
+            "name": "rejected_lowercasing",
+            "passed": false
+          },
+          {
+            "name": "existing_separator",
+            "passed": false
+          },
+          {
+            "name": "empty",
+            "passed": false
+          },
+          {
+            "name": "digits",
+            "passed": true
+          }
+        ]
+      },
+      "regressions": [
+        "rejected_lowercasing"
+      ],
+      "total": {
+        "usage": {
+          "input_tokens": 47474,
+          "cached_input_tokens": 31104,
+          "output_tokens": 186
+        },
+        "elapsed_seconds": 20.932
+      },
+      "wall_seconds": 21.004
+    },
+    {
+      "index": 2,
+      "task": "case-sensitive-slugs",
+      "repeat": 1,
+      "strategy": "recent",
+      "status": "completed",
+      "phases": {
+        "continuation": {
+          "elapsed_seconds": 21.448,
+          "usage": {
+            "input_tokens": 62513,
+            "cached_input_tokens": 46080,
+            "output_tokens": 231
+          },
+          "tool_calls": 2,
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "retained_context_chars": 187,
+      "retained_context_sha256": "197088aa0e05eb4d901a439dab5c35115f71c41e53eedad80189fd4e19754429",
+      "verification": {
+        "status": "completed",
+        "passed": false,
+        "checks": [
+          {
+            "name": "punctuation",
+            "passed": false
+          },
+          {
+            "name": "rejected_lowercasing",
+            "passed": false
+          },
+          {
+            "name": "existing_separator",
+            "passed": false
+          },
+          {
+            "name": "empty",
+            "passed": false
+          },
+          {
+            "name": "digits",
+            "passed": true
+          }
+        ]
+      },
+      "regressions": [
+        "rejected_lowercasing"
+      ],
+      "total": {
+        "usage": {
+          "input_tokens": 62513,
+          "cached_input_tokens": 46080,
+          "output_tokens": 231
+        },
+        "elapsed_seconds": 21.448
+      },
+      "wall_seconds": 21.505
+    },
+    {
+      "index": 3,
+      "task": "case-sensitive-slugs",
+      "repeat": 1,
+      "strategy": "structured",
+      "status": "aborted",
+      "phases": {},
+      "failure_phase": "summary",
+      "failure_type": "KeyboardInterrupt",
+      "total": {
+        "usage": null,
+        "elapsed_seconds": 0
+      },
+      "wall_seconds": 5.938
+    }
+  ],
+  "runner_sha256": "1386627b1d7f774244ecdb3e1ff2a6d57cf57cd8c7ccedc768b2e206a477d4f9",
+  "order": [
+    {
+      "task": "case-sensitive-slugs",
+      "repeat": 1,
+      "strategy": "full"
+    },
+    {
+      "task": "case-sensitive-slugs",
+      "repeat": 1,
+      "strategy": "recent"
+    },
+    {
+      "task": "case-sensitive-slugs",
+      "repeat": 1,
+      "strategy": "structured"
+    },
+    {
+      "task": "case-sensitive-slugs",
+      "repeat": 2,
+      "strategy": "full"
+    },
+    {
+      "task": "case-sensitive-slugs",
+      "repeat": 2,
+      "strategy": "structured"
+    },
+    {
+      "task": "case-sensitive-slugs",
+      "repeat": 2,
+      "strategy": "recent"
+    },
+    {
+      "task": "explicit-empty-overrides",
+      "repeat": 2,
+      "strategy": "recent"
+    },
+    {
+      "task": "explicit-empty-overrides",
+      "repeat": 2,
+      "strategy": "full"
+    },
+    {
+      "task": "explicit-empty-overrides",
+      "repeat": 2,
+      "strategy": "structured"
+    },
+    {
+      "task": "explicit-empty-overrides",
+      "repeat": 1,
+      "strategy": "full"
+    },
+    {
+      "task": "explicit-empty-overrides",
+      "repeat": 1,
+      "strategy": "recent"
+    },
+    {
+      "task": "explicit-empty-overrides",
+      "repeat": 1,
+      "strategy": "structured"
+    },
+    {
+      "task": "event-window-order",
+      "repeat": 1,
+      "strategy": "recent"
+    },
+    {
+      "task": "event-window-order",
+      "repeat": 1,
+      "strategy": "structured"
+    },
+    {
+      "task": "event-window-order",
+      "repeat": 1,
+      "strategy": "full"
+    },
+    {
+      "task": "event-window-order",
+      "repeat": 2,
+      "strategy": "recent"
+    },
+    {
+      "task": "event-window-order",
+      "repeat": 2,
+      "strategy": "full"
+    },
+    {
+      "task": "event-window-order",
+      "repeat": 2,
+      "strategy": "structured"
+    },
+    {
+      "task": "retry-method-policy",
+      "repeat": 1,
+      "strategy": "full"
+    },
+    {
+      "task": "retry-method-policy",
+      "repeat": 1,
+      "strategy": "recent"
+    },
+    {
+      "task": "retry-method-policy",
+      "repeat": 1,
+      "strategy": "structured"
+    },
+    {
+      "task": "retry-method-policy",
+      "repeat": 2,
+      "strategy": "full"
+    },
+    {
+      "task": "retry-method-policy",
+      "repeat": 2,
+      "strategy": "structured"
+    },
+    {
+      "task": "retry-method-policy",
+      "repeat": 2,
+      "strategy": "recent"
+    }
+  ],
+  "publication_note": "Integration failure, excluded from the strategy comparison: MCP tool calls required approval and were rejected. Batch was manually interrupted during the third attempt. Original traces remain private. An empty-phase usage value from the old runner is normalized to null below; no usage was reported for that interrupted summary."
+}

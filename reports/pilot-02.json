@@ -1,0 +1,1692 @@
+{
+  "schema_version": 1,
+  "status": "completed",
+  "config": {
+    "model": "gpt-6-sol",
+    "effort": "low",
+    "repetitions": 2,
+    "seed": 20260930,
+    "recent_turns": 1,
+    "summary_chars": 4096,
+    "timeout": 180,
+    "summary_timeout": 90,
+    "max_tools": 16
+  },
+  "codex_version": "codex-cli 0.155.1",
+  "scope": "Controlled reconstructed contexts; not native Codex compaction. Hand-authored microtasks.",
+  "tasks": [
+    {
+      "id": "case-sensitive-slugs",
+      "sha256": "24aa3356f4ada95ad8f212ad98fc392f7ab463de95b8fc28bb7b3a8db92fed42",
+      "provenance": {
+        "kind": "reconstructed",
+        "description": "Hand-authored engineering microtask and reconstructed conversation; not a production transcript. Tool observations describe the supplied checkpoint."
+      }
+    },
+    {
+      "id": "event-window-order",
+      "sha256": "0903b84adb4b7e0895834c1b05ee34f17d093f73307f7699f0e9758b38d85e83",
+      "provenance": {
+        "kind": "reconstructed",
+        "description": "Hand-authored engineering microtask and reconstructed conversation; not a production transcript. Tool observations describe the supplied checkpoint."
+      }
+    },
+    {
+      "id": "explicit-empty-overrides",
+      "sha256": "fed0f007f240aefc7fe275bfdb131de0fd0b751a65124bdac98aca5fd44f0fbc",
+      "provenance": {
+        "kind": "reconstructed",
+        "description": "Hand-authored engineering microtask and reconstructed conversation; not a production transcript. Tool observations describe the supplied checkpoint."
+      }
+    },
+    {
+      "id": "retry-method-policy",
+      "sha256": "e4ab21448285594aaae1ee5da1563a7b8ea513ad4aba77e627b00688b41a90b8",
+      "provenance": {
+        "kind": "reconstructed",
+        "description": "Hand-authored engineering microtask and reconstructed conversation; not a production transcript. Tool observations describe the supplied checkpoint."
+      }
+    }
+  ],
+  "planned_runs": 24,
+  "rows": [
+    {
+      "index": 1,
+      "task": "case-sensitive-slugs",
+      "repeat": 1,
+      "strategy": "full",
+      "status": "completed",
+      "phases": {
+        "continuation": {
+          "elapsed_seconds": 27.184,
+          "usage": {
+            "input_tokens": 97667,
+            "cached_input_tokens": 80128,
+            "output_tokens": 328
+          },
+          "tool_calls": 4,
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "retained_context_chars": 1252,
+      "retained_context_sha256": "cc599cdf6dbd11527d4ed7de6aac9e6d3db1ded049d8218b01b953c878806e6a",
+      "verification": {
+        "status": "completed",
+        "passed": true,
+        "checks": [
+          {
+            "name": "punctuation",
+            "passed": true
+          },
+          {
+            "name": "rejected_lowercasing",
+            "passed": true
+          },
+          {
+            "name": "existing_separator",
+            "passed": true
+          },
+          {
+            "name": "empty",
+            "passed": true
+          },
+          {
+            "name": "digits",
+            "passed": true
+          }
+        ]
+      },
+      "regressions": [],
+      "total": {
+        "usage": {
+          "input_tokens": 97667,
+          "cached_input_tokens": 80128,
+          "output_tokens": 328
+        },
+        "elapsed_seconds": 27.184
+      },
+      "wall_seconds": 27.26
+    },
+    {
+      "index": 2,
+      "task": "case-sensitive-slugs",
+      "repeat": 1,
+      "strategy": "recent",
+      "status": "completed",
+      "phases": {
+        "continuation": {
+          "elapsed_seconds": 30.332,
+          "usage": {
+            "input_tokens": 96865,
+            "cached_input_tokens": 79360,
+            "output_tokens": 634
+          },
+          "tool_calls": 4,
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "retained_context_chars": 187,
+      "retained_context_sha256": "197088aa0e05eb4d901a439dab5c35115f71c41e53eedad80189fd4e19754429",
+      "verification": {
+        "status": "completed",
+        "passed": false,
+        "checks": [
+          {
+            "name": "punctuation",
+            "passed": true
+          },
+          {
+            "name": "rejected_lowercasing",
+            "passed": false
+          },
+          {
+            "name": "existing_separator",
+            "passed": false
+          },
+          {
+            "name": "empty",
+            "passed": true
+          },
+          {
+            "name": "digits",
+            "passed": false
+          }
+        ]
+      },
+      "regressions": [
+        "rejected_lowercasing"
+      ],
+      "total": {
+        "usage": {
+          "input_tokens": 96865,
+          "cached_input_tokens": 79360,
+          "output_tokens": 634
+        },
+        "elapsed_seconds": 30.332
+      },
+      "wall_seconds": 30.396
+    },
+    {
+      "index": 3,
+      "task": "case-sensitive-slugs",
+      "repeat": 1,
+      "strategy": "structured",
+      "status": "completed",
+      "phases": {
+        "summary": {
+          "elapsed_seconds": 15.609,
+          "usage": {
+            "input_tokens": 15583,
+            "cached_input_tokens": 0,
+            "output_tokens": 259
+          },
+          "tool_calls": 0,
+          "exit_code": 0,
+          "status": "completed"
+        },
+        "continuation": {
+          "elapsed_seconds": 28.975,
+          "usage": {
+            "input_tokens": 96222,
+            "cached_input_tokens": 92928,
+            "output_tokens": 501
+          },
+          "tool_calls": 4,
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "retained_context_chars": 1127,
+      "retained_context_sha256": "0274d785ffe0a1f4f380449a7cbdbc08d4eb8ca10402f2dfeb31d5494a49cfce",
+      "verification": {
+        "status": "completed",
+        "passed": true,
+        "checks": [
+          {
+            "name": "punctuation",
+            "passed": true
+          },
+          {
+            "name": "rejected_lowercasing",
+            "passed": true
+          },
+          {
+            "name": "existing_separator",
+            "passed": true
+          },
+          {
+            "name": "empty",
+            "passed": true
+          },
+          {
+            "name": "digits",
+            "passed": true
+          }
+        ]
+      },
+      "regressions": [],
+      "total": {
+        "usage": {
+          "input_tokens": 111805,
+          "cached_input_tokens": 92928,
+          "output_tokens": 760
+        },
+        "elapsed_seconds": 44.584
+      },
+      "wall_seconds": 44.642
+    },
+    {
+      "index": 4,
+      "task": "case-sensitive-slugs",
+      "repeat": 2,
+      "strategy": "full",
+      "status": "completed",
+      "phases": {
+        "continuation": {
+          "elapsed_seconds": 24.141,
+          "usage": {
+            "input_tokens": 97375,
+            "cached_input_tokens": 87936,
+            "output_tokens": 320
+          },
+          "tool_calls": 4,
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "retained_context_chars": 1252,
+      "retained_context_sha256": "cc599cdf6dbd11527d4ed7de6aac9e6d3db1ded049d8218b01b953c878806e6a",
+      "verification": {
+        "status": "completed",
+        "passed": true,
+        "checks": [
+          {
+            "name": "punctuation",
+            "passed": true
+          },
+          {
+            "name": "rejected_lowercasing",
+            "passed": true
+          },
+          {
+            "name": "existing_separator",
+            "passed": true
+          },
+          {
+            "name": "empty",
+            "passed": true
+          },
+          {
+            "name": "digits",
+            "passed": true
+          }
+        ]
+      },
+      "regressions": [],
+      "total": {
+        "usage": {
+          "input_tokens": 97375,
+          "cached_input_tokens": 87936,
+          "output_tokens": 320
+        },
+        "elapsed_seconds": 24.141
+      },
+      "wall_seconds": 24.216
+    },
+    {
+      "index": 5,
+      "task": "case-sensitive-slugs",
+      "repeat": 2,
+      "strategy": "structured",
+      "status": "completed",
+      "phases": {
+        "summary": {
+          "elapsed_seconds": 13.593,
+          "usage": {
+            "input_tokens": 15537,
+            "cached_input_tokens": 0,
+            "output_tokens": 240
+          },
+          "tool_calls": 0,
+          "exit_code": 0,
+          "status": "completed"
+        },
+        "continuation": {
+          "elapsed_seconds": 30.73,
+          "usage": {
+            "input_tokens": 96136,
+            "cached_input_tokens": 78848,
+            "output_tokens": 440
+          },
+          "tool_calls": 4,
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "retained_context_chars": 1043,
+      "retained_context_sha256": "7975f03d711c63dd4e9acccecbaf4ec918160bae6d20e540a0b97593644343c3",
+      "verification": {
+        "status": "completed",
+        "passed": true,
+        "checks": [
+          {
+            "name": "punctuation",
+            "passed": true
+          },
+          {
+            "name": "rejected_lowercasing",
+            "passed": true
+          },
+          {
+            "name": "existing_separator",
+            "passed": true
+          },
+          {
+            "name": "empty",
+            "passed": true
+          },
+          {
+            "name": "digits",
+            "passed": true
+          }
+        ]
+      },
+      "regressions": [],
+      "total": {
+        "usage": {
+          "input_tokens": 111673,
+          "cached_input_tokens": 78848,
+          "output_tokens": 680
+        },
+        "elapsed_seconds": 44.323
+      },
+      "wall_seconds": 44.394
+    },
+    {
+      "index": 6,
+      "task": "case-sensitive-slugs",
+      "repeat": 2,
+      "strategy": "recent",
+      "status": "completed",
+      "phases": {
+        "continuation": {
+          "elapsed_seconds": 38.611,
+          "usage": {
+            "input_tokens": 95866,
+            "cached_input_tokens": 78464,
+            "output_tokens": 869
+          },
+          "tool_calls": 4,
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "retained_context_chars": 187,
+      "retained_context_sha256": "197088aa0e05eb4d901a439dab5c35115f71c41e53eedad80189fd4e19754429",
+      "verification": {
+        "status": "completed",
+        "passed": false,
+        "checks": [
+          {
+            "name": "punctuation",
+            "passed": true
+          },
+          {
+            "name": "rejected_lowercasing",
+            "passed": true
+          },
+          {
+            "name": "existing_separator",
+            "passed": false
+          },
+          {
+            "name": "empty",
+            "passed": true
+          },
+          {
+            "name": "digits",
+            "passed": true
+          }
+        ]
+      },
+      "regressions": [],
+      "total": {
+        "usage": {
+          "input_tokens": 95866,
+          "cached_input_tokens": 78464,
+          "output_tokens": 869
+        },
+        "elapsed_seconds": 38.611
+      },
+      "wall_seconds": 38.686
+    },
+    {
+      "index": 7,
+      "task": "explicit-empty-overrides",
+      "repeat": 2,
+      "strategy": "recent",
+      "status": "completed",
+      "phases": {
+        "continuation": {
+          "elapsed_seconds": 24.539,
+          "usage": {
+            "input_tokens": 94619,
+            "cached_input_tokens": 77568,
+            "output_tokens": 359
+          },
+          "tool_calls": 4,
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "retained_context_chars": 159,
+      "retained_context_sha256": "aa06d2b01b2b694a18b1f08de8a2498e8b27246e6c3ba4acb3af038dc0b5ef72",
+      "verification": {
+        "status": "completed",
+        "passed": true,
+        "checks": [
+          {
+            "name": "inherit_none",
+            "passed": true
+          },
+          {
+            "name": "rejected_truthiness",
+            "passed": true
+          },
+          {
+            "name": "new_none_omitted",
+            "passed": true
+          },
+          {
+            "name": "new_key",
+            "passed": true
+          },
+          {
+            "name": "inputs_unchanged",
+            "passed": true
+          }
+        ]
+      },
+      "regressions": [],
+      "total": {
+        "usage": {
+          "input_tokens": 94619,
+          "cached_input_tokens": 77568,
+          "output_tokens": 359
+        },
+        "elapsed_seconds": 24.539
+      },
+      "wall_seconds": 24.603
+    },
+    {
+      "index": 8,
+      "task": "explicit-empty-overrides",
+      "repeat": 2,
+      "strategy": "full",
+      "status": "completed",
+      "phases": {
+        "continuation": {
+          "elapsed_seconds": 25.948,
+          "usage": {
+            "input_tokens": 97349,
+            "cached_input_tokens": 63488,
+            "output_tokens": 354
+          },
+          "tool_calls": 4,
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "retained_context_chars": 1213,
+      "retained_context_sha256": "b9366c691c1a506193fbbee4716432ca95598764cb8c3ad8e8cb6995ab3991f4",
+      "verification": {
+        "status": "completed",
+        "passed": true,
+        "checks": [
+          {
+            "name": "inherit_none",
+            "passed": true
+          },
+          {
+            "name": "rejected_truthiness",
+            "passed": true
+          },
+          {
+            "name": "new_none_omitted",
+            "passed": true
+          },
+          {
+            "name": "new_key",
+            "passed": true
+          },
+          {
+            "name": "inputs_unchanged",
+            "passed": true
+          }
+        ]
+      },
+      "regressions": [],
+      "total": {
+        "usage": {
+          "input_tokens": 97349,
+          "cached_input_tokens": 63488,
+          "output_tokens": 354
+        },
+        "elapsed_seconds": 25.948
+      },
+      "wall_seconds": 26.036
+    },
+    {
+      "index": 9,
+      "task": "explicit-empty-overrides",
+      "repeat": 2,
+      "strategy": "structured",
+      "status": "completed",
+      "phases": {
+        "summary": {
+          "elapsed_seconds": 14.379,
+          "usage": {
+            "input_tokens": 15531,
+            "cached_input_tokens": 8064,
+            "output_tokens": 229
+          },
+          "tool_calls": 0,
+          "exit_code": 0,
+          "status": "completed"
+        },
+        "continuation": {
+          "elapsed_seconds": 28.913,
+          "usage": {
+            "input_tokens": 95691,
+            "cached_input_tokens": 86656,
+            "output_tokens": 431
+          },
+          "tool_calls": 4,
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "retained_context_chars": 1069,
+      "retained_context_sha256": "3ee78acc7b1ddbe0cc41d42a27032d9bb5750369e8361ca55df7d194acb7ee39",
+      "verification": {
+        "status": "completed",
+        "passed": true,
+        "checks": [
+          {
+            "name": "inherit_none",
+            "passed": true
+          },
+          {
+            "name": "rejected_truthiness",
+            "passed": true
+          },
+          {
+            "name": "new_none_omitted",
+            "passed": true
+          },
+          {
+            "name": "new_key",
+            "passed": true
+          },
+          {
+            "name": "inputs_unchanged",
+            "passed": true
+          }
+        ]
+      },
+      "regressions": [],
+      "total": {
+        "usage": {
+          "input_tokens": 111222,
+          "cached_input_tokens": 94720,
+          "output_tokens": 660
+        },
+        "elapsed_seconds": 43.292
+      },
+      "wall_seconds": 43.354
+    },
+    {
+      "index": 10,
+      "task": "explicit-empty-overrides",
+      "repeat": 1,
+      "strategy": "full",
+      "status": "completed",
+      "phases": {
+        "continuation": {
+          "elapsed_seconds": 26.709,
+          "usage": {
+            "input_tokens": 97690,
+            "cached_input_tokens": 80128,
+            "output_tokens": 342
+          },
+          "tool_calls": 4,
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "retained_context_chars": 1213,
+      "retained_context_sha256": "b9366c691c1a506193fbbee4716432ca95598764cb8c3ad8e8cb6995ab3991f4",
+      "verification": {
+        "status": "completed",
+        "passed": true,
+        "checks": [
+          {
+            "name": "inherit_none",
+            "passed": true
+          },
+          {
+            "name": "rejected_truthiness",
+            "passed": true
+          },
+          {
+            "name": "new_none_omitted",
+            "passed": true
+          },
+          {
+            "name": "new_key",
+            "passed": true
+          },
+          {
+            "name": "inputs_unchanged",
+            "passed": true
+          }
+        ]
+      },
+      "regressions": [],
+      "total": {
+        "usage": {
+          "input_tokens": 97690,
+          "cached_input_tokens": 80128,
+          "output_tokens": 342
+        },
+        "elapsed_seconds": 26.709
+      },
+      "wall_seconds": 26.782
+    },
+    {
+      "index": 11,
+      "task": "explicit-empty-overrides",
+      "repeat": 1,
+      "strategy": "recent",
+      "status": "completed",
+      "phases": {
+        "continuation": {
+          "elapsed_seconds": 26.117,
+          "usage": {
+            "input_tokens": 94899,
+            "cached_input_tokens": 77696,
+            "output_tokens": 456
+          },
+          "tool_calls": 4,
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "retained_context_chars": 159,
+      "retained_context_sha256": "aa06d2b01b2b694a18b1f08de8a2498e8b27246e6c3ba4acb3af038dc0b5ef72",
+      "verification": {
+        "status": "completed",
+        "passed": true,
+        "checks": [
+          {
+            "name": "inherit_none",
+            "passed": true
+          },
+          {
+            "name": "rejected_truthiness",
+            "passed": true
+          },
+          {
+            "name": "new_none_omitted",
+            "passed": true
+          },
+          {
+            "name": "new_key",
+            "passed": true
+          },
+          {
+            "name": "inputs_unchanged",
+            "passed": true
+          }
+        ]
+      },
+      "regressions": [],
+      "total": {
+        "usage": {
+          "input_tokens": 94899,
+          "cached_input_tokens": 77696,
+          "output_tokens": 456
+        },
+        "elapsed_seconds": 26.117
+      },
+      "wall_seconds": 26.194
+    },
+    {
+      "index": 12,
+      "task": "explicit-empty-overrides",
+      "repeat": 1,
+      "strategy": "structured",
+      "status": "completed",
+      "phases": {
+        "summary": {
+          "elapsed_seconds": 15.118,
+          "usage": {
+            "input_tokens": 15535,
+            "cached_input_tokens": 0,
+            "output_tokens": 235
+          },
+          "tool_calls": 0,
+          "exit_code": 0,
+          "status": "completed"
+        },
+        "continuation": {
+          "elapsed_seconds": 35.248,
+          "usage": {
+            "input_tokens": 95691,
+            "cached_input_tokens": 86656,
+            "output_tokens": 373
+          },
+          "tool_calls": 4,
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "retained_context_chars": 1129,
+      "retained_context_sha256": "460f094d6baa202a5191ee1a9a7cfb919abc1ee0c6c305150c31137b3d39a842",
+      "verification": {
+        "status": "completed",
+        "passed": true,
+        "checks": [
+          {
+            "name": "inherit_none",
+            "passed": true
+          },
+          {
+            "name": "rejected_truthiness",
+            "passed": true
+          },
+          {
+            "name": "new_none_omitted",
+            "passed": true
+          },
+          {
+            "name": "new_key",
+            "passed": true
+          },
+          {
+            "name": "inputs_unchanged",
+            "passed": true
+          }
+        ]
+      },
+      "regressions": [],
+      "total": {
+        "usage": {
+          "input_tokens": 111226,
+          "cached_input_tokens": 86656,
+          "output_tokens": 608
+        },
+        "elapsed_seconds": 50.366
+      },
+      "wall_seconds": 50.434
+    },
+    {
+      "index": 13,
+      "task": "event-window-order",
+      "repeat": 1,
+      "strategy": "recent",
+      "status": "completed",
+      "phases": {
+        "continuation": {
+          "elapsed_seconds": 31.828,
+          "usage": {
+            "input_tokens": 96985,
+            "cached_input_tokens": 93440,
+            "output_tokens": 607
+          },
+          "tool_calls": 4,
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "retained_context_chars": 149,
+      "retained_context_sha256": "a729c69c640f178b1025b8374494de895ee76f4d8c702e73f001e02e0d04ffe4",
+      "verification": {
+        "status": "completed",
+        "passed": false,
+        "checks": [
+          {
+            "name": "deduplicate",
+            "passed": true
+          },
+          {
+            "name": "rejected_closed_boundary",
+            "passed": false
+          },
+          {
+            "name": "ingestion_order",
+            "passed": true
+          },
+          {
+            "name": "filter_before_dedup",
+            "passed": true
+          },
+          {
+            "name": "inputs_unchanged",
+            "passed": true
+          }
+        ]
+      },
+      "regressions": [
+        "rejected_closed_boundary"
+      ],
+      "total": {
+        "usage": {
+          "input_tokens": 96985,
+          "cached_input_tokens": 93440,
+          "output_tokens": 607
+        },
+        "elapsed_seconds": 31.828
+      },
+      "wall_seconds": 31.883
+    },
+    {
+      "index": 14,
+      "task": "event-window-order",
+      "repeat": 1,
+      "strategy": "structured",
+      "status": "completed",
+      "phases": {
+        "summary": {
+          "elapsed_seconds": 14.195,
+          "usage": {
+            "input_tokens": 15565,
+            "cached_input_tokens": 0,
+            "output_tokens": 276
+          },
+          "tool_calls": 0,
+          "exit_code": 0,
+          "status": "completed"
+        },
+        "continuation": {
+          "elapsed_seconds": 25.712,
+          "usage": {
+            "input_tokens": 97719,
+            "cached_input_tokens": 80128,
+            "output_tokens": 348
+          },
+          "tool_calls": 4,
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "retained_context_chars": 1214,
+      "retained_context_sha256": "0fe50b1382aeed7a0bf5b5d5b8d6905308c458dc7b7bd1de9cf2154245b33a2f",
+      "verification": {
+        "status": "completed",
+        "passed": true,
+        "checks": [
+          {
+            "name": "deduplicate",
+            "passed": true
+          },
+          {
+            "name": "rejected_closed_boundary",
+            "passed": true
+          },
+          {
+            "name": "ingestion_order",
+            "passed": true
+          },
+          {
+            "name": "filter_before_dedup",
+            "passed": true
+          },
+          {
+            "name": "inputs_unchanged",
+            "passed": true
+          }
+        ]
+      },
+      "regressions": [],
+      "total": {
+        "usage": {
+          "input_tokens": 113284,
+          "cached_input_tokens": 80128,
+          "output_tokens": 624
+        },
+        "elapsed_seconds": 39.907
+      },
+      "wall_seconds": 39.982
+    },
+    {
+      "index": 15,
+      "task": "event-window-order",
+      "repeat": 1,
+      "strategy": "full",
+      "status": "completed",
+      "phases": {
+        "continuation": {
+          "elapsed_seconds": 28.73,
+          "usage": {
+            "input_tokens": 96154,
+            "cached_input_tokens": 92800,
+            "output_tokens": 341
+          },
+          "tool_calls": 4,
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "retained_context_chars": 1309,
+      "retained_context_sha256": "8965843fe525907a93e11260cb2a53267565a02d63e10bd5fbb6c9e767e56c89",
+      "verification": {
+        "status": "completed",
+        "passed": true,
+        "checks": [
+          {
+            "name": "deduplicate",
+            "passed": true
+          },
+          {
+            "name": "rejected_closed_boundary",
+            "passed": true
+          },
+          {
+            "name": "ingestion_order",
+            "passed": true
+          },
+          {
+            "name": "filter_before_dedup",
+            "passed": true
+          },
+          {
+            "name": "inputs_unchanged",
+            "passed": true
+          }
+        ]
+      },
+      "regressions": [],
+      "total": {
+        "usage": {
+          "input_tokens": 96154,
+          "cached_input_tokens": 92800,
+          "output_tokens": 341
+        },
+        "elapsed_seconds": 28.73
+      },
+      "wall_seconds": 28.809
+    },
+    {
+      "index": 16,
+      "task": "event-window-order",
+      "repeat": 2,
+      "strategy": "recent",
+      "status": "completed",
+      "phases": {
+        "continuation": {
+          "elapsed_seconds": 34.046,
+          "usage": {
+            "input_tokens": 95011,
+            "cached_input_tokens": 85760,
+            "output_tokens": 543
+          },
+          "tool_calls": 4,
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "retained_context_chars": 149,
+      "retained_context_sha256": "a729c69c640f178b1025b8374494de895ee76f4d8c702e73f001e02e0d04ffe4",
+      "verification": {
+        "status": "completed",
+        "passed": false,
+        "checks": [
+          {
+            "name": "deduplicate",
+            "passed": true
+          },
+          {
+            "name": "rejected_closed_boundary",
+            "passed": false
+          },
+          {
+            "name": "ingestion_order",
+            "passed": true
+          },
+          {
+            "name": "filter_before_dedup",
+            "passed": true
+          },
+          {
+            "name": "inputs_unchanged",
+            "passed": true
+          }
+        ]
+      },
+      "regressions": [
+        "rejected_closed_boundary"
+      ],
+      "total": {
+        "usage": {
+          "input_tokens": 95011,
+          "cached_input_tokens": 85760,
+          "output_tokens": 543
+        },
+        "elapsed_seconds": 34.046
+      },
+      "wall_seconds": 34.122
+    },
+    {
+      "index": 17,
+      "task": "event-window-order",
+      "repeat": 2,
+      "strategy": "full",
+      "status": "completed",
+      "phases": {
+        "continuation": {
+          "elapsed_seconds": 30.264,
+          "usage": {
+            "input_tokens": 97892,
+            "cached_input_tokens": 94336,
+            "output_tokens": 397
+          },
+          "tool_calls": 4,
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "retained_context_chars": 1309,
+      "retained_context_sha256": "8965843fe525907a93e11260cb2a53267565a02d63e10bd5fbb6c9e767e56c89",
+      "verification": {
+        "status": "completed",
+        "passed": true,
+        "checks": [
+          {
+            "name": "deduplicate",
+            "passed": true
+          },
+          {
+            "name": "rejected_closed_boundary",
+            "passed": true
+          },
+          {
+            "name": "ingestion_order",
+            "passed": true
+          },
+          {
+            "name": "filter_before_dedup",
+            "passed": true
+          },
+          {
+            "name": "inputs_unchanged",
+            "passed": true
+          }
+        ]
+      },
+      "regressions": [],
+      "total": {
+        "usage": {
+          "input_tokens": 97892,
+          "cached_input_tokens": 94336,
+          "output_tokens": 397
+        },
+        "elapsed_seconds": 30.264
+      },
+      "wall_seconds": 30.323
+    },
+    {
+      "index": 18,
+      "task": "event-window-order",
+      "repeat": 2,
+      "strategy": "structured",
+      "status": "completed",
+      "phases": {
+        "summary": {
+          "elapsed_seconds": 19.718,
+          "usage": {
+            "input_tokens": 15615,
+            "cached_input_tokens": 0,
+            "output_tokens": 250
+          },
+          "tool_calls": 0,
+          "exit_code": 0,
+          "status": "completed"
+        },
+        "continuation": {
+          "elapsed_seconds": 26.011,
+          "usage": {
+            "input_tokens": 96117,
+            "cached_input_tokens": 92800,
+            "output_tokens": 433
+          },
+          "tool_calls": 4,
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "retained_context_chars": 1107,
+      "retained_context_sha256": "29b075ab38a153ad8a0a6a8ffbc126cda35b4fa910eafaf9d9ab556a3e1ef0ad",
+      "verification": {
+        "status": "completed",
+        "passed": true,
+        "checks": [
+          {
+            "name": "deduplicate",
+            "passed": true
+          },
+          {
+            "name": "rejected_closed_boundary",
+            "passed": true
+          },
+          {
+            "name": "ingestion_order",
+            "passed": true
+          },
+          {
+            "name": "filter_before_dedup",
+            "passed": true
+          },
+          {
+            "name": "inputs_unchanged",
+            "passed": true
+          }
+        ]
+      },
+      "regressions": [],
+      "total": {
+        "usage": {
+          "input_tokens": 111732,
+          "cached_input_tokens": 92800,
+          "output_tokens": 683
+        },
+        "elapsed_seconds": 45.729
+      },
+      "wall_seconds": 45.792
+    },
+    {
+      "index": 19,
+      "task": "retry-method-policy",
+      "repeat": 1,
+      "strategy": "full",
+      "status": "completed",
+      "phases": {
+        "continuation": {
+          "elapsed_seconds": 24.071,
+          "usage": {
+            "input_tokens": 96162,
+            "cached_input_tokens": 78976,
+            "output_tokens": 382
+          },
+          "tool_calls": 4,
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "retained_context_chars": 1261,
+      "retained_context_sha256": "3b66f4a1bc69a9c5c25f4e14dcb04234cfc6fc37bd750e351dffce0244a3eb49",
+      "verification": {
+        "status": "completed",
+        "passed": true,
+        "checks": [
+          {
+            "name": "rate_limit",
+            "passed": true
+          },
+          {
+            "name": "server_error",
+            "passed": true
+          },
+          {
+            "name": "rejected_post_retry",
+            "passed": true
+          },
+          {
+            "name": "exact_allowed_methods",
+            "passed": true
+          },
+          {
+            "name": "case_insensitive_method",
+            "passed": true
+          },
+          {
+            "name": "exact_status_set",
+            "passed": true
+          }
+        ]
+      },
+      "regressions": [],
+      "total": {
+        "usage": {
+          "input_tokens": 96162,
+          "cached_input_tokens": 78976,
+          "output_tokens": 382
+        },
+        "elapsed_seconds": 24.071
+      },
+      "wall_seconds": 24.128
+    },
+    {
+      "index": 20,
+      "task": "retry-method-policy",
+      "repeat": 1,
+      "strategy": "recent",
+      "status": "completed",
+      "phases": {
+        "continuation": {
+          "elapsed_seconds": 26.07,
+          "usage": {
+            "input_tokens": 94910,
+            "cached_input_tokens": 77824,
+            "output_tokens": 503
+          },
+          "tool_calls": 4,
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "retained_context_chars": 194,
+      "retained_context_sha256": "8117e630a86f24868ce6e123823e3b4b7415ae0a01b3991774688dc0537a8508",
+      "verification": {
+        "status": "completed",
+        "passed": false,
+        "checks": [
+          {
+            "name": "rate_limit",
+            "passed": true
+          },
+          {
+            "name": "server_error",
+            "passed": true
+          },
+          {
+            "name": "rejected_post_retry",
+            "passed": false
+          },
+          {
+            "name": "exact_allowed_methods",
+            "passed": false
+          },
+          {
+            "name": "case_insensitive_method",
+            "passed": true
+          },
+          {
+            "name": "exact_status_set",
+            "passed": true
+          }
+        ]
+      },
+      "regressions": [
+        "exact_allowed_methods",
+        "rejected_post_retry"
+      ],
+      "total": {
+        "usage": {
+          "input_tokens": 94910,
+          "cached_input_tokens": 77824,
+          "output_tokens": 503
+        },
+        "elapsed_seconds": 26.07
+      },
+      "wall_seconds": 26.148
+    },
+    {
+      "index": 21,
+      "task": "retry-method-policy",
+      "repeat": 1,
+      "strategy": "structured",
+      "status": "completed",
+      "phases": {
+        "summary": {
+          "elapsed_seconds": 13.773,
+          "usage": {
+            "input_tokens": 15559,
+            "cached_input_tokens": 0,
+            "output_tokens": 260
+          },
+          "tool_calls": 0,
+          "exit_code": 0,
+          "status": "completed"
+        },
+        "continuation": {
+          "elapsed_seconds": 24.525,
+          "usage": {
+            "input_tokens": 96178,
+            "cached_input_tokens": 78848,
+            "output_tokens": 344
+          },
+          "tool_calls": 4,
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "retained_context_chars": 1148,
+      "retained_context_sha256": "aa14ef8c371f034d814812266f24378da99e7ed8f861753e0ac1125a41ae61b9",
+      "verification": {
+        "status": "completed",
+        "passed": true,
+        "checks": [
+          {
+            "name": "rate_limit",
+            "passed": true
+          },
+          {
+            "name": "server_error",
+            "passed": true
+          },
+          {
+            "name": "rejected_post_retry",
+            "passed": true
+          },
+          {
+            "name": "exact_allowed_methods",
+            "passed": true
+          },
+          {
+            "name": "case_insensitive_method",
+            "passed": true
+          },
+          {
+            "name": "exact_status_set",
+            "passed": true
+          }
+        ]
+      },
+      "regressions": [],
+      "total": {
+        "usage": {
+          "input_tokens": 111737,
+          "cached_input_tokens": 78848,
+          "output_tokens": 604
+        },
+        "elapsed_seconds": 38.298
+      },
+      "wall_seconds": 38.355
+    },
+    {
+      "index": 22,
+      "task": "retry-method-policy",
+      "repeat": 2,
+      "strategy": "full",
+      "status": "completed",
+      "phases": {
+        "continuation": {
+          "elapsed_seconds": 25.267,
+          "usage": {
+            "input_tokens": 97695,
+            "cached_input_tokens": 94080,
+            "output_tokens": 349
+          },
+          "tool_calls": 4,
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "retained_context_chars": 1261,
+      "retained_context_sha256": "3b66f4a1bc69a9c5c25f4e14dcb04234cfc6fc37bd750e351dffce0244a3eb49",
+      "verification": {
+        "status": "completed",
+        "passed": true,
+        "checks": [
+          {
+            "name": "rate_limit",
+            "passed": true
+          },
+          {
+            "name": "server_error",
+            "passed": true
+          },
+          {
+            "name": "rejected_post_retry",
+            "passed": true
+          },
+          {
+            "name": "exact_allowed_methods",
+            "passed": true
+          },
+          {
+            "name": "case_insensitive_method",
+            "passed": true
+          },
+          {
+            "name": "exact_status_set",
+            "passed": true
+          }
+        ]
+      },
+      "regressions": [],
+      "total": {
+        "usage": {
+          "input_tokens": 97695,
+          "cached_input_tokens": 94080,
+          "output_tokens": 349
+        },
+        "elapsed_seconds": 25.267
+      },
+      "wall_seconds": 25.333
+    },
+    {
+      "index": 23,
+      "task": "retry-method-policy",
+      "repeat": 2,
+      "strategy": "structured",
+      "status": "completed",
+      "phases": {
+        "summary": {
+          "elapsed_seconds": 16.467,
+          "usage": {
+            "input_tokens": 15601,
+            "cached_input_tokens": 14080,
+            "output_tokens": 235
+          },
+          "tool_calls": 0,
+          "exit_code": 0,
+          "status": "completed"
+        },
+        "continuation": {
+          "elapsed_seconds": 22.873,
+          "usage": {
+            "input_tokens": 95669,
+            "cached_input_tokens": 92544,
+            "output_tokens": 295
+          },
+          "tool_calls": 4,
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "retained_context_chars": 990,
+      "retained_context_sha256": "50180498dad0a68058065f31641c60cb40053f8e3b6e616143dbf2d3cbed3964",
+      "verification": {
+        "status": "completed",
+        "passed": true,
+        "checks": [
+          {
+            "name": "rate_limit",
+            "passed": true
+          },
+          {
+            "name": "server_error",
+            "passed": true
+          },
+          {
+            "name": "rejected_post_retry",
+            "passed": true
+          },
+          {
+            "name": "exact_allowed_methods",
+            "passed": true
+          },
+          {
+            "name": "case_insensitive_method",
+            "passed": true
+          },
+          {
+            "name": "exact_status_set",
+            "passed": true
+          }
+        ]
+      },
+      "regressions": [],
+      "total": {
+        "usage": {
+          "input_tokens": 111270,
+          "cached_input_tokens": 106624,
+          "output_tokens": 530
+        },
+        "elapsed_seconds": 39.34
+      },
+      "wall_seconds": 39.472
+    },
+    {
+      "index": 24,
+      "task": "retry-method-policy",
+      "repeat": 2,
+      "strategy": "recent",
+      "status": "completed",
+      "phases": {
+        "continuation": {
+          "elapsed_seconds": 29.745,
+          "usage": {
+            "input_tokens": 94854,
+            "cached_input_tokens": 85760,
+            "output_tokens": 562
+          },
+          "tool_calls": 4,
+          "exit_code": 0,
+          "status": "completed"
+        }
+      },
+      "retained_context_chars": 194,
+      "retained_context_sha256": "8117e630a86f24868ce6e123823e3b4b7415ae0a01b3991774688dc0537a8508",
+      "verification": {
+        "status": "completed",
+        "passed": false,
+        "checks": [
+          {
+            "name": "rate_limit",
+            "passed": true
+          },
+          {
+            "name": "server_error",
+            "passed": true
+          },
+          {
+            "name": "rejected_post_retry",
+            "passed": true
+          },
+          {
+            "name": "exact_allowed_methods",
+            "passed": false
+          },
+          {
+            "name": "case_insensitive_method",
+            "passed": true
+          },
+          {
+            "name": "exact_status_set",
+            "passed": true
+          }
+        ]
+      },
+      "regressions": [
+        "exact_allowed_methods"
+      ],
+      "total": {
+        "usage": {
+          "input_tokens": 94854,
+          "cached_input_tokens": 85760,
+          "output_tokens": 562
+        },
+        "elapsed_seconds": 29.745
+      },
+      "wall_seconds": 29.808
+    }
+  ],
+  "runner_sha256": "741ec765a51f91833a2b748cf07d9c888952df92d40849e098beb7a8d1c54a74",
+  "order": [
+    {
+      "task": "case-sensitive-slugs",
+      "repeat": 1,
+      "strategy": "full"
+    },
+    {
+      "task": "case-sensitive-slugs",
+      "repeat": 1,
+      "strategy": "recent"
+    },
+    {
+      "task": "case-sensitive-slugs",
+      "repeat": 1,
+      "strategy": "structured"
+    },
+    {
+      "task": "case-sensitive-slugs",
+      "repeat": 2,
+      "strategy": "full"
+    },
+    {
+      "task": "case-sensitive-slugs",
+      "repeat": 2,
+      "strategy": "structured"
+    },
+    {
+      "task": "case-sensitive-slugs",
+      "repeat": 2,
+      "strategy": "recent"
+    },
+    {
+      "task": "explicit-empty-overrides",
+      "repeat": 2,
+      "strategy": "recent"
+    },
+    {
+      "task": "explicit-empty-overrides",
+      "repeat": 2,
+      "strategy": "full"
+    },
+    {
+      "task": "explicit-empty-overrides",
+      "repeat": 2,
+      "strategy": "structured"
+    },
+    {
+      "task": "explicit-empty-overrides",
+      "repeat": 1,
+      "strategy": "full"
+    },
+    {
+      "task": "explicit-empty-overrides",
+      "repeat": 1,
+      "strategy": "recent"
+    },
+    {
+      "task": "explicit-empty-overrides",
+      "repeat": 1,
+      "strategy": "structured"
+    },
+    {
+      "task": "event-window-order",
+      "repeat": 1,
+      "strategy": "recent"
+    },
+    {
+      "task": "event-window-order",
+      "repeat": 1,
+      "strategy": "structured"
+    },
+    {
+      "task": "event-window-order",
+      "repeat": 1,
+      "strategy": "full"
+    },
+    {
+      "task": "event-window-order",
+      "repeat": 2,
+      "strategy": "recent"
+    },
+    {
+      "task": "event-window-order",
+      "repeat": 2,
+      "strategy": "full"
+    },
+    {
+      "task": "event-window-order",
+      "repeat": 2,
+      "strategy": "structured"
+    },
+    {
+      "task": "retry-method-policy",
+      "repeat": 1,
+      "strategy": "full"
+    },
+    {
+      "task": "retry-method-policy",
+      "repeat": 1,
+      "strategy": "recent"
+    },
+    {
+      "task": "retry-method-policy",
+      "repeat": 1,
+      "strategy": "structured"
+    },
+    {
+      "task": "retry-method-policy",
+      "repeat": 2,
+      "strategy": "full"
+    },
+    {
+      "task": "retry-method-policy",
+      "repeat": 2,
+      "strategy": "structured"
+    },
+    {
+      "task": "retry-method-policy",
+      "repeat": 2,
+      "strategy": "recent"
+    }
+  ]
+}

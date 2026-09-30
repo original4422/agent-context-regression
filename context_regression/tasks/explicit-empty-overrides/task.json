@@ -1,0 +1,16 @@
+{
+  "id": "explicit-empty-overrides",
+  "title": "Keep explicit empty values when adding None inheritance",
+  "module": "settings.py",
+  "editable": [
+    "settings.py"
+  ],
+  "request": "Finish the pending settings helper change. Preserve the requirements in the retained context.",
+  "regression_checks": [
+    "rejected_truthiness"
+  ],
+  "provenance": {
+    "kind": "reconstructed",
+    "description": "Hand-authored engineering microtask and reconstructed conversation; not a production transcript. Tool observations describe the supplied checkpoint."
+  }
+}

@@ -1,0 +1,42 @@
+[
+  {
+    "role": "user",
+    "content": "Build merge_settings(defaults, overrides) for layered configuration. Return a new dict. Explicit empty strings clear inherited text, zero disables retries, and False disables a flag. Never mutate either input."
+  },
+  {
+    "role": "assistant",
+    "content": "I considered value or defaults[key] as a short fallback expression."
+  },
+  {
+    "role": "user",
+    "content": "That truthiness fallback is wrong: empty string, 0 and False are intentional overrides. Only None means inherit. A new key with None should be omitted because there is nothing to inherit."
+  },
+  {
+    "role": "assistant",
+    "content": "I kept ordinary dict overlay as the starting point; it preserves explicit falsey values. None inheritance still needs an edit."
+  },
+  {
+    "role": "tool",
+    "content": "Checkpoint probe: merge_settings({\"label\":\"old\"},{\"label\":\"\"}) -> {\"label\":\"\"}; merge_settings({\"theme\":\"dark\"},{\"theme\":None}) -> {\"theme\":None}."
+  },
+  {
+    "role": "user",
+    "content": "The public examples will cover theme changes. Keep the helper self-contained."
+  },
+  {
+    "role": "assistant",
+    "content": "Normal theme replacement already works, and there are no imports."
+  },
+  {
+    "role": "tool",
+    "content": "Checkpoint probe: merge_settings({\"theme\":\"dark\"},{\"theme\":\"light\"}) -> {\"theme\":\"light\"}."
+  },
+  {
+    "role": "user",
+    "content": "Finish the pending inheritance change in settings.py and run the public smoke checks."
+  },
+  {
+    "role": "assistant",
+    "content": "I will implement the None behavior in merge_settings."
+  }
+]

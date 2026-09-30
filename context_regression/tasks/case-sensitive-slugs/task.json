@@ -1,0 +1,16 @@
+{
+  "id": "case-sensitive-slugs",
+  "title": "Preserve a rejected casing change while fixing punctuation",
+  "module": "slug.py",
+  "editable": [
+    "slug.py"
+  ],
+  "request": "Finish the pending slug helper change. Preserve the requirements in the retained context.",
+  "regression_checks": [
+    "rejected_lowercasing"
+  ],
+  "provenance": {
+    "kind": "reconstructed",
+    "description": "Hand-authored engineering microtask and reconstructed conversation; not a production transcript. Tool observations describe the supplied checkpoint."
+  }
+}
