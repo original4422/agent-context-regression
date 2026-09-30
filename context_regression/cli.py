@@ -9,6 +9,7 @@ from .planning import SUITE_NAMES, describe_plan, select_tasks
 from .native import SCENARIOS, native_plan
 from .native_preflight import preflight
 from .native_run import run_native_smoke
+from .native_accept import EXIT_CODES, InvalidResult, accept_result, result as acceptance_result, unique_object
 from .doctor import format_doctor, inspect_environment
 from .tasks import BUILTIN_TASKS, tasks_in
 
@@ -69,6 +70,9 @@ def main(argv=None):
     native_run.add_argument("--allow-model", action="store_true")
     native_run.add_argument("--codex", default="codex")
     native_run.add_argument("--private-dir", type=Path)
+    native_accept = commands.add_parser("native-accept", help="Accept saved native outcomes; no oracle or model execution")
+    native_accept.add_argument("results", type=Path)
+    native_accept.add_argument("--scenario", choices=SCENARIOS, required=True)
     listing = commands.add_parser("list", help="List built-in or external tasks")
     listing.add_argument("--tasks", type=Path, default=BUILTIN_TASKS)
     listing.add_argument("--suite", choices=SUITE_NAMES)
@@ -82,6 +86,17 @@ def main(argv=None):
     summary = commands.add_parser("summarize", help="Create a report from the machine-readable results")
     summary.add_argument("results", type=Path)
     args = parser.parse_args(argv)
+    if args.command == 'native-accept':
+        try:
+            saved = json.loads(args.results.read_text(), object_pairs_hook=unique_object)
+        except InvalidResult as error:
+            acceptance = acceptance_result('invalid_result', args.scenario, 0, [error.reason])
+        except (OSError, UnicodeError, json.JSONDecodeError):
+            acceptance = acceptance_result('invalid_result', args.scenario, 0, [{'code': 'unreadable_json'}])
+        else:
+            acceptance = accept_result(saved, args.scenario)
+        print(json.dumps(acceptance, indent=2))
+        raise SystemExit(EXIT_CODES[acceptance['verdict']])
     if args.command == "native-run":
         if not args.allow_model:
             parser.error("native-run requires --allow-model; native-plan and native-preflight make no model requests")
