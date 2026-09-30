@@ -75,6 +75,8 @@ Codex CLI 0.155.1 on macOS, 2026-09-30. [Complete result](../reports/native-pref
 
 The initial [preflight failure](../reports/native-preflight-initial.json) stopped before creating a thread: the isolated app-server exited with invalid MCP transport. A no-model initialization diagnostic showed that this version treats quote characters in CLI dotted-key segments as part of the MCP name. The builder now emits unquoted key segments for both CLI and thread config, while serializing values normally. The corrected complete preflight passed once; the failed result is retained. No approval request occurred in this read-only preflight.
 
+The successful measurement is committed at `bf8127c`; its source hashes remain in the report. A subsequent offline-only cleanup fix ensures an unconfirmed first bridge exit cannot short-circuit cleanup of later observed PIDs. Its injected failure test confirms both cleanup attempts; the real preflight was not repeated.
+
 Fake-peer checks separately cover initialization timeout and process reaping, immediate/error/late config response suppression, unexpected approval rejection, and refusal to send model/status/fork methods through the preflight RPC surface. They are fault-path checks, not additional real integrations.
 
 ## Next gate

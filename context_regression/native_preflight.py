@@ -54,6 +54,12 @@ def stop_observed(pid, started):
     return identity(pid) != started
 
 
+def cleanup_observed(bridge_ids):
+    # Evaluate every owned PID even if an earlier exit remains unconfirmed.
+    outcomes = [stop_observed(pid, born) if born else True for pid, born in bridge_ids.items()]
+    return all(outcomes)
+
+
 def read_mcp(path):
     return [json.loads(line) for line in path.read_text().splitlines()] if path.exists() else []
 
@@ -200,7 +206,7 @@ def preflight(private, codex='codex'):
             if event['kind'] == 'start' and event['value']['pid'] not in bridge_ids:
                 pid = event['value']['pid']
                 bridge_ids[pid] = event['value']['started']
-        report['checks']['bridges_cleaned'] = all(stop_observed(pid, born) if born else True for pid, born in bridge_ids.items())
+        report['checks']['bridges_cleaned'] = cleanup_observed(bridge_ids)
         sent = [event['message']['method'] for path in (private / 'discovery.jsonl', private / 'app-server.jsonl')
                 if path.exists() for event in map(json.loads, path.read_text().splitlines())
                 if event.get('direction') == 'send']

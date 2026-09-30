@@ -3,10 +3,11 @@ from pathlib import Path
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 
 from context_regression.native import isolated_config
 from context_regression.native_client import AppServer
-from context_regression.native_preflight import PrivateTrace, check_effective, identity
+from context_regression.native_preflight import PrivateTrace, check_effective, cleanup_observed, identity
 
 PEER = '''
 import json,sys,time
@@ -70,6 +71,11 @@ class PreflightTests(unittest.TestCase):
             finally:
                 host.close()
                 trace.close()
+
+    def test_unconfirmed_cleanup_still_attempts_remaining_owned_pids(self):
+        with patch('context_regression.native_preflight.stop_observed', side_effect=[False, True]) as stop:
+            self.assertFalse(cleanup_observed({100: 'first-start', 200: 'second-start'}))
+        self.assertEqual([call.args for call in stop.call_args_list], [(100, 'first-start'), (200, 'second-start')])
 
     def test_initialization_timeout_reaps_owned_process(self):
         with tempfile.TemporaryDirectory() as root:
