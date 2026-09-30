@@ -1,0 +1,1499 @@
+{
+  "status": "completed",
+  "model": "gpt-6-astra",
+  "effort": "low",
+  "scope": "Bounded native policy revision; ten phases maximum, no retries",
+  "plan": {
+    "protocol": "codex-native-policy-revision-v1",
+    "execution": "plan-only",
+    "model": "gpt-6-astra",
+    "effort": "low",
+    "seeds": 4,
+    "compactions": 2,
+    "continuations": 4,
+    "timeouts_seconds": {
+      "seed": 60,
+      "compact": 90,
+      "continuation": 180
+    },
+    "continuation_tool_budget": 16,
+    "seed_tool_budget": 0,
+    "cancellation_grace_seconds": 3,
+    "model_phase_timeout_budget_seconds": 1140,
+    "usage_contract": "unverified; phase usage null, arm total incomplete",
+    "pairs": [
+      {
+        "task": "visible-policy-b",
+        "task_sha256": "6b670ec3e5e85ccb217e373ec3102c93114d4269c2a860c4e4776e4b65d9142a",
+        "arms": [
+          "control",
+          "native-compact"
+        ],
+        "seed_text": "Implement select_plan(jobs, completed, capacity) for our release planner. It returns ordered selected job ids without modifying inputs. Job ids are unique strings, needs is a list of prerequisite ids, priority is an integer (larger first), cost is a nonnegative integer, manual/approved are booleans. completed contains ids successfully deployed before this call; capacity is a nonnegative shared budget. These input fields are schema-valid.\n\nChoose the concurrent launch wave. A dependency is satisfied only if its id is in completed before this call. A prerequisite selected earlier in this plan is not yet complete, so its dependent must wait for a later call. This helper feeds a launcher that starts every returned job immediately; treating selection as completion would launch dependents too soon.\n\nRemember this decision for the later coding task. Do not call tools or modify files yet. Confirm briefly and wait.",
+        "seed_sha256": "c5bc1cd4f6b733889536a8c2d6dab4485637aa6b52f5588518afa895f975af11",
+        "request": "Implement the missing dependency predicate in plan.py using the latest agreed decision. Run the public checks.",
+        "request_sha256": "4899153f29945cc934ea24dee746999d5b3ca09e96123ca3e97f2c9f3f6c4fc2",
+        "case_id": "A-to-B",
+        "initial_task": "visible-policy-a",
+        "revision_text": "I am changing my earlier product decision. Replace the concurrent launch wave policy with a sequential execution plan. The earlier rule that a prerequisite must already be in completed is superseded.\n\nA dependency is now satisfied if its id is in completed before this call OR was selected earlier in this plan. The executor waits for each selected job to succeed before starting the next and stops on failure; including a dependent after its selected prerequisite is intended. This helper does not execute the jobs itself.\n\nOnly this dependency policy changes. Keep every other input, ordering, approval, capacity and purity requirement. Do not call tools or modify files yet. Confirm briefly and wait.",
+        "initial_task_sha256": "a9315bdb24bfae2739dccc5493c8ad0fdf172bcc097394463c444d60dbe755de",
+        "revision_sha256": "5cd734b0cf63b331c94ba252c2e75dada1803058feae88f49aa426246b928f53"
+      },
+      {
+        "task": "visible-policy-a",
+        "task_sha256": "a9315bdb24bfae2739dccc5493c8ad0fdf172bcc097394463c444d60dbe755de",
+        "arms": [
+          "native-compact",
+          "control"
+        ],
+        "seed_text": "Implement select_plan(jobs, completed, capacity) for our release planner. It returns ordered selected job ids without modifying inputs. Job ids are unique strings, needs is a list of prerequisite ids, priority is an integer (larger first), cost is a nonnegative integer, manual/approved are booleans. completed contains ids successfully deployed before this call; capacity is a nonnegative shared budget. These input fields are schema-valid.\n\nChoose the sequential execution plan. A dependency is satisfied if its id is in completed before this call OR was selected earlier in this plan. The executor waits for each returned job to succeed before starting the next and stops on failure; including a dependent after its selected prerequisite is intended. This helper does not execute the jobs itself.\n\nRemember this decision for the later coding task. Do not call tools or modify files yet. Confirm briefly and wait.",
+        "seed_sha256": "5f7cb5526dca6892fa15a49776e48d0c2656970e84629f14bbff87f1e7112deb",
+        "request": "Implement the missing dependency predicate in plan.py using the latest agreed decision. Run the public checks.",
+        "request_sha256": "4899153f29945cc934ea24dee746999d5b3ca09e96123ca3e97f2c9f3f6c4fc2",
+        "case_id": "B-to-A",
+        "initial_task": "visible-policy-b",
+        "revision_text": "I am changing my earlier product decision. Replace the sequential execution plan policy with a concurrent launch wave. The earlier rule that a selected prerequisite can satisfy a dependency is superseded.\n\nA dependency is now satisfied only if its id is in completed before this call. A prerequisite selected earlier in this plan is not yet complete, so its dependent must wait for a later call. The launcher starts every returned job immediately; treating selection as completion would launch dependents too soon.\n\nOnly this dependency policy changes. Keep every other input, ordering, approval, capacity and purity requirement. Do not call tools or modify files yet. Confirm briefly and wait.",
+        "initial_task_sha256": "6b670ec3e5e85ccb217e373ec3102c93114d4269c2a860c4e4776e4b65d9142a",
+        "revision_sha256": "dea76f409c4d82895882130bcb2b2aecd0d80d8cc04190818f37d63956683806"
+      }
+    ],
+    "scenario": "policy-revision",
+    "fixture_sha256": "595f5e20c45e14fd4734097c029efee206cdb4e6d75532a9e39d26a6be98e7c1",
+    "initial_turns": 2,
+    "revision_turns": 2
+  },
+  "environment": {
+    "binary_sha256": "8eaf1ad12fe6bf89b1710330f58900014322c7c5af677e43be116d8ac5fc0a9e",
+    "codex_version": "codex-cli 0.155.1",
+    "schema_bundle_sha256": "3030f71054766db7af3e687d57638096f0100504b05337776c618eb15b56445e",
+    "source_sha256": {
+      "__init__.py": "0d48668ead458161df84c33e8cff3a648a65f2f0b98637c630830ab85c9f36c1",
+      "__main__.py": "6d8b7d7846a845059d7a3107143f11131f63c5511d669b44085b15ec5e3d2279",
+      "bridge.py": "8338821a412dfd46845a8e69b5230589879cf52217b1669fbafd06a23bf020c3",
+      "checks.py": "bccaf59ccdb055072233d30985a6d739184750e665cb180dd9aae99ba0dfd074",
+      "cli.py": "8bb4e08c6012a17d59ebf0ad98941f75f207d7e87839f95008d9ca47069e2e47",
+      "doctor.py": "f33fe4d46979baa4e41ec79665944154f9955bf5ec7fc7515808b02ed57d7335",
+      "native.py": "ab153aaca4b4f94c318df7b4ca2c620db6c14ee2ec6e64194af65a4e0f5c11cf",
+      "native_approval.py": "2b7d0a1195915caaa16642937f9cea6562fdb94b36e6d7a753bdbe5b12da8a05",
+      "native_bridge.py": "11d236db27bde595e714904f4542eeea0b32581a6ceeda78ffa1e74ae212c45b",
+      "native_client.py": "674717bf2adad7329ac180c0252d5479cfdcb9c946d8d53256c2bd81a7dab09a",
+      "native_preflight.py": "465e0d809e98835e2439b09cf1389b8764d0563c07673e16427e199e108c2b54",
+      "native_run.py": "50b6055073f7d0ad98530c1569825cf263f3317e8e21cfd9f250f28cdc193198",
+      "planning.py": "8c812a2c770e9b2b63792660f6ef6067f433167c09cd0bcecb693faf1cab064d",
+      "release_checks.py": "c9b960b86c8e95b25d57c673d739d4a9d1a6e426ca4c74c0061733a185266b78",
+      "runner.py": "3c4fa813ebba7c61c094aae7d6f7e53db7c8a4009e56f9796026dd19cd432dd5",
+      "tasks.py": "a48cad540d113eac69cae50533eca16bad923d63c1fa3061fb5cb6c639e83828",
+      "verify.py": "7042e6b1f387976df4e6b301de57b75e447379fe0ee78a324f02f530ffef72d0",
+      "worker.py": "5eb239ca826b675f8c59e61539f4af54223483ef59e4defda256e3c86992d0d9"
+    },
+    "developer_instructions_sha256": "dcce56344ee0c71f2f30740b6dfe6e270f6cd0ad4338b348fbbcf2679b684c6f",
+    "config_sha256_before": "d36f56bb99da0a2d2533a84ff8e5e3234d6c51edc2650b730c40a09168c407ed",
+    "effective_config": {
+      "disabled_features": [
+        "apps",
+        "plugins",
+        "hooks",
+        "skill_search",
+        "skill_mcp_dependency_install",
+        "shell_tool",
+        "multi_agent"
+      ],
+      "approval_policy": "on-request",
+      "approvals_reviewer": "user",
+      "sandbox_mode": "read-only",
+      "web_search": "disabled",
+      "unrelated_mcp_disabled": 2,
+      "plugins_disabled": 12
+    },
+    "config_sha256_after": "d36f56bb99da0a2d2533a84ff8e5e3234d6c51edc2650b730c40a09168c407ed"
+  },
+  "checks": {
+    "app_server_reaped": true,
+    "bridges_cleaned": true,
+    "candidate_cleaned": true,
+    "config_unchanged": true,
+    "runner_unchanged": true,
+    "tasks_unchanged": true,
+    "fixture_unchanged": true
+  },
+  "error": null,
+  "usage": null,
+  "usage_coverage": "incomplete",
+  "pairs": [
+    {
+      "task": "visible-policy-b",
+      "seed": {
+        "kind": "seed",
+        "status": "completed",
+        "elapsed_seconds": 7.701,
+        "tool_calls": 0,
+        "single_call_approvals": 0,
+        "terminal": "completed",
+        "cancellation": "not_requested",
+        "usage_issue": "contract_unverified",
+        "request_id": 4,
+        "turn": "A-to-B.seed.turn",
+        "start_sequence": 8,
+        "evidence": [
+          {
+            "sequence": 9,
+            "event": "rpc_ack"
+          },
+          {
+            "sequence": 11,
+            "event": "turn_started"
+          },
+          {
+            "sequence": 65,
+            "event": "turn_completed",
+            "status": "completed"
+          }
+        ],
+        "compaction_item_fingerprints": [],
+        "usage": null,
+        "usage_coverage": "unavailable",
+        "usage_snapshots": [
+          {
+            "sequence": 62,
+            "tokenUsage": {
+              "total": {
+                "totalTokens": 18571,
+                "inputTokens": 18521,
+                "cachedInputTokens": 0,
+                "cacheWriteInputTokens": 0,
+                "outputTokens": 50,
+                "reasoningOutputTokens": 0
+              },
+              "last": {
+                "totalTokens": 18571,
+                "inputTokens": 18521,
+                "cachedInputTokens": 0,
+                "cacheWriteInputTokens": 0,
+                "outputTokens": 50,
+                "reasoningOutputTokens": 0
+              },
+              "modelContextWindow": 258400
+            }
+          }
+        ]
+      },
+      "boundary_sha256": "7c0595169f6c83658e3045735f4efa292e281ff3c3ca7a7c956161809fb23a27",
+      "arms": [
+        {
+          "arm": "control",
+          "checkpoint_sha256": "b1e1f354a76caa2837bb38daf44c8e92682430349484b7999e8d5a73edde8683",
+          "candidate_sha256": "f6f086735c495715ae4939d988b6655a92dc749b3ac5291ac5338e0c4ebdc329",
+          "shared_rules_pass": true,
+          "classification": "latest_policy",
+          "cross_verification": {
+            "visible-policy-a": {
+              "status": "completed",
+              "passed": false,
+              "checks": [
+                {
+                  "name": "no_revisit",
+                  "passed": true
+                },
+                {
+                  "name": "blocked_prerequisite",
+                  "passed": true
+                },
+                {
+                  "name": "unknown_dependency",
+                  "passed": true
+                },
+                {
+                  "name": "all_dependencies_required",
+                  "passed": true
+                },
+                {
+                  "name": "previously_completed",
+                  "passed": true
+                },
+                {
+                  "name": "manual_gate",
+                  "passed": true
+                },
+                {
+                  "name": "stable_priority_budget",
+                  "passed": true
+                },
+                {
+                  "name": "skip_and_exact_fit",
+                  "passed": true
+                },
+                {
+                  "name": "zero_capacity",
+                  "passed": true
+                },
+                {
+                  "name": "empty",
+                  "passed": true
+                },
+                {
+                  "name": "dependency_policy",
+                  "passed": false
+                }
+              ]
+            },
+            "visible-policy-b": {
+              "status": "completed",
+              "passed": true,
+              "checks": [
+                {
+                  "name": "no_revisit",
+                  "passed": true
+                },
+                {
+                  "name": "blocked_prerequisite",
+                  "passed": true
+                },
+                {
+                  "name": "unknown_dependency",
+                  "passed": true
+                },
+                {
+                  "name": "all_dependencies_required",
+                  "passed": true
+                },
+                {
+                  "name": "previously_completed",
+                  "passed": true
+                },
+                {
+                  "name": "manual_gate",
+                  "passed": true
+                },
+                {
+                  "name": "stable_priority_budget",
+                  "passed": true
+                },
+                {
+                  "name": "skip_and_exact_fit",
+                  "passed": true
+                },
+                {
+                  "name": "zero_capacity",
+                  "passed": true
+                },
+                {
+                  "name": "empty",
+                  "passed": true
+                },
+                {
+                  "name": "dependency_policy",
+                  "passed": true
+                }
+              ]
+            }
+          },
+          "thread": "A-to-B.control",
+          "forked_from": "A-to-B.seed",
+          "phases": [
+            {
+              "kind": "continuation",
+              "status": "completed",
+              "elapsed_seconds": 36.023,
+              "tool_calls": 3,
+              "single_call_approvals": 3,
+              "terminal": "completed",
+              "cancellation": "not_requested",
+              "usage_issue": "contract_unverified",
+              "request_id": 11,
+              "turn": "A-to-B.control.continuation",
+              "start_sequence": 133,
+              "evidence": [
+                {
+                  "sequence": 134,
+                  "event": "rpc_ack"
+                },
+                {
+                  "sequence": 136,
+                  "event": "turn_started"
+                },
+                {
+                  "sequence": 227,
+                  "event": "turn_completed",
+                  "status": "completed"
+                }
+              ],
+              "compaction_item_fingerprints": [],
+              "usage": null,
+              "usage_coverage": "unavailable",
+              "usage_snapshots": [
+                {
+                  "sequence": 163,
+                  "tokenUsage": {
+                    "total": {
+                      "totalTokens": 56156,
+                      "inputTokens": 56002,
+                      "cachedInputTokens": 18304,
+                      "cacheWriteInputTokens": 0,
+                      "outputTokens": 154,
+                      "reasoningOutputTokens": 0
+                    },
+                    "last": {
+                      "totalTokens": 18834,
+                      "inputTokens": 18776,
+                      "cachedInputTokens": 0,
+                      "cacheWriteInputTokens": 0,
+                      "outputTokens": 58,
+                      "reasoningOutputTokens": 0
+                    },
+                    "modelContextWindow": 258400
+                  }
+                },
+                {
+                  "sequence": 171,
+                  "tokenUsage": {
+                    "total": {
+                      "totalTokens": 75290,
+                      "inputTokens": 75109,
+                      "cachedInputTokens": 36864,
+                      "cacheWriteInputTokens": 0,
+                      "outputTokens": 181,
+                      "reasoningOutputTokens": 0
+                    },
+                    "last": {
+                      "totalTokens": 19134,
+                      "inputTokens": 19107,
+                      "cachedInputTokens": 18560,
+                      "cacheWriteInputTokens": 0,
+                      "outputTokens": 27,
+                      "reasoningOutputTokens": 0
+                    },
+                    "modelContextWindow": 258400
+                  }
+                },
+                {
+                  "sequence": 185,
+                  "tokenUsage": {
+                    "total": {
+                      "totalTokens": 95387,
+                      "inputTokens": 94777,
+                      "cachedInputTokens": 55808,
+                      "cacheWriteInputTokens": 0,
+                      "outputTokens": 610,
+                      "reasoningOutputTokens": 0
+                    },
+                    "last": {
+                      "totalTokens": 20097,
+                      "inputTokens": 19668,
+                      "cachedInputTokens": 18944,
+                      "cacheWriteInputTokens": 0,
+                      "outputTokens": 429,
+                      "reasoningOutputTokens": 0
+                    },
+                    "modelContextWindow": 258400
+                  }
+                },
+                {
+                  "sequence": 224,
+                  "tokenUsage": {
+                    "total": {
+                      "totalTokens": 115643,
+                      "inputTokens": 114994,
+                      "cachedInputTokens": 75264,
+                      "cacheWriteInputTokens": 0,
+                      "outputTokens": 649,
+                      "reasoningOutputTokens": 0
+                    },
+                    "last": {
+                      "totalTokens": 20256,
+                      "inputTokens": 20217,
+                      "cachedInputTokens": 19456,
+                      "cacheWriteInputTokens": 0,
+                      "outputTokens": 39,
+                      "reasoningOutputTokens": 0
+                    },
+                    "modelContextWindow": 258400
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "arm": "native-compact",
+          "checkpoint_sha256": "b1e1f354a76caa2837bb38daf44c8e92682430349484b7999e8d5a73edde8683",
+          "candidate_sha256": "f2c07ebfff6e8eec774fade72206c391b4812dd38477caf372a9af321fe6a6ed",
+          "shared_rules_pass": true,
+          "classification": "latest_policy",
+          "cross_verification": {
+            "visible-policy-a": {
+              "status": "completed",
+              "passed": false,
+              "checks": [
+                {
+                  "name": "no_revisit",
+                  "passed": true
+                },
+                {
+                  "name": "blocked_prerequisite",
+                  "passed": true
+                },
+                {
+                  "name": "unknown_dependency",
+                  "passed": true
+                },
+                {
+                  "name": "all_dependencies_required",
+                  "passed": true
+                },
+                {
+                  "name": "previously_completed",
+                  "passed": true
+                },
+                {
+                  "name": "manual_gate",
+                  "passed": true
+                },
+                {
+                  "name": "stable_priority_budget",
+                  "passed": true
+                },
+                {
+                  "name": "skip_and_exact_fit",
+                  "passed": true
+                },
+                {
+                  "name": "zero_capacity",
+                  "passed": true
+                },
+                {
+                  "name": "empty",
+                  "passed": true
+                },
+                {
+                  "name": "dependency_policy",
+                  "passed": false
+                }
+              ]
+            },
+            "visible-policy-b": {
+              "status": "completed",
+              "passed": true,
+              "checks": [
+                {
+                  "name": "no_revisit",
+                  "passed": true
+                },
+                {
+                  "name": "blocked_prerequisite",
+                  "passed": true
+                },
+                {
+                  "name": "unknown_dependency",
+                  "passed": true
+                },
+                {
+                  "name": "all_dependencies_required",
+                  "passed": true
+                },
+                {
+                  "name": "previously_completed",
+                  "passed": true
+                },
+                {
+                  "name": "manual_gate",
+                  "passed": true
+                },
+                {
+                  "name": "stable_priority_budget",
+                  "passed": true
+                },
+                {
+                  "name": "skip_and_exact_fit",
+                  "passed": true
+                },
+                {
+                  "name": "zero_capacity",
+                  "passed": true
+                },
+                {
+                  "name": "empty",
+                  "passed": true
+                },
+                {
+                  "name": "dependency_policy",
+                  "passed": true
+                }
+              ]
+            }
+          },
+          "thread": "A-to-B.native-compact",
+          "forked_from": "A-to-B.seed",
+          "phases": [
+            {
+              "kind": "compact",
+              "status": "completed",
+              "elapsed_seconds": 26.98,
+              "tool_calls": 0,
+              "single_call_approvals": 0,
+              "terminal": "completed",
+              "cancellation": "not_requested",
+              "usage_issue": "contract_unverified",
+              "request_id": 12,
+              "turn": "A-to-B.native-compact.compact",
+              "start_sequence": 227,
+              "evidence": [
+                {
+                  "sequence": 228,
+                  "event": "rpc_ack"
+                },
+                {
+                  "sequence": 230,
+                  "event": "turn_started"
+                },
+                {
+                  "sequence": 233,
+                  "event": "compaction_completed"
+                },
+                {
+                  "sequence": 235,
+                  "event": "turn_completed",
+                  "status": "completed"
+                }
+              ],
+              "compaction_item_fingerprints": [
+                "284be1ea8856e218f1d0f344dbfa85509ed039780c1730da068d7806501cbe99"
+              ],
+              "usage": null,
+              "usage_coverage": "unavailable",
+              "usage_snapshots": [
+                {
+                  "sequence": 232,
+                  "tokenUsage": {
+                    "total": {
+                      "totalTokens": 37322,
+                      "inputTokens": 37226,
+                      "cachedInputTokens": 18304,
+                      "cacheWriteInputTokens": 0,
+                      "outputTokens": 96,
+                      "reasoningOutputTokens": 0
+                    },
+                    "last": {
+                      "totalTokens": 6837,
+                      "inputTokens": 0,
+                      "cachedInputTokens": 0,
+                      "cacheWriteInputTokens": 0,
+                      "outputTokens": 0,
+                      "reasoningOutputTokens": 0
+                    },
+                    "modelContextWindow": 258400
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "continuation",
+              "status": "completed",
+              "elapsed_seconds": 28.98,
+              "tool_calls": 3,
+              "single_call_approvals": 3,
+              "terminal": "completed",
+              "cancellation": "not_requested",
+              "usage_issue": "contract_unverified",
+              "request_id": 14,
+              "turn": "A-to-B.native-compact.continuation",
+              "start_sequence": 236,
+              "evidence": [
+                {
+                  "sequence": 237,
+                  "event": "rpc_ack"
+                },
+                {
+                  "sequence": 239,
+                  "event": "turn_started"
+                },
+                {
+                  "sequence": 327,
+                  "event": "turn_completed",
+                  "status": "completed"
+                }
+              ],
+              "compaction_item_fingerprints": [],
+              "usage": null,
+              "usage_coverage": "unavailable",
+              "usage_snapshots": [
+                {
+                  "sequence": 263,
+                  "tokenUsage": {
+                    "total": {
+                      "totalTokens": 56784,
+                      "inputTokens": 56637,
+                      "cachedInputTokens": 18304,
+                      "cacheWriteInputTokens": 0,
+                      "outputTokens": 147,
+                      "reasoningOutputTokens": 0
+                    },
+                    "last": {
+                      "totalTokens": 19462,
+                      "inputTokens": 19411,
+                      "cachedInputTokens": 0,
+                      "cacheWriteInputTokens": 0,
+                      "outputTokens": 51,
+                      "reasoningOutputTokens": 0
+                    },
+                    "modelContextWindow": 258400
+                  }
+                },
+                {
+                  "sequence": 271,
+                  "tokenUsage": {
+                    "total": {
+                      "totalTokens": 76546,
+                      "inputTokens": 76372,
+                      "cachedInputTokens": 37504,
+                      "cacheWriteInputTokens": 0,
+                      "outputTokens": 174,
+                      "reasoningOutputTokens": 0
+                    },
+                    "last": {
+                      "totalTokens": 19762,
+                      "inputTokens": 19735,
+                      "cachedInputTokens": 19200,
+                      "cacheWriteInputTokens": 0,
+                      "outputTokens": 27,
+                      "reasoningOutputTokens": 0
+                    },
+                    "modelContextWindow": 258400
+                  }
+                },
+                {
+                  "sequence": 285,
+                  "tokenUsage": {
+                    "total": {
+                      "totalTokens": 97314,
+                      "inputTokens": 96668,
+                      "cachedInputTokens": 57088,
+                      "cacheWriteInputTokens": 0,
+                      "outputTokens": 646,
+                      "reasoningOutputTokens": 0
+                    },
+                    "last": {
+                      "totalTokens": 20768,
+                      "inputTokens": 20296,
+                      "cachedInputTokens": 19584,
+                      "cacheWriteInputTokens": 0,
+                      "outputTokens": 472,
+                      "reasoningOutputTokens": 0
+                    },
+                    "modelContextWindow": 258400
+                  }
+                },
+                {
+                  "sequence": 324,
+                  "tokenUsage": {
+                    "total": {
+                      "totalTokens": 118241,
+                      "inputTokens": 117556,
+                      "cachedInputTokens": 77184,
+                      "cacheWriteInputTokens": 0,
+                      "outputTokens": 685,
+                      "reasoningOutputTokens": 0
+                    },
+                    "last": {
+                      "totalTokens": 20927,
+                      "inputTokens": 20888,
+                      "cachedInputTokens": 20096,
+                      "cacheWriteInputTokens": 0,
+                      "outputTokens": 39,
+                      "reasoningOutputTokens": 0
+                    },
+                    "modelContextWindow": 258400
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "case_id": "A-to-B",
+      "initial_task": "visible-policy-a",
+      "revision": {
+        "kind": "seed",
+        "status": "completed",
+        "elapsed_seconds": 7.179,
+        "tool_calls": 0,
+        "single_call_approvals": 0,
+        "terminal": "completed",
+        "cancellation": "not_requested",
+        "usage_issue": "contract_unverified",
+        "request_id": 5,
+        "turn": "A-to-B.revision.turn",
+        "start_sequence": 65,
+        "evidence": [
+          {
+            "sequence": 66,
+            "event": "rpc_ack"
+          },
+          {
+            "sequence": 68,
+            "event": "turn_started"
+          },
+          {
+            "sequence": 118,
+            "event": "turn_completed",
+            "status": "completed"
+          }
+        ],
+        "compaction_item_fingerprints": [],
+        "usage": null,
+        "usage_coverage": "unavailable",
+        "usage_snapshots": [
+          {
+            "sequence": 115,
+            "tokenUsage": {
+              "total": {
+                "totalTokens": 37322,
+                "inputTokens": 37226,
+                "cachedInputTokens": 18304,
+                "cacheWriteInputTokens": 0,
+                "outputTokens": 96,
+                "reasoningOutputTokens": 0
+              },
+              "last": {
+                "totalTokens": 18751,
+                "inputTokens": 18705,
+                "cachedInputTokens": 18304,
+                "cacheWriteInputTokens": 0,
+                "outputTokens": 46,
+                "reasoningOutputTokens": 0
+              },
+              "modelContextWindow": 258400
+            }
+          }
+        ]
+      }
+    },
+    {
+      "task": "visible-policy-a",
+      "seed": {
+        "kind": "seed",
+        "status": "completed",
+        "elapsed_seconds": 11.777,
+        "tool_calls": 0,
+        "single_call_approvals": 0,
+        "terminal": "completed",
+        "cancellation": "not_requested",
+        "usage_issue": "contract_unverified",
+        "request_id": 16,
+        "turn": "B-to-A.seed.turn",
+        "start_sequence": 332,
+        "evidence": [
+          {
+            "sequence": 333,
+            "event": "rpc_ack"
+          },
+          {
+            "sequence": 335,
+            "event": "turn_started"
+          },
+          {
+            "sequence": 380,
+            "event": "turn_completed",
+            "status": "completed"
+          }
+        ],
+        "compaction_item_fingerprints": [],
+        "usage": null,
+        "usage_coverage": "unavailable",
+        "usage_snapshots": [
+          {
+            "sequence": 377,
+            "tokenUsage": {
+              "total": {
+                "totalTokens": 18560,
+                "inputTokens": 18519,
+                "cachedInputTokens": 18304,
+                "cacheWriteInputTokens": 0,
+                "outputTokens": 41,
+                "reasoningOutputTokens": 0
+              },
+              "last": {
+                "totalTokens": 18560,
+                "inputTokens": 18519,
+                "cachedInputTokens": 18304,
+                "cacheWriteInputTokens": 0,
+                "outputTokens": 41,
+                "reasoningOutputTokens": 0
+              },
+              "modelContextWindow": 258400
+            }
+          }
+        ]
+      },
+      "boundary_sha256": "c13331d7a2dbad4ba5ab6b335050be29924cbe2d23b7fb6605ea9a6702d33047",
+      "arms": [
+        {
+          "arm": "native-compact",
+          "checkpoint_sha256": "b1e1f354a76caa2837bb38daf44c8e92682430349484b7999e8d5a73edde8683",
+          "candidate_sha256": "822939a5342ce6165ac400fb4100d70133959af407642998cfe37b80af7a0acd",
+          "shared_rules_pass": true,
+          "classification": "latest_policy",
+          "cross_verification": {
+            "visible-policy-a": {
+              "status": "completed",
+              "passed": true,
+              "checks": [
+                {
+                  "name": "no_revisit",
+                  "passed": true
+                },
+                {
+                  "name": "blocked_prerequisite",
+                  "passed": true
+                },
+                {
+                  "name": "unknown_dependency",
+                  "passed": true
+                },
+                {
+                  "name": "all_dependencies_required",
+                  "passed": true
+                },
+                {
+                  "name": "previously_completed",
+                  "passed": true
+                },
+                {
+                  "name": "manual_gate",
+                  "passed": true
+                },
+                {
+                  "name": "stable_priority_budget",
+                  "passed": true
+                },
+                {
+                  "name": "skip_and_exact_fit",
+                  "passed": true
+                },
+                {
+                  "name": "zero_capacity",
+                  "passed": true
+                },
+                {
+                  "name": "empty",
+                  "passed": true
+                },
+                {
+                  "name": "dependency_policy",
+                  "passed": true
+                }
+              ]
+            },
+            "visible-policy-b": {
+              "status": "completed",
+              "passed": false,
+              "checks": [
+                {
+                  "name": "no_revisit",
+                  "passed": true
+                },
+                {
+                  "name": "blocked_prerequisite",
+                  "passed": true
+                },
+                {
+                  "name": "unknown_dependency",
+                  "passed": true
+                },
+                {
+                  "name": "all_dependencies_required",
+                  "passed": true
+                },
+                {
+                  "name": "previously_completed",
+                  "passed": true
+                },
+                {
+                  "name": "manual_gate",
+                  "passed": true
+                },
+                {
+                  "name": "stable_priority_budget",
+                  "passed": true
+                },
+                {
+                  "name": "skip_and_exact_fit",
+                  "passed": true
+                },
+                {
+                  "name": "zero_capacity",
+                  "passed": true
+                },
+                {
+                  "name": "empty",
+                  "passed": true
+                },
+                {
+                  "name": "dependency_policy",
+                  "passed": false
+                }
+              ]
+            }
+          },
+          "thread": "B-to-A.native-compact",
+          "forked_from": "B-to-A.seed",
+          "phases": [
+            {
+              "kind": "compact",
+              "status": "completed",
+              "elapsed_seconds": 24.323,
+              "tool_calls": 0,
+              "single_call_approvals": 0,
+              "terminal": "completed",
+              "cancellation": "not_requested",
+              "usage_issue": "contract_unverified",
+              "request_id": 23,
+              "turn": "B-to-A.native-compact.compact",
+              "start_sequence": 456,
+              "evidence": [
+                {
+                  "sequence": 457,
+                  "event": "rpc_ack"
+                },
+                {
+                  "sequence": 459,
+                  "event": "turn_started"
+                },
+                {
+                  "sequence": 462,
+                  "event": "compaction_completed"
+                },
+                {
+                  "sequence": 464,
+                  "event": "turn_completed",
+                  "status": "completed"
+                }
+              ],
+              "compaction_item_fingerprints": [
+                "0d36f67e873cb65f00b07cc1a33870cfe0ef236f0994d1224b165a7f49dcaaeb"
+              ],
+              "usage": null,
+              "usage_coverage": "unavailable",
+              "usage_snapshots": [
+                {
+                  "sequence": 461,
+                  "tokenUsage": {
+                    "total": {
+                      "totalTokens": 37306,
+                      "inputTokens": 37211,
+                      "cachedInputTokens": 36608,
+                      "cacheWriteInputTokens": 0,
+                      "outputTokens": 95,
+                      "reasoningOutputTokens": 0
+                    },
+                    "last": {
+                      "totalTokens": 6718,
+                      "inputTokens": 0,
+                      "cachedInputTokens": 0,
+                      "cacheWriteInputTokens": 0,
+                      "outputTokens": 0,
+                      "reasoningOutputTokens": 0
+                    },
+                    "modelContextWindow": 258400
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "continuation",
+              "status": "completed",
+              "elapsed_seconds": 33.556,
+              "tool_calls": 3,
+              "single_call_approvals": 3,
+              "terminal": "completed",
+              "cancellation": "not_requested",
+              "usage_issue": "contract_unverified",
+              "request_id": 25,
+              "turn": "B-to-A.native-compact.continuation",
+              "start_sequence": 465,
+              "evidence": [
+                {
+                  "sequence": 466,
+                  "event": "rpc_ack"
+                },
+                {
+                  "sequence": 468,
+                  "event": "turn_started"
+                },
+                {
+                  "sequence": 563,
+                  "event": "turn_completed",
+                  "status": "completed"
+                }
+              ],
+              "compaction_item_fingerprints": [],
+              "usage": null,
+              "usage_coverage": "unavailable",
+              "usage_snapshots": [
+                {
+                  "sequence": 496,
+                  "tokenUsage": {
+                    "total": {
+                      "totalTokens": 56678,
+                      "inputTokens": 56524,
+                      "cachedInputTokens": 45440,
+                      "cacheWriteInputTokens": 0,
+                      "outputTokens": 154,
+                      "reasoningOutputTokens": 0
+                    },
+                    "last": {
+                      "totalTokens": 19372,
+                      "inputTokens": 19313,
+                      "cachedInputTokens": 8832,
+                      "cacheWriteInputTokens": 0,
+                      "outputTokens": 59,
+                      "reasoningOutputTokens": 0
+                    },
+                    "modelContextWindow": 258400
+                  }
+                },
+                {
+                  "sequence": 504,
+                  "tokenUsage": {
+                    "total": {
+                      "totalTokens": 76350,
+                      "inputTokens": 76169,
+                      "cachedInputTokens": 64512,
+                      "cacheWriteInputTokens": 0,
+                      "outputTokens": 181,
+                      "reasoningOutputTokens": 0
+                    },
+                    "last": {
+                      "totalTokens": 19672,
+                      "inputTokens": 19645,
+                      "cachedInputTokens": 19072,
+                      "cacheWriteInputTokens": 0,
+                      "outputTokens": 27,
+                      "reasoningOutputTokens": 0
+                    },
+                    "modelContextWindow": 258400
+                  }
+                },
+                {
+                  "sequence": 518,
+                  "tokenUsage": {
+                    "total": {
+                      "totalTokens": 96974,
+                      "inputTokens": 96375,
+                      "cachedInputTokens": 83968,
+                      "cacheWriteInputTokens": 0,
+                      "outputTokens": 599,
+                      "reasoningOutputTokens": 0
+                    },
+                    "last": {
+                      "totalTokens": 20624,
+                      "inputTokens": 20206,
+                      "cachedInputTokens": 19456,
+                      "cacheWriteInputTokens": 0,
+                      "outputTokens": 418,
+                      "reasoningOutputTokens": 0
+                    },
+                    "modelContextWindow": 258400
+                  }
+                },
+                {
+                  "sequence": 560,
+                  "tokenUsage": {
+                    "total": {
+                      "totalTokens": 117760,
+                      "inputTokens": 117119,
+                      "cachedInputTokens": 103936,
+                      "cacheWriteInputTokens": 0,
+                      "outputTokens": 641,
+                      "reasoningOutputTokens": 0
+                    },
+                    "last": {
+                      "totalTokens": 20786,
+                      "inputTokens": 20744,
+                      "cachedInputTokens": 19968,
+                      "cacheWriteInputTokens": 0,
+                      "outputTokens": 42,
+                      "reasoningOutputTokens": 0
+                    },
+                    "modelContextWindow": 258400
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "arm": "control",
+          "checkpoint_sha256": "b1e1f354a76caa2837bb38daf44c8e92682430349484b7999e8d5a73edde8683",
+          "candidate_sha256": "06041798b0b8f822828e3c1ea1287532d07b3ab7de885fb1fb4456f2b81799fe",
+          "shared_rules_pass": true,
+          "classification": "latest_policy",
+          "cross_verification": {
+            "visible-policy-a": {
+              "status": "completed",
+              "passed": true,
+              "checks": [
+                {
+                  "name": "no_revisit",
+                  "passed": true
+                },
+                {
+                  "name": "blocked_prerequisite",
+                  "passed": true
+                },
+                {
+                  "name": "unknown_dependency",
+                  "passed": true
+                },
+                {
+                  "name": "all_dependencies_required",
+                  "passed": true
+                },
+                {
+                  "name": "previously_completed",
+                  "passed": true
+                },
+                {
+                  "name": "manual_gate",
+                  "passed": true
+                },
+                {
+                  "name": "stable_priority_budget",
+                  "passed": true
+                },
+                {
+                  "name": "skip_and_exact_fit",
+                  "passed": true
+                },
+                {
+                  "name": "zero_capacity",
+                  "passed": true
+                },
+                {
+                  "name": "empty",
+                  "passed": true
+                },
+                {
+                  "name": "dependency_policy",
+                  "passed": true
+                }
+              ]
+            },
+            "visible-policy-b": {
+              "status": "completed",
+              "passed": false,
+              "checks": [
+                {
+                  "name": "no_revisit",
+                  "passed": true
+                },
+                {
+                  "name": "blocked_prerequisite",
+                  "passed": true
+                },
+                {
+                  "name": "unknown_dependency",
+                  "passed": true
+                },
+                {
+                  "name": "all_dependencies_required",
+                  "passed": true
+                },
+                {
+                  "name": "previously_completed",
+                  "passed": true
+                },
+                {
+                  "name": "manual_gate",
+                  "passed": true
+                },
+                {
+                  "name": "stable_priority_budget",
+                  "passed": true
+                },
+                {
+                  "name": "skip_and_exact_fit",
+                  "passed": true
+                },
+                {
+                  "name": "zero_capacity",
+                  "passed": true
+                },
+                {
+                  "name": "empty",
+                  "passed": true
+                },
+                {
+                  "name": "dependency_policy",
+                  "passed": false
+                }
+              ]
+            }
+          },
+          "thread": "B-to-A.control",
+          "forked_from": "B-to-A.seed",
+          "phases": [
+            {
+              "kind": "continuation",
+              "status": "completed",
+              "elapsed_seconds": 29.639,
+              "tool_calls": 3,
+              "single_call_approvals": 3,
+              "terminal": "completed",
+              "cancellation": "not_requested",
+              "usage_issue": "contract_unverified",
+              "request_id": 26,
+              "turn": "B-to-A.control.continuation",
+              "start_sequence": 563,
+              "evidence": [
+                {
+                  "sequence": 564,
+                  "event": "rpc_ack"
+                },
+                {
+                  "sequence": 566,
+                  "event": "turn_started"
+                },
+                {
+                  "sequence": 660,
+                  "event": "turn_completed",
+                  "status": "completed"
+                }
+              ],
+              "compaction_item_fingerprints": [],
+              "usage": null,
+              "usage_coverage": "unavailable",
+              "usage_snapshots": [
+                {
+                  "sequence": 594,
+                  "tokenUsage": {
+                    "total": {
+                      "totalTokens": 56136,
+                      "inputTokens": 55982,
+                      "cachedInputTokens": 36608,
+                      "cacheWriteInputTokens": 0,
+                      "outputTokens": 154,
+                      "reasoningOutputTokens": 0
+                    },
+                    "last": {
+                      "totalTokens": 18830,
+                      "inputTokens": 18771,
+                      "cachedInputTokens": 0,
+                      "cacheWriteInputTokens": 0,
+                      "outputTokens": 59,
+                      "reasoningOutputTokens": 0
+                    },
+                    "modelContextWindow": 258400
+                  }
+                },
+                {
+                  "sequence": 602,
+                  "tokenUsage": {
+                    "total": {
+                      "totalTokens": 75266,
+                      "inputTokens": 75085,
+                      "cachedInputTokens": 55168,
+                      "cacheWriteInputTokens": 0,
+                      "outputTokens": 181,
+                      "reasoningOutputTokens": 0
+                    },
+                    "last": {
+                      "totalTokens": 19130,
+                      "inputTokens": 19103,
+                      "cachedInputTokens": 18560,
+                      "cacheWriteInputTokens": 0,
+                      "outputTokens": 27,
+                      "reasoningOutputTokens": 0
+                    },
+                    "modelContextWindow": 258400
+                  }
+                },
+                {
+                  "sequence": 616,
+                  "tokenUsage": {
+                    "total": {
+                      "totalTokens": 95351,
+                      "inputTokens": 94749,
+                      "cachedInputTokens": 74112,
+                      "cacheWriteInputTokens": 0,
+                      "outputTokens": 602,
+                      "reasoningOutputTokens": 0
+                    },
+                    "last": {
+                      "totalTokens": 20085,
+                      "inputTokens": 19664,
+                      "cachedInputTokens": 18944,
+                      "cacheWriteInputTokens": 0,
+                      "outputTokens": 421,
+                      "reasoningOutputTokens": 0
+                    },
+                    "modelContextWindow": 258400
+                  }
+                },
+                {
+                  "sequence": 657,
+                  "tokenUsage": {
+                    "total": {
+                      "totalTokens": 115597,
+                      "inputTokens": 114954,
+                      "cachedInputTokens": 93568,
+                      "cacheWriteInputTokens": 0,
+                      "outputTokens": 643,
+                      "reasoningOutputTokens": 0
+                    },
+                    "last": {
+                      "totalTokens": 20246,
+                      "inputTokens": 20205,
+                      "cachedInputTokens": 19456,
+                      "cacheWriteInputTokens": 0,
+                      "outputTokens": 41,
+                      "reasoningOutputTokens": 0
+                    },
+                    "modelContextWindow": 258400
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "case_id": "B-to-A",
+      "initial_task": "visible-policy-b",
+      "revision": {
+        "kind": "seed",
+        "status": "completed",
+        "elapsed_seconds": 8.659,
+        "tool_calls": 0,
+        "single_call_approvals": 0,
+        "terminal": "completed",
+        "cancellation": "not_requested",
+        "usage_issue": "contract_unverified",
+        "request_id": 17,
+        "turn": "B-to-A.revision.turn",
+        "start_sequence": 380,
+        "evidence": [
+          {
+            "sequence": 381,
+            "event": "rpc_ack"
+          },
+          {
+            "sequence": 383,
+            "event": "turn_started"
+          },
+          {
+            "sequence": 441,
+            "event": "turn_completed",
+            "status": "completed"
+          }
+        ],
+        "compaction_item_fingerprints": [],
+        "usage": null,
+        "usage_coverage": "unavailable",
+        "usage_snapshots": [
+          {
+            "sequence": 438,
+            "tokenUsage": {
+              "total": {
+                "totalTokens": 37306,
+                "inputTokens": 37211,
+                "cachedInputTokens": 36608,
+                "cacheWriteInputTokens": 0,
+                "outputTokens": 95,
+                "reasoningOutputTokens": 0
+              },
+              "last": {
+                "totalTokens": 18746,
+                "inputTokens": 18692,
+                "cachedInputTokens": 18304,
+                "cacheWriteInputTokens": 0,
+                "outputTokens": 54,
+                "reasoningOutputTokens": 0
+              },
+              "modelContextWindow": 258400
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "control_both_policies_pass": true,
+  "native-compact_both_policies_pass": true,
+  "audit": {
+    "source_commit": "5c06db134d78c2149bbf43025c7311dd216c47dd",
+    "run_date": "2026-09-30",
+    "phase_requests": {
+      "initial": 2,
+      "revision": 2,
+      "compact": 2,
+      "continuation": 4
+    },
+    "lifecycle_requests": {
+      "initialize": 2,
+      "config/read": 2,
+      "thread/start": 2,
+      "turn/start": 8,
+      "thread/read": 8,
+      "thread/fork": 4,
+      "thread/compact/start": 2
+    },
+    "dedicated_threads": 6,
+    "bridge_starts": 6,
+    "mcp_initialize_requests": 6,
+    "mcp_tools_list_requests": 6,
+    "config_responses_absent_from_private_logs": true,
+    "private_root_mode": "0o700",
+    "trace_modes": {
+      "discovery.jsonl": "0o600",
+      "app-server.jsonl": "0o600",
+      "mcp.jsonl": "0o600"
+    },
+    "owned_bridges_no_longer_live": true,
+    "published_candidates": [
+      {
+        "candidate": "A-to-B-control",
+        "bytes": 1909,
+        "plan_py_sha256": "b9ddbe2426c6370261ed96f546809aefa92193509c98682bc124b290d51bc076"
+      },
+      {
+        "candidate": "A-to-B-native-compact",
+        "bytes": 1897,
+        "plan_py_sha256": "e28004f54762df902c70d91f0e00af2511a308c43be70b2e391a071eac8a2620"
+      },
+      {
+        "candidate": "B-to-A-native-compact",
+        "bytes": 1867,
+        "plan_py_sha256": "17da3ec29514114fbf00abe66611a3a7714bda589b918d31eb0cc0bba58cd7d9"
+      },
+      {
+        "candidate": "B-to-A-control",
+        "bytes": 1889,
+        "plan_py_sha256": "9d00b2b5c0eac35f9f009d35e8d078c050472861b2630c16b24b7a9641e04f37"
+      }
+    ],
+    "rollout_snapshots": [
+      {
+        "label": "A-to-B.seed",
+        "sha256": "21d7a732f20fd5f7e49698a9e399e10c1d419d90e56d2ce390c8534f97b9d3e0"
+      },
+      {
+        "label": "A-to-B.control",
+        "sha256": "b893e7cf21913cd4e4c2c099550702a0439c2f7c8596d878a73aa5b1d2a4e873"
+      },
+      {
+        "label": "A-to-B.native-compact",
+        "sha256": "f101287a41d72e6a623bb29c650dd004d642a349c39300743731b6c84e52cc2f"
+      },
+      {
+        "label": "B-to-A.seed",
+        "sha256": "ef05f039715f1c048f131c79978412be1de077cb00dcf1d50db9059d5cc4f2ff"
+      },
+      {
+        "label": "B-to-A.control",
+        "sha256": "9dc4a05c868df4f7b0d4cdfa83b3fb2aae76d4d945652beaf126b4d3a3fe58c7"
+      },
+      {
+        "label": "B-to-A.native-compact",
+        "sha256": "33bbee59d8ff91dc329c3b264b9ecb0e56995bd2693af08045851786193bbf36"
+      }
+    ]
+  }
+}

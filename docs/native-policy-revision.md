@@ -1,5 +1,7 @@
 # Native user-policy revision
 
+**Measured:** one [fixed ten-phase batch](../reports/native-revision.md) completed; both directions passed the latest policy in control and native arms. Four actual candidates are public and can be rechecked with `python3 -B scripts/recheck_native_candidates.py --scenario policy-revision`.
+
 This scenario checks a different question from fixed-policy retention: after the user explicitly replaces an earlier valid decision, does a compacted thread implement the latest policy or revive the superseded one?
 
 The fixture contains two directions, A→B and B→A. A means concurrent launch (dependencies already completed); B means sequential execution (earlier selections may satisfy dependencies). Each direction uses **two separate real user turns**: an initial policy with a real completed reply, then an explicit correction with another completed reply. Neither turn may call tools or change source. Both control and native forks are created from the correction's completed turn, preserving both turns in the boundary comparison. No synthetic assistant/tool history is injected.

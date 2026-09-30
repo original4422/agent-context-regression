@@ -14,15 +14,15 @@ class PublicRecheckTests(unittest.TestCase):
         self.temporary = tempfile.TemporaryDirectory()
         self.addCleanup(self.temporary.cleanup)
         self.root = Path(self.temporary.name)
-        for name in ('context_regression', 'reports/native-candidates'):
+        for name in ('context_regression', 'reports/native-candidates', 'reports/native-revision-candidates'):
             shutil.copytree(ROOT / name, self.root / name, ignore=shutil.ignore_patterns('__pycache__'))
         (self.root / 'scripts').mkdir()
-        for name in ('reports/native-smoke.json', 'scripts/recheck_native_candidates.py'):
+        for name in ('reports/native-smoke.json', 'reports/native-revision.json', 'scripts/recheck_native_candidates.py'):
             shutil.copyfile(ROOT / name, self.root / name)
 
-    def run_recheck(self):
+    def run_recheck(self, scenario='fixed-policy'):
         # No inherited credentials or executable search path; only this Python.
-        return subprocess.run([sys.executable, '-I', '-B', str(self.root / 'scripts/recheck_native_candidates.py')],
+        return subprocess.run([sys.executable, '-I', '-B', str(self.root / 'scripts/recheck_native_candidates.py'), '--scenario', scenario],
                               cwd=self.root, env={'PATH': '', 'HOME': str(self.root)},
                               capture_output=True, text=True, timeout=30)
 
@@ -40,6 +40,21 @@ class PublicRecheckTests(unittest.TestCase):
             self.assertTrue(all(len(v['checks']) == 11 for v in row['cross_verification'].values()))
         after = {p.relative_to(self.root): p.read_bytes() for p in self.root.rglob('*') if p.is_file()}
         self.assertEqual(after, before)
+
+    def test_revision_published_candidates_match_and_swap_is_rejected(self):
+        run = self.run_recheck('policy-revision')
+        self.assertEqual(run.returncode, 0, run.stderr)
+        result = json.loads(run.stdout)
+        self.assertEqual(result['oracle_evaluations'], 8)
+        self.assertTrue(result['matches_recorded_results'])
+        for row in result['candidates']:
+            target = 'visible-policy-b' if row['candidate'].startswith('A-to-B') else 'visible-policy-a'
+            self.assertEqual([t for t,v in row['cross_verification'].items() if v['passed']], [target])
+        base = self.root / 'reports/native-revision-candidates'
+        shutil.copyfile(base / 'A-to-B-control/plan.py', base / 'B-to-A-control/plan.py')
+        run = self.run_recheck('policy-revision')
+        self.assertEqual(run.returncode, 1)
+        self.assertIn('candidate hash mismatch: B-to-A-control', run.stdout)
 
     def test_mutations_rejected_before_any_worker_or_oracle_executes(self):
         import importlib.util
