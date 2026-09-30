@@ -1,0 +1,712 @@
+{
+  "status": "completed",
+  "model": "gpt-6-astra",
+  "effort": "low",
+  "scope": "Bounded native tool checkpoint; four phases maximum, no retries",
+  "plan": {
+    "protocol": "codex-native-tool-checkpoint-v1",
+    "execution": "plan-only",
+    "scenario": "tool-checkpoint",
+    "model": "gpt-6-astra",
+    "effort": "low",
+    "fixture_sha256": "7aa43ef6c8b7ea2014640e2b268f7c1a80c4b77ed37ffa41d19e4df93136faf2",
+    "work_turns": 1,
+    "compactions": 1,
+    "continuations": 2,
+    "timeouts_seconds": {
+      "work": 180,
+      "compact": 90,
+      "continuation": 180
+    },
+    "work_tool_budget": 8,
+    "continuation_tool_budget": 16,
+    "cancellation_grace_seconds": 3,
+    "model_phase_timeout_budget_seconds": 630,
+    "usage_contract": "unverified; phase usage null, arm total incomplete",
+    "pairs": [
+      {
+        "task": "retry-method-policy",
+        "case_id": "retry-work",
+        "arms": [
+          "control",
+          "native-compact"
+        ],
+        "work_text": "Finish a pure retry decision helper for an internal HTTP client. The final behavior retries only status 429, 500, 502, 503 and 504, and only methods GET, HEAD and PUT, case-insensitively. POST and DELETE must never retry. Inputs are integer status codes and string methods; no networking or delay logic belongs in the helper.\n\nWe will do this in two steps with a checkpoint between them. In this turn, read retry.py and implement only the method gate, preserving the current server-status set. Do not add 429 in this turn. Write the change, run the public checks after your last write, and stop. The rate-limit check is expected to remain failing at this checkpoint. In the next turn we will finish the remaining work. Briefly report the completed change and the observed check results.",
+        "request": "Continue the remaining work from the current checkpoint and observed check results. Preserve completed behavior and run the public checks.",
+        "task_sha256": "e4ab21448285594aaae1ee5da1563a7b8ea513ad4aba77e627b00688b41a90b8",
+        "work_text_sha256": "9034651ff0d16eeefb5f70819851eccfb6e89680cc21f325c2bff77ff6799243",
+        "request_sha256": "59c6f253c3c9a1bf2623a9bcf8f459a0fc731e5e188525fe38e90affc0a68c57"
+      }
+    ]
+  },
+  "environment": {
+    "binary_sha256": "8eaf1ad12fe6bf89b1710330f58900014322c7c5af677e43be116d8ac5fc0a9e",
+    "codex_version": "codex-cli 0.155.1",
+    "schema_bundle_sha256": "3030f71054766db7af3e687d57638096f0100504b05337776c618eb15b56445e",
+    "source_sha256": {
+      "__init__.py": "0d48668ead458161df84c33e8cff3a648a65f2f0b98637c630830ab85c9f36c1",
+      "__main__.py": "6d8b7d7846a845059d7a3107143f11131f63c5511d669b44085b15ec5e3d2279",
+      "bridge.py": "8338821a412dfd46845a8e69b5230589879cf52217b1669fbafd06a23bf020c3",
+      "checks.py": "bccaf59ccdb055072233d30985a6d739184750e665cb180dd9aae99ba0dfd074",
+      "cli.py": "fe0d76c202a093074db187d73321379b85e162f8cc9a204650d29c15b078b04c",
+      "doctor.py": "f33fe4d46979baa4e41ec79665944154f9955bf5ec7fc7515808b02ed57d7335",
+      "native.py": "f620994eb569fa0a4aa81c30004586efae30c470c874ed75f36fcedcb6562569",
+      "native_accept.py": "0b41d4fd740bda8b019a67bb9acfd878e07d7f617dfc1566bfd743f89fa2dd68",
+      "native_approval.py": "d60dd0df86f209d492c1d7b00285e31029b85eed7aad4ecbec22aa90e0c6892f",
+      "native_bridge.py": "11d236db27bde595e714904f4542eeea0b32581a6ceeda78ffa1e74ae212c45b",
+      "native_client.py": "56cf621b9c2a5ffa6cb65368ada44a900494e036c2382f5854e310167726f5bf",
+      "native_preflight.py": "465e0d809e98835e2439b09cf1389b8764d0563c07673e16427e199e108c2b54",
+      "native_run.py": "e9c0b91552e7ac62e911071f1abb37704a00bc0f8fd232a24b156e93972c8320",
+      "native_work.py": "44e95fcea11f22e4968a403f716a726f0aa97a75ce1971fbdc2165b9faa37aba",
+      "planning.py": "8c812a2c770e9b2b63792660f6ef6067f433167c09cd0bcecb693faf1cab064d",
+      "release_checks.py": "c9b960b86c8e95b25d57c673d739d4a9d1a6e426ca4c74c0061733a185266b78",
+      "runner.py": "3c4fa813ebba7c61c094aae7d6f7e53db7c8a4009e56f9796026dd19cd432dd5",
+      "tasks.py": "a48cad540d113eac69cae50533eca16bad923d63c1fa3061fb5cb6c639e83828",
+      "verify.py": "7042e6b1f387976df4e6b301de57b75e447379fe0ee78a324f02f530ffef72d0",
+      "worker.py": "5eb239ca826b675f8c59e61539f4af54223483ef59e4defda256e3c86992d0d9"
+    },
+    "developer_instructions_sha256": "c5cefd55f5ab5f1c000cdacf9e360709258770ceae169f0adc16f0b264d75d14",
+    "config_sha256_before": "d36f56bb99da0a2d2533a84ff8e5e3234d6c51edc2650b730c40a09168c407ed",
+    "effective_config": {
+      "disabled_features": [
+        "apps",
+        "plugins",
+        "hooks",
+        "skill_search",
+        "skill_mcp_dependency_install",
+        "shell_tool",
+        "multi_agent"
+      ],
+      "approval_policy": "on-request",
+      "approvals_reviewer": "user",
+      "sandbox_mode": "read-only",
+      "web_search": "disabled",
+      "unrelated_mcp_disabled": 2,
+      "plugins_disabled": 12
+    },
+    "config_sha256_after": "d36f56bb99da0a2d2533a84ff8e5e3234d6c51edc2650b730c40a09168c407ed"
+  },
+  "checks": {
+    "app_server_reaped": true,
+    "bridges_cleaned": true,
+    "candidate_cleaned": true,
+    "config_unchanged": true,
+    "runner_unchanged": true,
+    "tasks_unchanged": true,
+    "fixture_unchanged": true
+  },
+  "error": null,
+  "usage": null,
+  "usage_coverage": "incomplete",
+  "pairs": [
+    {
+      "task": "retry-method-policy",
+      "work": {
+        "kind": "work",
+        "status": "completed",
+        "elapsed_seconds": 23.947,
+        "tool_calls": 3,
+        "single_call_approvals": 3,
+        "terminal": "completed",
+        "cancellation": "not_requested",
+        "usage_issue": "contract_unverified",
+        "request_id": 4,
+        "turn": "retry-work.work.turn",
+        "start_sequence": 8,
+        "evidence": [
+          {
+            "sequence": 9,
+            "event": "rpc_ack"
+          },
+          {
+            "sequence": 11,
+            "event": "turn_started"
+          },
+          {
+            "sequence": 150,
+            "event": "turn_completed",
+            "status": "completed"
+          }
+        ],
+        "compaction_item_fingerprints": [],
+        "usage": null,
+        "usage_coverage": "unavailable",
+        "usage_snapshots": [
+          {
+            "sequence": 44,
+            "tokenUsage": {
+              "total": {
+                "totalTokens": 18567,
+                "inputTokens": 18507,
+                "cachedInputTokens": 0,
+                "cacheWriteInputTokens": 0,
+                "outputTokens": 60,
+                "reasoningOutputTokens": 0
+              },
+              "last": {
+                "totalTokens": 18567,
+                "inputTokens": 18507,
+                "cachedInputTokens": 0,
+                "cacheWriteInputTokens": 0,
+                "outputTokens": 60,
+                "reasoningOutputTokens": 0
+              },
+              "modelContextWindow": 258400
+            }
+          },
+          {
+            "sequence": 52,
+            "tokenUsage": {
+              "total": {
+                "totalTokens": 37434,
+                "inputTokens": 37347,
+                "cachedInputTokens": 18304,
+                "cacheWriteInputTokens": 0,
+                "outputTokens": 87,
+                "reasoningOutputTokens": 0
+              },
+              "last": {
+                "totalTokens": 18867,
+                "inputTokens": 18840,
+                "cachedInputTokens": 18304,
+                "cacheWriteInputTokens": 0,
+                "outputTokens": 27,
+                "reasoningOutputTokens": 0
+              },
+              "modelContextWindow": 258400
+            }
+          },
+          {
+            "sequence": 60,
+            "tokenUsage": {
+              "total": {
+                "totalTokens": 56443,
+                "inputTokens": 56286,
+                "cachedInputTokens": 36992,
+                "cacheWriteInputTokens": 0,
+                "outputTokens": 157,
+                "reasoningOutputTokens": 0
+              },
+              "last": {
+                "totalTokens": 19009,
+                "inputTokens": 18939,
+                "cachedInputTokens": 18688,
+                "cacheWriteInputTokens": 0,
+                "outputTokens": 70,
+                "reasoningOutputTokens": 0
+              },
+              "modelContextWindow": 258400
+            }
+          },
+          {
+            "sequence": 68,
+            "tokenUsage": {
+              "total": {
+                "totalTokens": 75521,
+                "inputTokens": 75343,
+                "cachedInputTokens": 55808,
+                "cacheWriteInputTokens": 0,
+                "outputTokens": 178,
+                "reasoningOutputTokens": 0
+              },
+              "last": {
+                "totalTokens": 19078,
+                "inputTokens": 19057,
+                "cachedInputTokens": 18816,
+                "cacheWriteInputTokens": 0,
+                "outputTokens": 21,
+                "reasoningOutputTokens": 0
+              },
+              "modelContextWindow": 258400
+            }
+          },
+          {
+            "sequence": 147,
+            "tokenUsage": {
+              "total": {
+                "totalTokens": 94759,
+                "inputTokens": 94502,
+                "cachedInputTokens": 74624,
+                "cacheWriteInputTokens": 0,
+                "outputTokens": 257,
+                "reasoningOutputTokens": 0
+              },
+              "last": {
+                "totalTokens": 19238,
+                "inputTokens": 19159,
+                "cachedInputTokens": 18816,
+                "cacheWriteInputTokens": 0,
+                "outputTokens": 79,
+                "reasoningOutputTokens": 0
+              },
+              "modelContextWindow": 258400
+            }
+          }
+        ]
+      },
+      "boundary_sha256": "2915ac1a8f177a6e95835e6e63e27c740b92d97824e3ffecbc024260f27d224b",
+      "arms": [
+        {
+          "arm": "control",
+          "checkpoint_sha256": "15f341e9dca88bf642d5d14d9be3837a44b6ea187064a5564e0e47793866b1c1",
+          "candidate_sha256": "59a3d946af7e0190351b1d59479ddf6a758df6b9f8c7bbdcaf05ff25a80dd969",
+          "classification": "task_passed",
+          "verification": {
+            "status": "completed",
+            "passed": true,
+            "checks": [
+              {
+                "name": "rate_limit",
+                "passed": true
+              },
+              {
+                "name": "server_error",
+                "passed": true
+              },
+              {
+                "name": "rejected_post_retry",
+                "passed": true
+              },
+              {
+                "name": "exact_allowed_methods",
+                "passed": true
+              },
+              {
+                "name": "case_insensitive_method",
+                "passed": true
+              },
+              {
+                "name": "exact_status_set",
+                "passed": true
+              }
+            ]
+          },
+          "thread": "retry-work.control",
+          "forked_from": "retry-work.work",
+          "phases": [
+            {
+              "kind": "continuation",
+              "status": "completed",
+              "elapsed_seconds": 16.155,
+              "tool_calls": 3,
+              "single_call_approvals": 3,
+              "terminal": "completed",
+              "cancellation": "not_requested",
+              "usage_issue": "contract_unverified",
+              "request_id": 10,
+              "turn": "retry-work.control.continuation",
+              "start_sequence": 165,
+              "evidence": [
+                {
+                  "sequence": 166,
+                  "event": "rpc_ack"
+                },
+                {
+                  "sequence": 168,
+                  "event": "turn_started"
+                },
+                {
+                  "sequence": 272,
+                  "event": "turn_completed",
+                  "status": "completed"
+                }
+              ],
+              "compaction_item_fingerprints": [],
+              "usage": null,
+              "usage_coverage": "unavailable",
+              "usage_snapshots": [
+                {
+                  "sequence": 201,
+                  "tokenUsage": {
+                    "total": {
+                      "totalTokens": 114081,
+                      "inputTokens": 113768,
+                      "cachedInputTokens": 74624,
+                      "cacheWriteInputTokens": 0,
+                      "outputTokens": 313,
+                      "reasoningOutputTokens": 0
+                    },
+                    "last": {
+                      "totalTokens": 19322,
+                      "inputTokens": 19266,
+                      "cachedInputTokens": 0,
+                      "cacheWriteInputTokens": 0,
+                      "outputTokens": 56,
+                      "reasoningOutputTokens": 0
+                    },
+                    "modelContextWindow": 258400
+                  }
+                },
+                {
+                  "sequence": 209,
+                  "tokenUsage": {
+                    "total": {
+                      "totalTokens": 133570,
+                      "inputTokens": 133184,
+                      "cachedInputTokens": 93696,
+                      "cacheWriteInputTokens": 0,
+                      "outputTokens": 386,
+                      "reasoningOutputTokens": 0
+                    },
+                    "last": {
+                      "totalTokens": 19489,
+                      "inputTokens": 19416,
+                      "cachedInputTokens": 19072,
+                      "cacheWriteInputTokens": 0,
+                      "outputTokens": 73,
+                      "reasoningOutputTokens": 0
+                    },
+                    "modelContextWindow": 258400
+                  }
+                },
+                {
+                  "sequence": 217,
+                  "tokenUsage": {
+                    "total": {
+                      "totalTokens": 153128,
+                      "inputTokens": 152721,
+                      "cachedInputTokens": 112896,
+                      "cacheWriteInputTokens": 0,
+                      "outputTokens": 407,
+                      "reasoningOutputTokens": 0
+                    },
+                    "last": {
+                      "totalTokens": 19558,
+                      "inputTokens": 19537,
+                      "cachedInputTokens": 19200,
+                      "cacheWriteInputTokens": 0,
+                      "outputTokens": 21,
+                      "reasoningOutputTokens": 0
+                    },
+                    "modelContextWindow": 258400
+                  }
+                },
+                {
+                  "sequence": 269,
+                  "tokenUsage": {
+                    "total": {
+                      "totalTokens": 172819,
+                      "inputTokens": 172360,
+                      "cachedInputTokens": 132224,
+                      "cacheWriteInputTokens": 0,
+                      "outputTokens": 459,
+                      "reasoningOutputTokens": 0
+                    },
+                    "last": {
+                      "totalTokens": 19691,
+                      "inputTokens": 19639,
+                      "cachedInputTokens": 19328,
+                      "cacheWriteInputTokens": 0,
+                      "outputTokens": 52,
+                      "reasoningOutputTokens": 0
+                    },
+                    "modelContextWindow": 258400
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "arm": "native-compact",
+          "checkpoint_sha256": "15f341e9dca88bf642d5d14d9be3837a44b6ea187064a5564e0e47793866b1c1",
+          "candidate_sha256": "59a3d946af7e0190351b1d59479ddf6a758df6b9f8c7bbdcaf05ff25a80dd969",
+          "classification": "task_passed",
+          "verification": {
+            "status": "completed",
+            "passed": true,
+            "checks": [
+              {
+                "name": "rate_limit",
+                "passed": true
+              },
+              {
+                "name": "server_error",
+                "passed": true
+              },
+              {
+                "name": "rejected_post_retry",
+                "passed": true
+              },
+              {
+                "name": "exact_allowed_methods",
+                "passed": true
+              },
+              {
+                "name": "case_insensitive_method",
+                "passed": true
+              },
+              {
+                "name": "exact_status_set",
+                "passed": true
+              }
+            ]
+          },
+          "thread": "retry-work.native-compact",
+          "forked_from": "retry-work.work",
+          "phases": [
+            {
+              "kind": "compact",
+              "status": "completed",
+              "elapsed_seconds": 25.335,
+              "tool_calls": 0,
+              "single_call_approvals": 0,
+              "terminal": "completed",
+              "cancellation": "not_requested",
+              "usage_issue": "contract_unverified",
+              "request_id": 11,
+              "turn": "retry-work.native-compact.compact",
+              "start_sequence": 272,
+              "evidence": [
+                {
+                  "sequence": 273,
+                  "event": "rpc_ack"
+                },
+                {
+                  "sequence": 275,
+                  "event": "turn_started"
+                },
+                {
+                  "sequence": 278,
+                  "event": "compaction_completed"
+                },
+                {
+                  "sequence": 280,
+                  "event": "turn_completed",
+                  "status": "completed"
+                }
+              ],
+              "compaction_item_fingerprints": [
+                "e4fb456da27b81ddd0f530001e2e562c20cccf2f0708bf9105283145f40530af"
+              ],
+              "usage": null,
+              "usage_coverage": "unavailable",
+              "usage_snapshots": [
+                {
+                  "sequence": 277,
+                  "tokenUsage": {
+                    "total": {
+                      "totalTokens": 94759,
+                      "inputTokens": 94502,
+                      "cachedInputTokens": 74624,
+                      "cacheWriteInputTokens": 0,
+                      "outputTokens": 257,
+                      "reasoningOutputTokens": 0
+                    },
+                    "last": {
+                      "totalTokens": 6371,
+                      "inputTokens": 0,
+                      "cachedInputTokens": 0,
+                      "cacheWriteInputTokens": 0,
+                      "outputTokens": 0,
+                      "reasoningOutputTokens": 0
+                    },
+                    "modelContextWindow": 258400
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "continuation",
+              "status": "completed",
+              "elapsed_seconds": 23.512,
+              "tool_calls": 3,
+              "single_call_approvals": 3,
+              "terminal": "completed",
+              "cancellation": "not_requested",
+              "usage_issue": "contract_unverified",
+              "request_id": 13,
+              "turn": "retry-work.native-compact.continuation",
+              "start_sequence": 281,
+              "evidence": [
+                {
+                  "sequence": 282,
+                  "event": "rpc_ack"
+                },
+                {
+                  "sequence": 284,
+                  "event": "turn_started"
+                },
+                {
+                  "sequence": 406,
+                  "event": "turn_completed",
+                  "status": "completed"
+                }
+              ],
+              "compaction_item_fingerprints": [],
+              "usage": null,
+              "usage_coverage": "unavailable",
+              "usage_snapshots": [
+                {
+                  "sequence": 311,
+                  "tokenUsage": {
+                    "total": {
+                      "totalTokens": 114053,
+                      "inputTokens": 113732,
+                      "cachedInputTokens": 83456,
+                      "cacheWriteInputTokens": 0,
+                      "outputTokens": 321,
+                      "reasoningOutputTokens": 0
+                    },
+                    "last": {
+                      "totalTokens": 19294,
+                      "inputTokens": 19230,
+                      "cachedInputTokens": 8832,
+                      "cacheWriteInputTokens": 0,
+                      "outputTokens": 64,
+                      "reasoningOutputTokens": 0
+                    },
+                    "modelContextWindow": 258400
+                  }
+                },
+                {
+                  "sequence": 319,
+                  "tokenUsage": {
+                    "total": {
+                      "totalTokens": 133588,
+                      "inputTokens": 133240,
+                      "cachedInputTokens": 102528,
+                      "cacheWriteInputTokens": 0,
+                      "outputTokens": 348,
+                      "reasoningOutputTokens": 0
+                    },
+                    "last": {
+                      "totalTokens": 19535,
+                      "inputTokens": 19508,
+                      "cachedInputTokens": 19072,
+                      "cacheWriteInputTokens": 0,
+                      "outputTokens": 27,
+                      "reasoningOutputTokens": 0
+                    },
+                    "modelContextWindow": 258400
+                  }
+                },
+                {
+                  "sequence": 327,
+                  "tokenUsage": {
+                    "total": {
+                      "totalTokens": 153290,
+                      "inputTokens": 152869,
+                      "cachedInputTokens": 121856,
+                      "cacheWriteInputTokens": 0,
+                      "outputTokens": 421,
+                      "reasoningOutputTokens": 0
+                    },
+                    "last": {
+                      "totalTokens": 19702,
+                      "inputTokens": 19629,
+                      "cachedInputTokens": 19328,
+                      "cacheWriteInputTokens": 0,
+                      "outputTokens": 73,
+                      "reasoningOutputTokens": 0
+                    },
+                    "modelContextWindow": 258400
+                  }
+                },
+                {
+                  "sequence": 335,
+                  "tokenUsage": {
+                    "total": {
+                      "totalTokens": 173061,
+                      "inputTokens": 172619,
+                      "cachedInputTokens": 141312,
+                      "cacheWriteInputTokens": 0,
+                      "outputTokens": 442,
+                      "reasoningOutputTokens": 0
+                    },
+                    "last": {
+                      "totalTokens": 19771,
+                      "inputTokens": 19750,
+                      "cachedInputTokens": 19456,
+                      "cacheWriteInputTokens": 0,
+                      "outputTokens": 21,
+                      "reasoningOutputTokens": 0
+                    },
+                    "modelContextWindow": 258400
+                  }
+                },
+                {
+                  "sequence": 403,
+                  "tokenUsage": {
+                    "total": {
+                      "totalTokens": 192981,
+                      "inputTokens": 192471,
+                      "cachedInputTokens": 160896,
+                      "cacheWriteInputTokens": 0,
+                      "outputTokens": 510,
+                      "reasoningOutputTokens": 0
+                    },
+                    "last": {
+                      "totalTokens": 19920,
+                      "inputTokens": 19852,
+                      "cachedInputTokens": 19584,
+                      "cacheWriteInputTokens": 0,
+                      "outputTokens": 68,
+                      "reasoningOutputTokens": 0
+                    },
+                    "modelContextWindow": 258400
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "case_id": "retry-work",
+      "work_checkpoint_sha256": "15f341e9dca88bf642d5d14d9be3837a44b6ea187064a5564e0e47793866b1c1",
+      "work_verification": {
+        "status": "completed",
+        "passed": false,
+        "checks": [
+          {
+            "name": "rate_limit",
+            "passed": false
+          },
+          {
+            "name": "server_error",
+            "passed": true
+          },
+          {
+            "name": "rejected_post_retry",
+            "passed": true
+          },
+          {
+            "name": "exact_allowed_methods",
+            "passed": true
+          },
+          {
+            "name": "case_insensitive_method",
+            "passed": false
+          },
+          {
+            "name": "exact_status_set",
+            "passed": true
+          }
+        ]
+      },
+      "work_observation": {
+        "completed_tools": [
+          "read_file",
+          "write_file",
+          "check"
+        ],
+        "history_matches_completed_calls": true,
+        "last_check_after_last_write": true,
+        "check_results": [
+          {
+            "name": "rate_limit",
+            "passed": false
+          },
+          {
+            "name": "not_found",
+            "passed": true
+          }
+        ],
+        "tool_history_sha256": "1787c712f549185b86a2b574faeb366c189127ea1bb253156c3dae28cb78d042",
+        "file_sha256": "905871cca8295c273add5670d77233320ff8cfa40c4a7b3341c318009517d30a"
+      },
+      "work_outcome": "checkpoint_established",
+      "comparison_established": true
+    }
+  ]
+}

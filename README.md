@@ -36,7 +36,7 @@ The four actual candidate files are now [public with an offline recheck](reports
 
 The separate [user-policy revision batch](reports/native-revision.md) completed A→B and B→A using two real prelude turns per direction, then forking at the correction boundary. All four control/native candidates followed the latest policy and passed the shared rules. Recheck their published code with `python3 -B scripts/recheck_native_candidates.py --scenario policy-revision`. The [protocol](docs/native-policy-revision.md) and default fixed-policy scenario remain distinct; usage is null/incomplete.
 
-A [tool-checkpoint protocol](docs/native-tool-checkpoint.md) is now prepared offline: one real read/write/check work turn, then control/native continuation from the same actual intermediate source. It reuses the retry helper's existing oracle to detect loss of completed work. Preview with `acr native-plan --scenario tool-checkpoint`. **This scenario has not yet been measured live.** Its four-phase batch is separate from the completed policy experiments.
+A separate [tool-checkpoint batch](reports/native-tool-checkpoint.md) completed one real read/write/check work turn, one compact and two continuations. Both arms started from the actual partial edit and passed the original retry helper's six checks; their final source bytes matched. The partial checkpoint and two candidates are public: `python3 -I -B scripts/recheck_native_candidates.py --scenario tool-checkpoint` recomputes all three verdicts. See the [protocol](docs/native-tool-checkpoint.md); this is one successful workflow sample, with null/incomplete usage.
 
 ### Accept a saved native result
 
@@ -47,7 +47,7 @@ acr native-accept /path/to/run/public.json --scenario policy-revision
 # Also accepts the same run's private results.json; fixed-policy is supported.
 ```
 
-The gate requires the complete fixed group and checks both oracles' individual results for all four candidates. It ignores classification and pass-summary booleans. Exit codes are **0 accepted, 1 behavior failed, 2 invalid/unsupported result, 3 run incomplete**. It consumes stable fields shared by public/private reports without outputting private identities. It does not run candidates, verify raw wire events or reproduce native compaction. [Contract and examples](docs/native-accept.md).
+For **fixed-policy and policy-revision only**, the gate requires the complete fixed group and checks both oracles' individual results for all four candidates. It ignores classification and pass-summary booleans. Exit codes are **0 accepted, 1 behavior failed, 2 invalid/unsupported result, 3 run incomplete**. It consumes stable fields shared by public/private reports without outputting private identities. It does not run candidates, verify raw wire events or reproduce native compaction. [Contract and examples](docs/native-accept.md).
 
 中文：采样完成不等于行为通过。`native-accept` 只读已保存结果，依据完整固定组和逐项 oracle 判定返回 0/1/2/3；不相信汇总标签，不调用模型或重跑 oracle。旧 `native-run` 与公开候选 `recheck` 的退出语义保持不变。
 

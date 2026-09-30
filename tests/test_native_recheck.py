@@ -14,10 +14,10 @@ class PublicRecheckTests(unittest.TestCase):
         self.temporary = tempfile.TemporaryDirectory()
         self.addCleanup(self.temporary.cleanup)
         self.root = Path(self.temporary.name)
-        for name in ('context_regression', 'reports/native-candidates', 'reports/native-revision-candidates'):
+        for name in ('context_regression', 'reports/native-candidates', 'reports/native-revision-candidates', 'reports/native-tool-checkpoint-candidates'):
             shutil.copytree(ROOT / name, self.root / name, ignore=shutil.ignore_patterns('__pycache__'))
         (self.root / 'scripts').mkdir()
-        for name in ('reports/native-smoke.json', 'reports/native-revision.json', 'scripts/recheck_native_candidates.py'):
+        for name in ('reports/native-smoke.json', 'reports/native-revision.json', 'reports/native-tool-checkpoint.json', 'scripts/recheck_native_candidates.py'):
             shutil.copyfile(ROOT / name, self.root / name)
 
     def run_recheck(self, scenario='fixed-policy'):
@@ -55,6 +55,46 @@ class PublicRecheckTests(unittest.TestCase):
         run = self.run_recheck('policy-revision')
         self.assertEqual(run.returncode, 1)
         self.assertIn('candidate hash mismatch: B-to-A-control', run.stdout)
+
+    def test_work_artifacts_recompute_intermediate_and_final_results(self):
+        before = {p.relative_to(self.root): p.read_bytes() for p in self.root.rglob('*') if p.is_file()}
+        run = self.run_recheck('tool-checkpoint')
+        self.assertEqual(run.returncode, 0, run.stderr + run.stdout)
+        result = json.loads(run.stdout)
+        self.assertEqual(result['oracle_evaluations'], 3)
+        verdicts = [r['cross_verification']['retry-method-policy'] for r in result['candidates']]
+        self.assertEqual([v['passed'] for v in verdicts], [False, True, True])
+        self.assertEqual([c['name'] for c in verdicts[0]['checks'] if not c['passed']],
+                         ['rate_limit', 'case_insensitive_method'])
+        self.assertTrue(all(r['matches_recorded_results'] for r in result['candidates']))
+        self.assertEqual(before, {p.relative_to(self.root): p.read_bytes() for p in self.root.rglob('*') if p.is_file()})
+
+    def test_work_mutations_rejected_before_execution(self):
+        import importlib.util
+        from unittest.mock import patch
+        spec = importlib.util.spec_from_file_location('recheck', self.root / 'scripts/recheck_native_candidates.py')
+        recheck = importlib.util.module_from_spec(spec); spec.loader.exec_module(recheck)
+        base = self.root / 'reports/native-tool-checkpoint-candidates'
+        partial = base / 'work-checkpoint/retry.py'
+        final = base / 'retry-work-native-compact/retry.py'
+        paths = [partial, final, self.root / 'context_regression/worker.py',
+                 self.root / 'context_regression/tasks/retry-method-policy/oracle.py']
+        for path in paths:
+            original = path.read_bytes()
+            with self.subTest(path=path), patch('subprocess.Popen') as spawn, patch('runpy.run_path') as oracle:
+                path.write_bytes(original + b'\n# changed\n')
+                with self.assertRaisesRegex(ValueError, 'mismatch'):
+                    recheck.recheck('tool-checkpoint')
+                spawn.assert_not_called(); oracle.assert_not_called()
+            path.write_bytes(original)
+        for replacement in (None, partial.read_bytes()):
+            original = final.read_bytes()
+            with patch('subprocess.Popen') as spawn:
+                final.unlink() if replacement is None else final.write_bytes(replacement)
+                with self.assertRaisesRegex(ValueError, 'mismatch'):
+                    recheck.recheck('tool-checkpoint')
+                spawn.assert_not_called()
+            final.write_bytes(original)
 
     def test_mutations_rejected_before_any_worker_or_oracle_executes(self):
         import importlib.util
