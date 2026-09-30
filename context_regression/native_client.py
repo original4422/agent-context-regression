@@ -1,10 +1,10 @@
 """Small owned-process stdio adapter, exercised with scripted peers offline."""
 import json
 import os
-import queue
+from collections import deque
+import selectors
 import signal
 import subprocess
-import threading
 import time
 
 from .native import Phase
@@ -13,30 +13,50 @@ from .native import Phase
 class AppServer:
     def __init__(self, command, cwd, trace):
         self.serial = self.sequence = 0
-        self.receive_lock = threading.Lock()
         self.stopped = False
         self.closed = False
-        self.messages = queue.Queue()
+        self.messages = deque()
+        self.buffer = b""
+        self.eof = False
         self.trace = trace
         env = dict(os.environ)
         env.pop("OPENAI_API_KEY", None)
         self.process = subprocess.Popen(command, cwd=cwd, env=env, stdin=subprocess.PIPE,
                                         stdout=subprocess.PIPE, stderr=subprocess.DEVNULL,
-                                        text=True, start_new_session=True)
-        def read():
-            for line in self.process.stdout:
-                with self.receive_lock:
-                    self.sequence += 1
-                    self.messages.put((self.sequence, line))
-            self.messages.put(None)
-        self.reader = threading.Thread(target=read, daemon=True)
-        self.reader.start()
+                                        bufsize=0, start_new_session=True)
+        os.set_blocking(self.process.stdout.fileno(), False)
+        self.selector = selectors.DefaultSelector()
+        self.selector.register(self.process.stdout, selectors.EVENT_READ)
+
+    def drain(self, deadline, wait=0):
+        """Consume readable bytes in this thread, bounded by the stage deadline."""
+        while not self.eof:
+            if time.monotonic() >= deadline:
+                raise TimeoutError("phase_timeout")
+            if not self.selector.select(wait):
+                return
+            wait = 0
+            data = os.read(self.process.stdout.fileno(), 65536)
+            if not data:
+                self.eof = True
+                if self.buffer:
+                    raise ValueError("incomplete_event_at_eof")
+                return
+            self.buffer += data
+            while b"\n" in self.buffer:
+                if time.monotonic() >= deadline:
+                    raise TimeoutError("phase_timeout")
+                line, self.buffer = self.buffer.split(b"\n", 1)
+                event = json.loads(line)
+                self.sequence += 1
+                self.trace.append({"direction": "receive", "sequence": self.sequence, "message": event})
+                self.messages.append((self.sequence, event))
 
     def send(self, method, params):
         self.serial += 1
         message = {"id": self.serial, "method": method, "params": params}
         self.trace.append({"direction": "send", "message": message})
-        self.process.stdin.write(json.dumps(message) + "\n")
+        self.process.stdin.write((json.dumps(message) + "\n").encode())
         self.process.stdin.flush()
         return self.serial
 
@@ -44,18 +64,13 @@ class AppServer:
         remaining = deadline - time.monotonic()
         if remaining <= 0:
             raise TimeoutError("phase_timeout")
-        try:
-            line = self.messages.get(timeout=min(remaining, 0.05))
-        except queue.Empty:
-            return None
-        if line is None:
+        if not self.messages:
+            self.drain(deadline, min(remaining, 0.05))
+        if self.messages:
+            return self.messages.popleft()
+        if self.eof:
             raise RuntimeError("app_server_closed")
-        sequence, line = line
-        event = json.loads(line)
-        # This adapter never sends config/read. A future preflight must keep its
-        # response (including late responses) out of this raw protocol trace.
-        self.trace.append({"direction": "receive", "sequence": sequence, "message": event})
-        return sequence, event
+        return None
 
     def phase(self, kind, thread_id, params, timeout, *, previous_turn_id=None, cancel=None, grace=3):
         if self.stopped or (cancel and cancel.is_set()):
@@ -68,11 +83,13 @@ class AppServer:
             raise ValueError("thread_mismatch")
         phase = Phase(kind, thread_id, self.serial + 1, self.sequence, previous_turn_id)
         try:
-            with self.receive_lock:
-                if cancel and cancel.is_set():
-                    raise RuntimeError("cancelled")
-                phase.start_sequence = self.sequence
-                self.send(method, params)
+            self.drain(deadline)
+            if self.buffer:
+                raise RuntimeError("partial_event_before_dispatch")
+            if cancel and cancel.is_set():
+                raise RuntimeError("cancelled")
+            phase.start_sequence = self.sequence
+            self.send(method, params)
             while not phase.completed and not phase.failure:
                 if cancel and cancel.is_set():
                     phase.failure = "cancelled"
@@ -125,11 +142,18 @@ class AppServer:
         # Only this session's process group, including its spawned MCP bridge.
         # Always clean the group even if the app-server leader already exited.
         try:
-            os.killpg(self.process.pid, signal.SIGKILL)
+            self.process.poll()
+            try:
+                os.killpg(self.process.pid, signal.SIGKILL)
+            except PermissionError:
+                # macOS can reject signalling an exited, unreaped group leader.
+                self.process.wait(timeout=3)
+                os.killpg(self.process.pid, signal.SIGKILL)
         except ProcessLookupError:
             pass
-        self.process.wait(timeout=3)
-        self.reader.join(timeout=1)
-        self.process.stdin.close()
-        self.process.stdout.close()
+        finally:
+            self.process.wait(timeout=3)
+            self.selector.close()
+            self.process.stdin.close()
+            self.process.stdout.close()
         return self.process.returncode

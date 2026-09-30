@@ -26,7 +26,9 @@ Each arm restores and hashes the fixed snapshot at the same neutral candidate pa
 
 ## Completion evidence
 
-`Phase` accepts only messages received after dispatch on the requested thread. The reader assigns sequence numbers before queueing messages; dispatch captures that boundary under the same lock. Old queued compaction events cannot join a new empty RPC response to produce success.
+`Phase` accepts only messages received after dispatch on the requested thread. A single-thread selector drains already readable bytes before dispatch and assigns sequence numbers before recording the boundary. Old queued or already readable compaction events cannot join a new empty RPC response to produce success. Draining shares the absolute deadline, including under continuous output; incomplete pre-dispatch lines stop the phase. Thread and previous-turn matching remain required for delayed notifications.
+
+The original `cb87644` reader-lock implementation had a reproduced ordering bug: an old line read before dispatch could acquire the lock afterward and receive a new sequence number. A scripted peer with only a new empty ack could then falsely complete using old compaction events. The selector regression covers this case alongside split lines, EOF, cancellation and bounded continuous output.
 
 A native compact stage requires all of:
 

@@ -153,7 +153,10 @@ PEER = '''
 import json, sys, time
 mode = sys.argv[1]
 def send(e):
- print(json.dumps(e), flush=True)
+ data=json.dumps(e)
+ if mode=='split':
+  sys.stdout.write(data[:10]);sys.stdout.flush();time.sleep(.01);data=data[10:]
+ print(data, flush=True)
 def notify(method, **params):
  send({'method':method, 'params':{'threadId':'thread', **params}})
 if mode=='stale':
@@ -166,6 +169,10 @@ for line in sys.stdin:
   if mode != 'no-terminal':
    notify('turn/completed', turn={'id':'new','status':'interrupted'})
   continue
+ if mode=='eof':
+  break
+ if mode=='partial-eof':
+  print('{',end='',flush=True);break
  if mode=='unexpected':
   send({'id':500, 'method':'mcpServer/elicitation/request','params':{}})
   continue
@@ -176,7 +183,7 @@ for line in sys.stdin:
   time.sleep(.12)
  send({'id':q['id'], 'result':{'turn':{'id':'new'}} if q['method']=='turn/start' else {}})
  notify('turn/started', turn={'id':'new','status':'inProgress'})
- if mode=='success':
+ if mode in ('success', 'split'):
   notify('item/completed', turnId='new', item={'id':'c','type':'contextCompaction'})
   notify('turn/completed', turn={'id':'new','status':'completed'})
 '''
@@ -202,9 +209,9 @@ class NativeClientTests(unittest.TestCase):
             host = AppServer([sys.executable, '-u', '-c', PEER, 'stale'], root, [])
             try:
                 deadline = time.monotonic() + 2
-                while host.sequence < 3 and time.monotonic() < deadline:
-                    time.sleep(.01)
-                self.assertEqual(host.sequence, 3)
+                self.assertTrue(host.selector.select(2))
+                # Bytes are readable but have not been consumed by the client.
+                self.assertEqual(host.sequence, 0)
                 result = host.phase('compact', 'thread', {'threadId':'thread'}, .1, grace=.1)
                 self.assertEqual(result['start_sequence'], 3)
                 self.assertEqual(result['status'], 'phase_timeout')
@@ -223,6 +230,24 @@ class NativeClientTests(unittest.TestCase):
             self.assertEqual(trace, [])
             self.assertIsNotNone(host.process.poll())
 
+    def test_split_lines_and_eof(self):
+        self.assertEqual(self.run_peer('split', timeout=2)[0]['status'], 'completed')
+        self.assertEqual(self.run_peer('eof')[0]['status'], 'app_server_closed')
+        self.assertEqual(self.run_peer('partial-eof')[0]['status'], 'incomplete_event_at_eof')
+
+    def test_readable_flood_cannot_extend_absolute_deadline(self):
+        with tempfile.TemporaryDirectory() as root:
+            peer = "import sys\nwhile True: print('{\"method\":\"noise\",\"params\":{}}', flush=True)"
+            host = AppServer([sys.executable, '-u', '-c', peer], root, [])
+            try:
+                self.assertTrue(host.selector.select(2))
+                began = time.monotonic()
+                result = host.phase('compact', 'thread', {'threadId':'thread'}, .05, grace=.05)
+                self.assertEqual(result['status'], 'phase_timeout')
+                self.assertLess(time.monotonic() - began, 1)
+            finally:
+                host.close()
+
     def test_scripted_success(self):
         self.assertEqual(self.run_peer('success')[0]['status'], 'completed')
 
@@ -236,16 +261,23 @@ class NativeClientTests(unittest.TestCase):
         self.assertEqual(self.run_peer('no-terminal')[0]['cancellation'], 'cancellation_unconfirmed')
 
     def test_cancel_during_start_response_interrupts_late_turn(self):
-        flag = threading.Event()
-        timer = threading.Timer(.05, flag.set)
-        timer.start()
-        try:
-            result, trace = self.run_peer('late', 'continuation', flag, timeout=1, grace=.5)
-            self.assertEqual(result['status'], 'cancelled')
-            self.assertEqual(result['cancellation'], 'terminal_confirmed')
-            self.assertTrue(any(e['message'].get('method') == 'turn/completed' for e in trace))
-        finally:
-            timer.cancel()
+        with tempfile.TemporaryDirectory() as root:
+            flag, trace = threading.Event(), []
+            host = AppServer([sys.executable, '-u', '-c', PEER, 'late'], root, trace)
+            original = host.send
+            def send(method, params):
+                result = original(method, params)
+                if method == 'turn/start':
+                    flag.set()
+                return result
+            host.send = send
+            try:
+                result = host.phase('continuation', 'thread', {'threadId':'thread'}, 1, cancel=flag, grace=1)
+                self.assertEqual(result['status'], 'cancelled')
+                self.assertEqual(result['cancellation'], 'terminal_confirmed')
+                self.assertTrue(any(e['message'].get('method') == 'turn/interrupt' for e in trace))
+            finally:
+                host.close()
 
     def test_unexpected_approval_stops_without_accepting(self):
         result, _ = self.run_peer('unexpected')
