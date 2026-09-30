@@ -1,9 +1,11 @@
-# Native compaction smoke: protocol preparation
+# Native compaction smoke
 
-Status: **real no-model app-server/MCP preflight passed; native compaction has not been run.** The CLI exposes `native-plan`, `native-preflight`, and the explicitly opted-in `native-run --allow-model`. The complete eight-phase/ six-thread graph and scoped approvals pass fake-runtime tests; the first real setup attempt stopped before any model request ([failure and cwd repair](../reports/native-smoke-initial.md)). A repaired real batch remains the next gate.
+Status: **one real bounded batch completed on Codex CLI 0.155.1, `gpt-6-astra`/low.** Both short A/B histories produced the requested policy in control and native-compact arms; all four candidates passed shared rules and only their target external policy oracle. Both native stages emitted a matched `contextCompaction` completion and successful turn terminal. [Measured report](../reports/native-smoke.md) and [full public evidence](../reports/native-smoke.json).
+
+The earlier [setup failure](../reports/native-smoke-initial.md) made zero model requests. A separate [no-model persistent-thread probe](../reports/native-reset-probe.json) confirmed the cwd inode repair before the successful batch. All three records remain distinct.
 
 ```sh
-python3 -B -m context_regression native-plan --model gpt-6-sol --effort low
+python3 -B -m context_regression native-plan --model gpt-6-astra --effort low
 python3 -m unittest discover -s tests -p 'test_native*.py' -v
 # Uses installed Codex and existing login, but creates no model turn:
 python3 -B -m context_regression native-preflight
@@ -22,7 +24,7 @@ The plan loads the existing visible-policy A/B tasks and emits their hashes, new
 
 Total: **2 seed turns + 2 explicit compactions + 4 continuations**. Seed has 60 seconds and zero tool calls; compact has 90 seconds; continuation has 180 seconds and 16 unique started tool calls. The eight stage limits sum to 1,020 seconds. Setup, external oracle verification and cleanup are additional. No repetitions or matrix expansion are planned.
 
-Each seed must finish at a recorded completed turn. Both forks must name the seed in `forkedFromId`, have distinct thread IDs, and retain the same completed history through that boundary. `check_fork` compares ordered turns/items, normalizing only turn IDs/times and top-level item IDs. Other content remains exact. Missing fields or unavailable history stop the gate; a separate regenerated seed cannot replace an unverified fork. Model/effort/config/tool catalog and source checkpoint hashes must also match in the future orchestration.
+Each seed must finish at a recorded completed turn. Both forks must name the seed in `forkedFromId`, have distinct thread IDs, and retain the same completed history through that boundary. `check_fork` compares ordered turns/items, normalizing only turn IDs/times and top-level item IDs. Other content remains exact. Missing fields or unavailable history stop the gate; a separate regenerated seed cannot replace an unverified fork. Model/effort/config/tool catalog and source checkpoint hashes also match in the live orchestration.
 
 Each arm restores and hashes the fixed snapshot at the same neutral candidate path. The seed and compact stages must leave it unchanged. The candidate directory contains only editable source; both trusted oracles stay outside it. Each saved candidate is cross-scored by the existing process-isolated verifier for shared rules, requested policy, opposite policy and neither. The [reference check](../reports/native-reference-check.json) records the two reference candidates against both oracles under the actual read-only sandbox: shared rules pass for both, and each passes only its own policy.
 
@@ -39,9 +41,9 @@ A native compact stage requires all of:
 3. `item/completed` with `type: contextCompaction` for that same thread/turn.
 4. `turn/completed` with status `completed` for that same thread/turn.
 
-Duplicate item notifications count once. Ack alone, deprecated `thread/compacted`, another thread/turn, failed/interrupted terminal, or timeout cannot prove success. The first real run must establish that this event sequence exists in the installed version; unsupported/skipped compaction ends the capability gate. The seed and both forks use persistent legacy history; `thread/read(includeTurns=true)` confirms the completed seed and each fork. Only these six experiment threads are created; their rollout identities remain private. The continuation must stay on the same fork and use a different turn ID. Automatic compaction observed in a seed or continuation marks the comparison contaminated, including a control that compresses itself.
+Duplicate item notifications count once. Ack alone, deprecated `thread/compacted`, another thread/turn, failed/interrupted terminal, or timeout cannot prove success. The measured batch established this event sequence for both manual compactions in 0.155.1; unsupported/skipped compaction still ends the capability gate. The seed and both forks use persistent legacy history; `thread/read(includeTurns=true)` confirms the completed seed and each fork. Only these six experiment threads are created; their rollout identities remain private. The continuation must stay on the same fork and use a different turn ID. Automatic compaction observed in a seed or continuation marks the comparison contaminated, including a control that compresses itself.
 
-These fields were inspected in the locally exported Codex CLI 0.155.1 app-server schemas (`ThreadForkResponse`, `TurnStartedNotification`, `ItemCompletedNotification`, `TurnCompletedNotification`, `ThreadTokenUsageUpdatedNotification`). The real preflight exported 437 experimental schema files and recorded their bundle hash plus the binary hash. Compaction and fork fields still await the bounded live batch.
+These fields were inspected in the locally exported Codex CLI 0.155.1 app-server schemas (`ThreadForkResponse`, `TurnStartedNotification`, `ItemCompletedNotification`, `TurnCompletedNotification`, `ThreadTokenUsageUpdatedNotification`). The real preflight exported 437 experimental schema files and recorded their bundle hash plus the binary hash. The measured batch checked completed seed history, both fork responses and readback for each pair, plus both compaction event sequences.
 
 ## Usage evidence
 
@@ -79,8 +81,12 @@ The successful measurement is committed at `bf8127c`; its source hashes remain i
 
 Fake-peer checks separately cover initialization timeout and process reaping, immediate/error/late config response suppression, unexpected approval rejection, and refusal to send model/status/fork methods through the preflight RPC surface. They are fault-path checks, not additional real integrations.
 
-## Next gate
+## Execution and measured scope
 
-Maintainer review and an exclusive model window are required before implementing/running the real batch. The no-model configuration/catalog/schema/logging gate and fake full-graph/scoped-approval checks are complete. `native-run --allow-model` fixes `gpt-6-astra`/low, creates both forks before either arm runs, restores one neutral candidate path, and scores each saved source through both external oracles on that neutral path. Next establish a real completed seed and verify both fork boundaries; empty-thread preflight is not evidence for that boundary. Public evidence must contain source/config/task hashes, anonymized branch graph, event order, oracle results and usage coverage. Raw messages, real thread IDs and candidates belong in a private 0700 directory with 0600 files. The preflight writes protocol/MCP logs as 0600 files in a new 0700 private directory. It does not log `config/read` responses, even privately. Public output uses a configuration field allowlist and hashes.
+`native-plan` accepts model/effort options for a preview. `native-run --allow-model` fixes `gpt-6-astra`/low and performs one batch without retries. The successful result embeds the original static plan, whose `execution: "plan-only"` describes that plan generator; the top-level `status: "completed"`, recorded events and audited request counts describe the actual run. No measurement JSON was rewritten to change the template field.
 
-A failed capability, contaminated boundary or incomplete evidence ends the bounded batch and remains part of its report. Historical model matrices are not rerun for this integration.
+The runner creates both forks before either arm runs, resets the contents of one neutral candidate directory while preserving its inode, and scores each saved source through both external oracles on that neutral path. Public evidence includes source/config/task hashes, anonymized branches, event order, oracle results and raw usage snapshots. Raw messages, real thread/rollout identities and source candidates remain in a private 0700 directory with 0600 files. `config/read` responses never enter even private protocol logs.
+
+The completed smoke establishes this bounded native lifecycle and correct policy recovery for two short histories. It does not measure long-context behavior, summary fidelity or a token/cost advantage. Both compact phases exposed a snapshot with unchanged inherited `total`, nonzero `last.totalTokens` and zero input/output components; the accounting contract remains unverified, so stage costs and whole-arm usage remain null/incomplete.
+
+A failed capability, contaminated boundary or incomplete evidence ends the batch. Historical reconstructed-context matrices were not rerun for this integration.

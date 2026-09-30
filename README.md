@@ -24,11 +24,11 @@ python3 -B -m context_regression run --dry-run --suite all
 python3 -B -m context_regression list --suite visible-policy
 ```
 
-## Native compaction protocol preparation
+## Native compaction smoke
 
-`acr native-plan --model gpt-6-sol` previews a separate, bounded native protocol: **2 real seed turns, 2 compactions and 4 continuations**, with both control and compact forks from each completed seed boundary. `acr native-run --allow-model` executes this fixed protocol with `gpt-6-astra`/low; the [first setup attempt](reports/native-smoke-initial.md) stopped before any model request, and the cwd reset defect was repaired. Native compaction remains unverified. `acr native-preflight` validates the real app-server configuration, temporary read-only thread and four-tool MCP connection without model turns; one [real preflight passed](reports/native-preflight.json).
+A separate [real native smoke](reports/native-smoke.md) completed **2 real seed turns, 2 native compactions and 4 continuations** on Codex CLI 0.155.1 with `gpt-6-astra`/low. Both short A/B histories preserved the requested policy after compaction; all four control/native candidates passed their target external oracle and failed the opposite policy. Each native stage had a matching completed `contextCompaction` item and successful turn terminal. Usage remains null/incomplete.
 
-The [protocol plan](docs/native-compaction.md) describes matching compaction completion evidence, fork validation, cancellation, usage coverage and the remaining completed-seed/fork/compaction gate. Scripted protocol tests and [real-sandbox A/B reference checks](reports/native-reference-check.json) cover this preparation. The existing quickstart below remains the reconstructed-context experiment.
+`acr native-plan --model gpt-6-astra --effort low` previews the protocol; its model options affect only the plan. `acr native-run --allow-model` executes the fixed `gpt-6-astra`/low batch. `acr native-preflight` checks real configuration and the four-tool MCP connection without model turns. The [protocol](docs/native-compaction.md) covers boundaries, scoped approvals, cancellation and evidence. The [first setup failure](reports/native-smoke-initial.md), [no-model cwd repair probe](reports/native-reset-probe.json), and successful batch are separate records. The existing quickstart below remains the reconstructed-context experiment.
 
 ## Check readiness and run
 
