@@ -19,6 +19,8 @@ class AppServer:
         self.buffer = b""
         self.eof = False
         self.trace = trace
+        self.sensitive_ids = set()
+        self.notifications = []
         env = dict(os.environ)
         env.pop("OPENAI_API_KEY", None)
         self.process = subprocess.Popen(command, cwd=cwd, env=env, stdin=subprocess.PIPE,
@@ -49,11 +51,16 @@ class AppServer:
                 line, self.buffer = self.buffer.split(b"\n", 1)
                 event = json.loads(line)
                 self.sequence += 1
-                self.trace.append({"direction": "receive", "sequence": self.sequence, "message": event})
+                # Keep this ID set for the process lifetime: a timed-out
+                # config/read response is still sensitive when it arrives late.
+                if event.get("id") not in self.sensitive_ids:
+                    self.trace.append({"direction": "receive", "sequence": self.sequence, "message": event})
                 self.messages.append((self.sequence, event))
 
     def send(self, method, params):
         self.serial += 1
+        if method == "config/read":
+            self.sensitive_ids.add(self.serial)
         message = {"id": self.serial, "method": method, "params": params}
         self.trace.append({"direction": "send", "message": message})
         self.process.stdin.write((json.dumps(message) + "\n").encode())
@@ -71,6 +78,53 @@ class AppServer:
         if self.eof:
             raise RuntimeError("app_server_closed")
         return None
+
+    def request(self, method, params, timeout=15):
+        """Serial, no-model preflight RPCs only; notifications remain observable."""
+        if method not in {"initialize", "config/read", "thread/start", "mcpServer/tool/call"}:
+            raise ValueError("unsupported_preflight_method")
+        deadline = time.monotonic() + timeout
+        try:
+            request_id = self.send(method, params)
+            while True:
+                received = self.receive(deadline)
+                if not received:
+                    continue
+                _, event = received
+                if "method" in event:
+                    if "id" in event:
+                        raise RuntimeError("unexpected_server_request:" + event["method"])
+                    self.notifications.append(event)
+                elif event.get("id") == request_id:
+                    if "error" in event:
+                        # config/read errors may contain sensitive inherited values.
+                        raise RuntimeError("rpc_error:" + method)
+                    return event["result"]
+        except BaseException:
+            if method != "config/read":
+                self.close()
+            raise
+
+    def initialize(self, timeout=15):
+        result = self.request("initialize", {"clientInfo": {"name": "acr_native_preflight", "version": "1"},
+                                             "capabilities": {"experimentalApi": True}}, timeout)
+        self.process.stdin.write(b'{"method":"initialized","params":{}}\n')
+        self.process.stdin.flush()
+        return result
+
+    def wait_notification(self, predicate, timeout=15):
+        deadline = time.monotonic() + timeout
+        while True:
+            for event in self.notifications:
+                if predicate(event):
+                    return event
+            received = self.receive(deadline)
+            if received:
+                _, event = received
+                if "method" in event:
+                    if "id" in event:
+                        raise RuntimeError("unexpected_server_request:" + event["method"])
+                    self.notifications.append(event)
 
     def phase(self, kind, thread_id, params, timeout, *, previous_turn_id=None, cancel=None, grace=3):
         if self.stopped or (cancel and cancel.is_set()):

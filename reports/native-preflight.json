@@ -1,0 +1,119 @@
+{
+  "scope": "Real app-server/MCP preflight; no model, fork or compaction requests",
+  "status": "completed",
+  "model_requests": 0,
+  "checks": {
+    "discovery_no_mcp": true,
+    "one_connection": true,
+    "checkpoint_unchanged": true,
+    "only_acr_ready": true,
+    "thread_isolation": true,
+    "effective_overrides": true,
+    "candidate_cleaned": true,
+    "bridges_cleaned": true,
+    "no_model_requests": true,
+    "config_unchanged": true
+  },
+  "config_sha256_before": "d36f56bb99da0a2d2533a84ff8e5e3234d6c51edc2650b730c40a09168c407ed",
+  "codex_version": "codex-cli 0.155.1",
+  "binary_sha256": "8eaf1ad12fe6bf89b1710330f58900014322c7c5af677e43be116d8ac5fc0a9e",
+  "schema": {
+    "files": 437,
+    "bundle_sha256": "3030f71054766db7af3e687d57638096f0100504b05337776c618eb15b56445e",
+    "interfaces": {
+      "ClientRequest.json": "ef13a122e4fb0296b377d571fc26dc4bb7d85736364a65530a87d13fd84234a2",
+      "ServerNotification.json": "49a787f49a8ba46034fbea8664f4cbfe10211abd57e34b8281430a7dc033b42b",
+      "v2/ThreadStartParams.json": "25f490368ec6df52a2a3b82a5469d2413307eb93439121b309f415b5648eee7a",
+      "v2/ThreadForkResponse.json": "3e58bf5c5eab969f0fb1c239cd2066c931f76991ec735f35df9d3e642bb654c3",
+      "v2/ItemCompletedNotification.json": "69aba3fe5f72f38bf5c541e7e2c09de40778abe65ff969d9fc73372037812091",
+      "v2/TurnCompletedNotification.json": "78af2a37391e8e669a4020cb58593e4d3e378756ced79d5fec72374fa69fb94b",
+      "v2/ThreadTokenUsageUpdatedNotification.json": "aba4f6c7e4a19b2b842c08ee793b57000c07dafd57b922ad0d8e7c76609108c2"
+    }
+  },
+  "source_sha256": {
+    "__init__.py": "0d48668ead458161df84c33e8cff3a648a65f2f0b98637c630830ab85c9f36c1",
+    "__main__.py": "6d8b7d7846a845059d7a3107143f11131f63c5511d669b44085b15ec5e3d2279",
+    "bridge.py": "8338821a412dfd46845a8e69b5230589879cf52217b1669fbafd06a23bf020c3",
+    "checks.py": "bccaf59ccdb055072233d30985a6d739184750e665cb180dd9aae99ba0dfd074",
+    "cli.py": "96e0726aeec94dfde8a70b4e7b7b9f7bc7049b113158b6e4b966e34d6e741aa1",
+    "doctor.py": "f33fe4d46979baa4e41ec79665944154f9955bf5ec7fc7515808b02ed57d7335",
+    "native.py": "ee19444d54a9f819e933747aeed774ec486168c490e9973ffee5196ded6cc09b",
+    "native_bridge.py": "09202a5b983329f7f4f2f6e8451d00d7fd4331c1d153c0f37bf5c15740dc9404",
+    "native_client.py": "aba4774d2f4e5d994ee68b85bc68839c2cd5e93054cb25a91b75d67cee30865f",
+    "native_preflight.py": "e1f343ee495213a9bfc3f38ea8206ff7a6c75e1c54dd1ef165dbbb9125cdd503",
+    "planning.py": "8c812a2c770e9b2b63792660f6ef6067f433167c09cd0bcecb693faf1cab064d",
+    "release_checks.py": "c9b960b86c8e95b25d57c673d739d4a9d1a6e426ca4c74c0061733a185266b78",
+    "runner.py": "3c4fa813ebba7c61c094aae7d6f7e53db7c8a4009e56f9796026dd19cd432dd5",
+    "tasks.py": "a48cad540d113eac69cae50533eca16bad923d63c1fa3061fb5cb6c639e83828",
+    "verify.py": "7042e6b1f387976df4e6b301de57b75e447379fe0ee78a324f02f530ffef72d0",
+    "worker.py": "5eb239ca826b675f8c59e61539f4af54223483ef59e4defda256e3c86992d0d9"
+  },
+  "discovery_exit_code": -9,
+  "effective_config": {
+    "disabled_features": [
+      "apps",
+      "plugins",
+      "hooks",
+      "skill_search",
+      "skill_mcp_dependency_install",
+      "shell_tool",
+      "multi_agent"
+    ],
+    "approval_policy": "on-request",
+    "approvals_reviewer": "user",
+    "sandbox_mode": "read-only",
+    "web_search": "disabled",
+    "unrelated_mcp_disabled": 2,
+    "plugins_disabled": 12
+  },
+  "thread": {
+    "ephemeral": true,
+    "path_is_null": true,
+    "sandbox": "readOnly",
+    "approval_policy": "on-request",
+    "approvals_reviewer": "user",
+    "model": "gpt-6-astra",
+    "effort": "low"
+  },
+  "catalog": {
+    "tools": [
+      "list_files",
+      "read_file",
+      "write_file",
+      "check"
+    ],
+    "sha256": "a9f9721a1c657c1b4b3a7ec88ecd770da67496c1f0edb66c9afca635e24a261a",
+    "initialize_requests": 1,
+    "tools_list_requests": 1,
+    "bridge_starts": 1,
+    "read_calls": [
+      "list_files",
+      "read_file"
+    ]
+  },
+  "app_server_exit_code": -9,
+  "rpc_methods": [
+    "config/read",
+    "initialize",
+    "mcpServer/tool/call",
+    "thread/start"
+  ],
+  "config_sha256_after": "d36f56bb99da0a2d2533a84ff8e5e3234d6c51edc2650b730c40a09168c407ed",
+  "elapsed_seconds": 2.728,
+  "private_log_audit": {
+    "directory_mode": "0700",
+    "logs": {
+      "discovery.jsonl": {
+        "config_requests": 1,
+        "config_responses_logged": 0,
+        "mode": "0600"
+      },
+      "app-server.jsonl": {
+        "config_requests": 1,
+        "config_responses_logged": 0,
+        "mode": "0600"
+      }
+    },
+    "bridge_start_nonces_unique": true
+  }
+}

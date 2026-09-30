@@ -7,6 +7,7 @@ import statistics
 from .runner import STRATEGIES, execution_plan, run_batch
 from .planning import SUITE_NAMES, describe_plan, select_tasks
 from .native import native_plan
+from .native_preflight import preflight
 from .doctor import format_doctor, inspect_environment
 from .tasks import BUILTIN_TASKS, tasks_in
 
@@ -58,6 +59,9 @@ def main(argv=None):
     native = commands.add_parser("native-plan", help="Offline native-compaction protocol preparation; no model execution")
     native.add_argument("--model")
     native.add_argument("--effort", choices=["low", "medium", "high"], default="low")
+    native_check = commands.add_parser("native-preflight", help="Validate real app-server/MCP isolation without model requests")
+    native_check.add_argument("--codex", default="codex")
+    native_check.add_argument("--private-dir", type=Path)
     listing = commands.add_parser("list", help="List built-in or external tasks")
     listing.add_argument("--tasks", type=Path, default=BUILTIN_TASKS)
     listing.add_argument("--suite", choices=SUITE_NAMES)
@@ -71,6 +75,11 @@ def main(argv=None):
     summary = commands.add_parser("summarize", help="Create a report from the machine-readable results")
     summary.add_argument("results", type=Path)
     args = parser.parse_args(argv)
+    if args.command == "native-preflight":
+        private = args.private_dir or Path.home() / ".local/state/agent-context-regression" / ("native-preflight-" + datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S.%fZ"))
+        report = preflight(private, args.codex)
+        print(json.dumps(report, indent=2))
+        raise SystemExit(0 if report["status"] == "completed" else 1)
     if args.command == "native-plan":
         print(json.dumps(native_plan(args.model, args.effort), indent=2))
         return

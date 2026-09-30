@@ -1,10 +1,12 @@
 # Native compaction smoke: protocol preparation
 
-Status: **offline protocol checks passed; real Codex native compaction has not been run.** The CLI exposes `native-plan` only. The phase transport is tested against scripted stdio peers; thread initialization, real configuration preflight, checkpoint orchestration and a model execution command remain the next gated stage.
+Status: **real no-model app-server/MCP preflight passed; native compaction has not been run.** The CLI exposes `native-plan` and `native-preflight`. The compact/continuation transport is tested against scripted peers; completed-seed fork validation and model execution remain the next gated stage.
 
 ```sh
 python3 -B -m context_regression native-plan --model gpt-6-sol --effort low
-python3 -m unittest discover -s tests -p 'test_native.py' -v
+python3 -m unittest discover -s tests -p 'test_native*.py' -v
+# Uses installed Codex and existing login, but creates no model turn:
+python3 -B -m context_regression native-preflight
 # Requires installed Codex sandbox, but makes no model request:
 python3 -B scripts/check_native_references.py
 ```
@@ -39,7 +41,7 @@ A native compact stage requires all of:
 
 Duplicate item notifications count once. Ack alone, deprecated `thread/compacted`, another thread/turn, failed/interrupted terminal, or timeout cannot prove success. The first real run must establish that this event sequence exists in the installed version; unsupported/skipped compaction ends the capability gate. The continuation must stay on the same fork and use a different turn ID. Automatic compaction observed in a seed or continuation marks the comparison contaminated, including a control that compresses itself.
 
-These fields were inspected in the locally exported Codex CLI 0.155.1 app-server schemas (`ThreadForkResponse`, `TurnStartedNotification`, `ItemCompletedNotification`, `TurnCompletedNotification`, `ThreadTokenUsageUpdatedNotification`). They establish a protocol contract, not a completed integration test. The real preflight must export and hash its exact binary/schema version before measurement.
+These fields were inspected in the locally exported Codex CLI 0.155.1 app-server schemas (`ThreadForkResponse`, `TurnStartedNotification`, `ItemCompletedNotification`, `TurnCompletedNotification`, `ThreadTokenUsageUpdatedNotification`). The real preflight exported 437 experimental schema files and recorded their bundle hash plus the binary hash. Compaction and fork fields still await the bounded live batch.
 
 ## Usage evidence
 
@@ -47,16 +49,36 @@ The adapter retains ordered raw `thread/tokenUsage/updated` snapshots associated
 
 ## Configuration and lifecycle gate
 
-The configuration builder returns process and thread overrides, with apps/plugins/hooks, shell, web and multi-agent disabled, unrelated MCP servers disabled by name, `read-only`, and `on-request`/`user` approvals. It omits a model override when none is selected. This is **offline construction only**; effective isolation still needs a real no-model app-server preflight. It never modifies global configuration or skills.
+The configuration builder returns process and thread overrides, with apps/plugins/hooks, shell, web and multi-agent disabled, unrelated MCP servers disabled by name, `read-only`, and `on-request`/`user` approvals. It omits a model override when none is selected. The real preflight compared every override with the effective `config/read` result and checked the returned thread policy plus actual MCP catalog. It never modifies global configuration or skills.
 
-App-server does not accept exec's `--ignore-user-config`. The preflight must inspect effective configuration without persisting secret-bearing `config/read` responses, apply the same isolation at process and thread scope, observe startup/catalog through the actual MCP connection, and verify the user config hash is unchanged. `mcpServerStatus/list` is excluded because an adjacent same-host experiment observed it starting another MCP process. This repository has no runtime dependency on that experiment.
+App-server does not accept exec's `--ignore-user-config`. The preflight reads effective configuration into memory, applies isolation at process and thread scope, observes startup/catalog through the actual MCP connection, and verifies the user config hash is unchanged. A discovery process initializes and reads configuration without creating a thread or MCP; it then exits. A second process disables inherited MCP servers/plugins by name before starting the ephemeral thread. Config responses, including RPC errors and late responses after timeout, never enter the private trace. Process stderr is discarded. `mcpServerStatus/list` is excluded because an adjacent same-host experiment observed it starting another MCP process. This repository has no runtime dependency on that experiment.
 
 An unexpected server request, including MCP elicitation, stops and cleans up; this transport sends no approval acceptance. A later real integration may need a narrowly matched single-call approval for the four fixture tools after inspecting the actual request. Server-wide approval is not enabled.
 
 Deadlines include dispatch, ack and completion waits. Cancellation stops later stages. With a known turn ID the adapter sends `turn/interrupt` and allows a three-second terminal window. If a delayed start response reveals the turn during that window, it is interrupted then. Without a matching terminal, it records `cancellation_unconfirmed`. The adapter kills/reaps only its own process group, including its bridge descendants; local exit does not prove remote inference stopped. Unexpected protocol exceptions also close the owned process.
 
+## Measured no-model preflight
+
+Codex CLI 0.155.1 on macOS, 2026-09-30. [Complete result](../reports/native-preflight.json), including binary/schema/source hashes and private-log audit:
+
+| Evidence | Observed |
+| --- | --- |
+| Effective configuration | All requested overrides match; 2 unrelated MCP servers and 12 plugins disabled |
+| Thread | Ephemeral, no rollout path, `readOnly`, `on-request`/`user`; configured model `gpt-6-astra`, effort `low` |
+| Actual MCP | One bridge PID/start identity/nonce; one initialize and one tools/list request |
+| Catalog | Exactly `list_files`, `read_file`, `write_file`, `check`; full schema equals the existing bridge |
+| Direct no-model calls | `list_files` and `read_file` return the expected checkpoint |
+| Integrity | User config and checkpoint hashes unchanged; candidate directory removed |
+| Cleanup | Both sequential app-server processes exited; observed bridge exited |
+| Model requests | Zero; no `turn/start`, `thread/compact/start`, fork or MCP status/list call |
+| Private log audit | No response for any config/read request ID; raw log files 0600, directory 0700 |
+
+The initial [preflight failure](../reports/native-preflight-initial.json) stopped before creating a thread: the isolated app-server exited with invalid MCP transport. A no-model initialization diagnostic showed that this version treats quote characters in CLI dotted-key segments as part of the MCP name. The builder now emits unquoted key segments for both CLI and thread config, while serializing values normally. The corrected complete preflight passed once; the failed result is retained. No approval request occurred in this read-only preflight.
+
+Fake-peer checks separately cover initialization timeout and process reaping, immediate/error/late config response suppression, unexpected approval rejection, and refusal to send model/status/fork methods through the preflight RPC surface. They are fault-path checks, not additional real integrations.
+
 ## Next gate
 
-Maintainer review and an exclusive model window are required before implementing/running the real batch. First complete no-model configuration, catalog, schema, fork-readback and private logging preflight. Public evidence must contain source/config/task hashes, anonymized branch graph, event order, oracle results and usage coverage. Raw messages, real thread IDs and candidates belong in a private 0700 directory with 0600 files. The raw phase trace remains in memory in this offline preparation.
+Maintainer review and an exclusive model window are required before implementing/running the real batch. The no-model configuration/catalog/schema/logging gate is complete. Next establish a real completed seed and verify both fork boundaries; empty-thread preflight is not evidence for that boundary. Public evidence must contain source/config/task hashes, anonymized branch graph, event order, oracle results and usage coverage. Raw messages, real thread IDs and candidates belong in a private 0700 directory with 0600 files. The preflight writes protocol/MCP logs as 0600 files in a new 0700 private directory. It does not log `config/read` responses, even privately. Public output uses a configuration field allowlist and hashes.
 
 A failed capability, contaminated boundary or incomplete evidence ends the bounded batch and remains part of its report. Historical model matrices are not rerun for this integration.

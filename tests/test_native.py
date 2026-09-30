@@ -130,7 +130,7 @@ class NativeProtocolTests(unittest.TestCase):
                 check_fork(seed, changed, 'seed')
 
     def test_config_constructs_process_and_thread_overrides_without_mutation(self):
-        inherited = {'mcp_servers': {'unrelated': {}, 'acr': {}}, 'plugins': {'p@market': {}}}
+        inherited = {'mcp_servers': {'unrelated': {}, 'computer-use': {}, 'acr': {}}, 'plugins': {'p@market': {}}}
         saved = deepcopy(inherited)
         config, args = isolated_config(inherited, ['/python', '/bridge'], 'model', 'low')
         self.assertEqual(inherited, saved)
@@ -145,6 +145,8 @@ class NativeProtocolTests(unittest.TestCase):
         default, default_args = isolated_config({}, ['/python', '/bridge'], None, 'low')
         self.assertNotIn('model', default)
         self.assertNotIn('model=null', default_args)
+        self.assertIn('mcp_servers.computer-use.enabled=false', args)
+        self.assertIn('plugins.p@market.enabled=false', args)
         self.assertNotIn('--ignore-user-config', args)
         self.assertNotIn('mcpServerStatus/list', ' '.join(args))
 

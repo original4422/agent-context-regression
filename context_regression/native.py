@@ -56,12 +56,10 @@ def isolated_config(inherited, bridge_args, model, effort):
         values[f"plugins.{name}.enabled"] = False
     values.update({"mcp_servers.acr.enabled": True, "mcp_servers.acr.command": bridge_args[0],
                    "mcp_servers.acr.args": bridge_args[1:]})
-    # CLI TOML quotes names; thread/start config keys are unquoted dotted paths.
+    # Codex's dotted-key parser treats quote characters as part of the name.
+    # Quote TOML values, not MCP/plugin path segments (also in thread config).
     cli = []
     for key, value in values.items():
-        parts = key.split(".")
-        if parts[0] in ("mcp_servers", "plugins"):
-            key = parts[0] + "." + json.dumps(".".join(parts[1:-1])) + "." + parts[-1]
         cli.extend(["-c", f"{key}={json.dumps(value)}"])
     return values, ["app-server", "--listen", "stdio://", *cli]
 
