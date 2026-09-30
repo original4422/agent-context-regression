@@ -6,6 +6,7 @@ import statistics
 
 from .runner import STRATEGIES, execution_plan, run_batch
 from .planning import SUITE_NAMES, describe_plan, select_tasks
+from .native import native_plan
 from .doctor import format_doctor, inspect_environment
 from .tasks import BUILTIN_TASKS, tasks_in
 
@@ -54,6 +55,9 @@ def add_run_options(command):
 def main(argv=None):
     parser = argparse.ArgumentParser(description="Executable checks for coding tasks after controlled context compression")
     commands = parser.add_subparsers(dest="command", required=True)
+    native = commands.add_parser("native-plan", help="Offline native-compaction protocol preparation; no model execution")
+    native.add_argument("--model")
+    native.add_argument("--effort", choices=["low", "medium", "high"], default="low")
     listing = commands.add_parser("list", help="List built-in or external tasks")
     listing.add_argument("--tasks", type=Path, default=BUILTIN_TASKS)
     listing.add_argument("--suite", choices=SUITE_NAMES)
@@ -67,6 +71,9 @@ def main(argv=None):
     summary = commands.add_parser("summarize", help="Create a report from the machine-readable results")
     summary.add_argument("results", type=Path)
     args = parser.parse_args(argv)
+    if args.command == "native-plan":
+        print(json.dumps(native_plan(args.model, args.effort), indent=2))
+        return
     if args.command == "summarize":
         print(summarize(json.loads(args.results.read_text())), end="")
         return

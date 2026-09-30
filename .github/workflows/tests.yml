@@ -16,3 +16,4 @@ jobs:
       - run: acr list
       - run: acr plan --codex /missing/codex
       - run: acr run --dry-run --suite all --codex /missing/codex
+      - run: acr native-plan

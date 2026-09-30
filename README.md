@@ -24,6 +24,12 @@ python3 -B -m context_regression run --dry-run --suite all
 python3 -B -m context_regression list --suite visible-policy
 ```
 
+## Native compaction protocol preparation
+
+`acr native-plan --model gpt-6-sol` previews a separate, bounded native protocol: **2 real seed turns, 2 compactions and 4 continuations**, with both control and compact forks from each completed seed boundary. This is offline preparation; native compaction has not been measured and there is no `native-run` command yet.
+
+The [protocol plan](docs/native-compaction.md) describes matching compaction completion evidence, fork validation, cancellation, usage coverage and the next real preflight gate. Scripted protocol tests and [real-sandbox A/B reference checks](reports/native-reference-check.json) cover this preparation. The existing quickstart below remains the reconstructed-context experiment.
+
 ## Check readiness and run
 
 ```sh
@@ -92,7 +98,7 @@ Codex CLI 0.155.1, `gpt-6-sol`, low reasoning, two repetitions per task:
 
 On these short histories, the automatic summary preserved correctness but **increased total tokens and latency**. Truncation lost casing, window-boundary and retry-policy requirements; both truncation runs passed the configuration task. One slug failure concerned separator handling rather than the designated corrected requirement.
 
-[Full results and accounting](reports/README.md) include all 24 continuations, all 8 summary generations, input/cached-input/output breakdowns, and the initial aborted integration batch. All 24 saved candidates were subsequently [rechecked with process-isolated verification](reports/isolated-verifier-recheck.json), with identical outcomes. The timing table records the original runner. The 43 deterministic tests cover candidate outcomes, process isolation, usage accounting, failure handling and sandbox protection of acceptance files.
+[Full results and accounting](reports/README.md) include all 24 continuations, all 8 summary generations, input/cached-input/output breakdowns, and the initial aborted integration batch. All 24 saved candidates were subsequently [rechecked with process-isolated verification](reports/isolated-verifier-recheck.json), with identical outcomes. The timing table records the original runner. The deterministic tests cover candidate outcomes, process isolation, usage accounting, failure handling and sandbox protection of acceptance files.
 
 ## Software-policy extension
 
