@@ -161,7 +161,7 @@ class AppServer:
                 if received:
                     sequence, event = received
                     if "id" in event and "method" in event:
-                        if approve is None or kind != "continuation":
+                        if approve is None or kind not in ("continuation", "work"):
                             phase.failure = "unexpected_server_request"
                             break
                         result = approve(event, phase)

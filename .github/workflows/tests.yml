@@ -19,6 +19,8 @@ jobs:
       - run: acr native-plan
       - run: acr native-plan --scenario policy-revision
         working-directory: ${{ runner.temp }}
+      - run: acr native-plan --scenario tool-checkpoint
+        working-directory: ${{ runner.temp }}
       - run: acr native-accept "${{ github.workspace }}/reports/native-smoke.json" --scenario fixed-policy
         working-directory: ${{ runner.temp }}
       - run: acr native-accept "${{ github.workspace }}/reports/native-revision.json" --scenario policy-revision

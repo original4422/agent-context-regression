@@ -36,6 +36,8 @@ The four actual candidate files are now [public with an offline recheck](reports
 
 The separate [user-policy revision batch](reports/native-revision.md) completed A→B and B→A using two real prelude turns per direction, then forking at the correction boundary. All four control/native candidates followed the latest policy and passed the shared rules. Recheck their published code with `python3 -B scripts/recheck_native_candidates.py --scenario policy-revision`. The [protocol](docs/native-policy-revision.md) and default fixed-policy scenario remain distinct; usage is null/incomplete.
 
+A [tool-checkpoint protocol](docs/native-tool-checkpoint.md) is now prepared offline: one real read/write/check work turn, then control/native continuation from the same actual intermediate source. It reuses the retry helper's existing oracle to detect loss of completed work. Preview with `acr native-plan --scenario tool-checkpoint`. **This scenario has not yet been measured live.** Its four-phase batch is separate from the completed policy experiments.
+
 ### Accept a saved native result
 
 `native-run` exits 0 when sampling completes, including valid behavioral failures. For CI acceptance of a saved run, use the separate offline gate:

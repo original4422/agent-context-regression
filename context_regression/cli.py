@@ -9,7 +9,7 @@ from .planning import SUITE_NAMES, describe_plan, select_tasks
 from .native import SCENARIOS, native_plan
 from .native_preflight import preflight
 from .native_run import run_native_smoke
-from .native_accept import EXIT_CODES, InvalidResult, accept_result, result as acceptance_result, unique_object
+from .native_accept import EXIT_CODES, SCENARIOS as ACCEPT_SCENARIOS, InvalidResult, accept_result, result as acceptance_result, unique_object
 from .doctor import format_doctor, inspect_environment
 from .tasks import BUILTIN_TASKS, tasks_in
 
@@ -72,7 +72,7 @@ def main(argv=None):
     native_run.add_argument("--private-dir", type=Path)
     native_accept = commands.add_parser("native-accept", help="Accept saved native outcomes; no oracle or model execution")
     native_accept.add_argument("results", type=Path)
-    native_accept.add_argument("--scenario", choices=SCENARIOS, required=True)
+    native_accept.add_argument("--scenario", choices=ACCEPT_SCENARIOS, required=True)
     listing = commands.add_parser("list", help="List built-in or external tasks")
     listing.add_argument("--tasks", type=Path, default=BUILTIN_TASKS)
     listing.add_argument("--suite", choices=SUITE_NAMES)
@@ -100,7 +100,7 @@ def main(argv=None):
     if args.command == "native-run":
         if not args.allow_model:
             parser.error("native-run requires --allow-model; native-plan and native-preflight make no model requests")
-        prefix = 'native-revision-' if args.scenario == 'policy-revision' else 'native-smoke-'
+        prefix = {'policy-revision': 'native-revision-', 'tool-checkpoint': 'native-tool-checkpoint-'}.get(args.scenario, 'native-smoke-')
         private = args.private_dir or Path.home() / ".local/state/agent-context-regression" / (prefix + datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S.%fZ"))
         result = run_native_smoke(private, args.codex, args.scenario)
         print(json.dumps(result, indent=2))

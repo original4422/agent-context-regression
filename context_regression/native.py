@@ -11,7 +11,8 @@ from .tasks import BUILTIN_TASKS, tasks_in
 
 LIMITS = {"seed": 60, "compact": 90, "continuation": 180}
 TOKEN_KEYS = ("inputTokens", "cachedInputTokens", "outputTokens", "reasoningOutputTokens", "totalTokens")
-SCENARIOS = ("fixed-policy", "policy-revision")
+SCENARIOS = ("fixed-policy", "policy-revision", "tool-checkpoint")
+WORK_FIXTURE = Path(__file__).with_name('fixtures') / 'native-tool-checkpoint.json'
 REVISION_FIXTURE = Path(__file__).with_name('fixtures') / 'native-policy-revision.json'
 
 
@@ -23,6 +24,19 @@ def native_plan(model=None, effort="low", scenario="fixed-policy"):
     if scenario not in SCENARIOS:
         raise ValueError('unknown native scenario')
     tasks = {t["spec"]["id"]: t for t in tasks_in(BUILTIN_TASKS)}
+    if scenario == 'tool-checkpoint':
+        fixture = json.loads(WORK_FIXTURE.read_bytes())
+        pair = {**fixture, 'task_sha256': tasks[fixture['task']]['digest']}
+        for name in ('work_text', 'request'):
+            pair[name + '_sha256'] = hashlib.sha256(pair[name].encode()).hexdigest()
+        return {'protocol': 'codex-native-tool-checkpoint-v1', 'execution': 'plan-only',
+                'scenario': scenario, 'model': model, 'effort': effort,
+                'fixture_sha256': hashlib.sha256(WORK_FIXTURE.read_bytes()).hexdigest(),
+                'work_turns': 1, 'compactions': 1, 'continuations': 2,
+                'timeouts_seconds': {'work': 180, 'compact': 90, 'continuation': 180},
+                'work_tool_budget': 8, 'continuation_tool_budget': 16,
+                'cancellation_grace_seconds': 3, 'model_phase_timeout_budget_seconds': 630,
+                'usage_contract': 'unverified; phase usage null, arm total incomplete', 'pairs': [pair]}
     pairs = []
     for suffix, arms in (("a", ["control", "native-compact"]), ("b", ["native-compact", "control"])):
         task = tasks[f"visible-policy-{suffix}"]
@@ -124,6 +138,7 @@ class Phase:
         self.compactions = set()
         self.tools = set()
         self.pending_tools = {}
+        self.completed_tools = []
         self.usage_events = []
         self.usage_issue = "missing"
 
@@ -161,6 +176,8 @@ class Phase:
         if method == "turn/completed":
             self.terminal = p["turn"]["status"]
             self.evidence.append({"sequence": sequence, "event": "turn_completed", "turn_id": self.turn_id, "status": self.terminal})
+            if self.kind == "work" and self.pending_tools:
+                self.failure = "work_pending_tools"
             if self.terminal != "completed":
                 self.failure = "turn_" + self.terminal
         elif method == "item/completed" and item.get("type") == "contextCompaction":
@@ -170,10 +187,12 @@ class Phase:
             self.tools.add(item["id"])
             if item["type"] == "mcpToolCall":
                 self.pending_tools[item["id"]] = deepcopy(item)
-            if len(self.tools) > (16 if self.kind == "continuation" else 0):
+            if len(self.tools) > (16 if self.kind == "continuation" else 8 if self.kind == "work" else 0):
                 self.failure = "tool_budget"
         elif method == "item/completed" and item.get("type") == "mcpToolCall":
             self.pending_tools.pop(item["id"], None)
+            if self.kind == "work":
+                self.completed_tools.append(deepcopy(item))
             if item.get("status") == "failed" or item.get("error"):
                 self.failure = "tool_failed"
         elif method == "thread/tokenUsage/updated":
@@ -198,4 +217,5 @@ class Phase:
                 "turn_id": self.turn_id, "terminal": self.terminal,
                 "compaction_item_ids": sorted(self.compactions), "tool_calls": len(self.tools),
                 "usage": None, "usage_coverage": "unavailable", "usage_issue": self.usage_issue,
-                "usage_events": self.usage_events, "arm_total": None, "arm_total_coverage": "incomplete"}
+                "usage_events": self.usage_events, "arm_total": None, "arm_total_coverage": "incomplete"} | (
+                    {"completed_tools": self.completed_tools} if self.kind == "work" else {})

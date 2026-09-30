@@ -10,10 +10,11 @@ import time
 
 from .bridge import TOOLS
 from .checks import run_checks
-from .native import LIMITS, REVISION_FIXTURE, check_fork, digest, isolated_config, native_plan
+from .native import LIMITS, REVISION_FIXTURE, WORK_FIXTURE, check_fork, digest, isolated_config, native_plan
 from .native_approval import approve_fixture
 from .native_client import AppServer
 from .native_preflight import PrivateTrace, check_effective, cleanup_observed, file_hash, identity, read_mcp
+from . import native_work
 from .tasks import BUILTIN_TASKS, load_task
 
 MODEL, EFFORT = 'gpt-6-astra', 'low'
@@ -32,7 +33,7 @@ def checkpoint(workspace):
     return digest({str(p.relative_to(workspace)): file_hash(p) for p in sorted(workspace.rglob('*')) if p.is_file()})
 
 
-def reset(workspace):
+def reset(workspace, source=BUILTIN_TASKS / 'visible-policy-a/snapshot'):
     # The live app-server and bridge use this cwd. Preserve its inode while
     # replacing only the contents of this harness-owned candidate directory.
     workspace.mkdir(exist_ok=True)
@@ -41,21 +42,23 @@ def reset(workspace):
             shutil.rmtree(entry)
         else:
             entry.unlink()
-    shutil.copytree(BUILTIN_TASKS / 'visible-policy-a/snapshot', workspace, dirs_exist_ok=True)
+    shutil.copytree(source, workspace, dirs_exist_ok=True)
     return checkpoint(workspace)
 
 
 class LiveSession:
     """This experiment's thread lifecycle and observed ACR connection identities."""
-    def __init__(self, host, overrides, workspace, mcp_trace):
+    def __init__(self, host, overrides, workspace, mcp_trace, task='visible-policy-a'):
         self.host, self.overrides, self.workspace, self.mcp_trace = host, overrides, workspace, mcp_trace
         self.threads, self.bridges = {}, {}
+        self.task = task
+        self.instructions = native_work.INSTRUCTIONS if task == native_work.TASK else INSTRUCTIONS
 
     def new_thread(self, label, source=None, last_turn=None):
         before = {e['value']['pid'] for e in read_mcp(self.mcp_trace) if e['kind'] == 'start'}
         params = {'cwd': str(self.workspace), 'ephemeral': False, 'model': MODEL,
                   'sandbox': 'read-only', 'approvalPolicy': 'on-request', 'approvalsReviewer': 'user',
-                  'config': self.overrides, 'developerInstructions': INSTRUCTIONS}
+                  'config': self.overrides, 'developerInstructions': self.instructions}
         if source:
             params.update(threadId=source, lastTurnId=last_turn, excludeTurns=False)
             result = self.host.lifecycle('thread/fork', params)
@@ -112,8 +115,8 @@ class LiveSession:
             params.update(input=[{'type': 'text', 'text': text, 'text_elements': []}], model=MODEL, effort=EFFORT)
         approved = set()
         began = time.monotonic()
-        result = self.host.phase(kind, thread_id, params, LIMITS[kind], previous_turn_id=previous,
-                                 approve=lambda event, phase: approve_fixture(event, phase, self.workspace, approved))
+        result = self.host.phase(kind, thread_id, params, 180 if kind == 'work' else LIMITS[kind], previous_turn_id=previous,
+                                 approve=lambda event, phase: approve_fixture(event, phase, self.workspace, approved, task=self.task))
         result.update(thread_id=thread_id, kind=kind, elapsed_seconds=round(time.monotonic() - began, 3),
                       single_call_approvals=len(approved))
         return result
@@ -124,17 +127,23 @@ def exercise_pairs(session, workspace, private, report, verify=run_checks):
     plan = report['plan'] if 'plan' in report else native_plan(MODEL, EFFORT)
     for pair in plan['pairs']:
         label = pair.get('case_id', pair['task'][-1].upper())
-        expected = reset(workspace)
+        work = 'work_text' in pair
+        source = BUILTIN_TASKS / (native_work.TASK if work else 'visible-policy-a') / 'snapshot'
+        expected = reset(workspace, source)
         row = {'task': pair['task'], 'seed': {}, 'arms': []}
+        if work:
+            row.update(case_id=label, work={}, comparison_established=False)
+            del row['seed']
         if 'revision_text' in pair:
             row.update(case_id=label, initial_task=pair['initial_task'])
         report['pairs'].append(row)
-        seed = session.new_thread(label + '.seed')
-        phase = session.phase('seed', seed['id'], pair['seed_text'])
-        row['seed'] = phase
+        prelude = 'work' if work else 'seed'
+        seed = session.new_thread(label + '.' + prelude)
+        phase = session.phase(prelude, seed['id'], pair['work_text'] if work else pair['seed_text'])
+        row[prelude] = phase
         if phase['status'] != 'completed':
-            raise ValueError('seed:' + phase['status'])
-        if checkpoint(workspace) != expected:
+            raise ValueError(prelude + ':' + phase['status'])
+        if not work and checkpoint(workspace) != expected:
             raise ValueError('seed_modified_checkpoint')
         prelude_ids = [phase['turn_id']]
         if 'revision_text' in pair:
@@ -152,6 +161,20 @@ def exercise_pairs(session, workspace, private, report, verify=run_checks):
             raise ValueError('seed_completed_boundary_mismatch')
         if 'revision_text' in pair and [turn['id'] for turn in boundary['turns']] != prelude_ids:
             raise ValueError('revision_history_mismatch')
+        if work:
+            source = private / 'work-checkpoint'
+            shutil.copytree(workspace, source)
+            for file in source.rglob('*'):
+                if file.is_file():
+                    file.chmod(0o600)
+            expected = checkpoint(source)
+            row['work_checkpoint_sha256'] = expected
+            row['work_verification'] = verify(BUILTIN_TASKS / native_work.TASK, workspace, 'oracle')
+            if not native_work.intermediate_matches(row['work_verification']):
+                row['work_outcome'] = 'prelude_behavior_failed'
+                raise ValueError('work_checkpoint_precondition_failed')
+            row['work_observation'] = native_work.work_observation(boundary, phase, workspace)
+            row['work_outcome'] = 'checkpoint_established'
         branches = {}
         # Both forks exist before either continuation edits the candidate.
         for arm in ('control', 'native-compact'):
@@ -164,8 +187,10 @@ def exercise_pairs(session, workspace, private, report, verify=run_checks):
         if branches['control']['id'] == branches['native-compact']['id']:
             raise ValueError('fork_identity_collision')
         row['boundary_sha256'] = fingerprint
+        if work:
+            row['comparison_established'] = True
         for arm in pair['arms']:
-            if reset(workspace) != expected:
+            if checkpoint(source) != expected or reset(workspace, source) != expected:
                 raise ValueError('candidate_reset_mismatch')
             branch = branches[arm]
             arm_row = {'arm': arm, 'thread_id': branch['id'], 'phases': [], 'checkpoint_sha256': expected}
@@ -190,6 +215,14 @@ def exercise_pairs(session, workspace, private, report, verify=run_checks):
             for file in saved.rglob('*'):
                 if file.is_file():
                     file.chmod(0o600)
+            if work:
+                verdict = verify(BUILTIN_TASKS / native_work.TASK, workspace, 'oracle')
+                arm_row.update(candidate_sha256=checkpoint(saved), verification=verdict,
+                               classification='task_passed' if verdict['passed'] else 'task_failed')
+                if checkpoint(source) != expected:
+                    raise ValueError('work_checkpoint_changed')
+                save(private / 'results.json', report)
+                continue
             verdicts = {name: verify(BUILTIN_TASKS / name, workspace, 'oracle')
                         for name in ('visible-policy-a', 'visible-policy-b')}
             accepted = [name for name, verdict in verdicts.items() if verdict['passed']]
@@ -216,16 +249,23 @@ def public_report(report):
                                 for e in value.get('usage_events', [])]}
     for pair in report['pairs']:
         label = pair.get('case_id', pair['task'][-1].upper())
-        row = {'task': pair['task'], 'seed': phase(pair['seed'], label + '.seed.turn'),
+        work = 'work' in pair
+        prelude = 'work' if work else 'seed'
+        row = {'task': pair['task'], prelude: phase(pair[prelude], label + '.' + prelude + '.turn'),
                'boundary_sha256': pair.get('boundary_sha256'), 'arms': []}
-        if 'case_id' in pair:
+        if work:
+            row.update({key: pair[key] for key in ('case_id', 'work_checkpoint_sha256', 'work_verification',
+                'work_observation', 'work_outcome', 'comparison_established') if key in pair})
+        elif 'case_id' in pair:
             row.update(case_id=label, initial_task=pair['initial_task'],
                        revision=phase(pair.get('revision', {}), label + '.revision.turn'))
         for arm in pair['arms']:
             alias = label + '.' + arm['arm']
-            row['arms'].append({key: arm[key] for key in ('arm', 'checkpoint_sha256', 'candidate_sha256', 'shared_rules_pass', 'classification', 'cross_verification') if key in arm} | {
-                'thread': alias, 'forked_from': label + '.seed', 'phases': [phase(p, alias + '.' + p['kind']) for p in arm['phases']]})
+            row['arms'].append({key: arm[key] for key in ('arm', 'checkpoint_sha256', 'candidate_sha256', 'shared_rules_pass', 'classification', 'cross_verification', 'verification') if key in arm} | {
+                'thread': alias, 'forked_from': label + '.' + prelude, 'phases': [phase(p, alias + '.' + p['kind']) for p in arm['phases']]})
         result['pairs'].append(row)
+    if report.get('plan', {}).get('scenario') == 'tool-checkpoint':
+        return result
     for arm in ('control', 'native-compact'):
         rows = [a for p in result['pairs'] for a in p['arms'] if a['arm'] == arm]
         result[arm + '_both_policies_pass'] = (all(a.get('classification') in ('requested_policy', 'latest_policy') for a in rows)
@@ -241,14 +281,18 @@ def run_native_smoke(private, codex='codex', scenario='fixed-policy'):
     binary = Path(shutil.which(codex) or codex).resolve()
     config_path = Path(os.environ.get('CODEX_HOME', str(Path.home() / '.codex'))) / 'config.toml'
     before = file_hash(config_path)
+    work = scenario == 'tool-checkpoint'
+    task_name = native_work.TASK if work else 'visible-policy-a'
     scope = ('Bounded native policy revision; ten phases maximum, no retries' if scenario == 'policy-revision'
              else 'Bounded native compaction smoke; eight phases maximum, no retries')
+    if work:
+        scope = 'Bounded native tool checkpoint; four phases maximum, no retries'
     report = {'status': 'running', 'scope': scope,
               'model': MODEL, 'effort': EFFORT, 'plan': plan, 'pairs': [], 'checks': {}}
     host = trace = session = None
     temporary = None
     mcp_trace = private / 'mcp.jsonl'
-    tasks_before = {name: load_task(BUILTIN_TASKS / name)['digest'] for name in ('visible-policy-a', 'visible-policy-b')}
+    tasks_before = {name: load_task(BUILTIN_TASKS / name)['digest'] for name in ((native_work.TASK,) if work else ('visible-policy-a', 'visible-policy-b'))}
     try:
         schema = private / 'schema'
         subprocess.run([str(binary), 'app-server', 'generate-json-schema', '--experimental', '--out', str(schema)],
@@ -257,12 +301,12 @@ def run_native_smoke(private, codex='codex', scenario='fixed-policy'):
             'codex_version': subprocess.check_output([str(binary), '--version'], text=True, timeout=10).strip(),
             'schema_bundle_sha256': digest({str(p.relative_to(schema)): file_hash(p) for p in sorted(schema.rglob('*.json'))}),
             'source_sha256': {p.name: file_hash(p) for p in sorted(Path(__file__).parent.glob('*.py'))},
-            'developer_instructions_sha256': digest(INSTRUCTIONS), 'config_sha256_before': before}
+            'developer_instructions_sha256': digest(native_work.INSTRUCTIONS if work else INSTRUCTIONS), 'config_sha256_before': before}
         with tempfile.TemporaryDirectory(prefix='acr-native-smoke-') as temporary:
             workspace = Path(temporary) / 'candidate'
-            reset(workspace)
+            reset(workspace, BUILTIN_TASKS / task_name / 'snapshot')
             bridge = [sys.executable, '-I', '-B', str(Path(__file__).with_name('native_bridge.py')),
-                      str(BUILTIN_TASKS / 'visible-policy-a'), str(workspace), str(binary), str(os.getpid()), str(mcp_trace)]
+                      str(BUILTIN_TASKS / task_name), str(workspace), str(binary), str(os.getpid()), str(mcp_trace)]
             _, args = isolated_config({}, bridge, MODEL, EFFORT)
             trace = PrivateTrace(private / 'discovery.jsonl')
             host = AppServer([str(binary), *args], workspace, trace)
@@ -279,7 +323,7 @@ def run_native_smoke(private, codex='codex', scenario='fixed-policy'):
             effective = host.request('config/read', {'cwd': str(workspace), 'includeLayers': False})['config']
             report['environment']['effective_config'] = check_effective(effective, overrides)
             del inherited, effective
-            session = LiveSession(host, overrides, workspace, mcp_trace)
+            session = LiveSession(host, overrides, workspace, mcp_trace, task_name)
             exercise_pairs(session, workspace, private, report,
                            verify=lambda task, saved, mode: run_checks(task, saved, mode, str(binary)))
         report['status'] = 'completed'
@@ -302,8 +346,8 @@ def run_native_smoke(private, codex='codex', scenario='fixed-policy'):
             report['environment']['config_sha256_after'] = file_hash(config_path)
             report['checks']['runner_unchanged'] = report['environment']['source_sha256'] == {p.name: file_hash(p) for p in sorted(Path(__file__).parent.glob('*.py'))}
         report['checks']['tasks_unchanged'] = tasks_before == {name: load_task(BUILTIN_TASKS / name)['digest'] for name in tasks_before}
-        if scenario == 'policy-revision':
-            report['checks']['fixture_unchanged'] = plan['fixture_sha256'] == file_hash(REVISION_FIXTURE)
+        if scenario in ('policy-revision', 'tool-checkpoint'):
+            report['checks']['fixture_unchanged'] = plan['fixture_sha256'] == file_hash(WORK_FIXTURE if work else REVISION_FIXTURE)
         if not all(report['checks'].values()):
             report['status'] = 'failed'
         save(private / 'results.json', report)
