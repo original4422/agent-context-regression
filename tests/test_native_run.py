@@ -3,13 +3,15 @@ from copy import deepcopy
 import io
 from pathlib import Path
 import tempfile
+import subprocess
+import sys
 import unittest
 from unittest.mock import patch
 
 from context_regression.cli import main
 from context_regression.native import Phase, native_plan
 from context_regression.native_approval import approve_fixture
-from context_regression.native_run import exercise_pairs, public_report
+from context_regression.native_run import exercise_pairs, public_report, reset
 from test_regression import direct_checks
 from visible_fixtures import SOLUTIONS
 
@@ -101,6 +103,24 @@ class NativeRunTests(unittest.TestCase):
                     exercise_pairs(session, root/'candidate', private, report, direct_checks)
                 self.assertFalse(any(e[1].startswith('B') for e in session.events))
                 self.assertLessEqual(sum(e[0]=='compact' for e in session.events), 1)
+
+    def test_reset_keeps_live_child_cwd_and_restores_only_checkpoint(self):
+        with tempfile.TemporaryDirectory() as root:
+            workspace = Path(root) / 'candidate'
+            expected = reset(workspace)
+            inode = workspace.stat().st_ino
+            (workspace / 'extra').mkdir()
+            (workspace / 'extra' / 'discard').write_text('old')
+            source = "import os,sys; print('ready',flush=True); sys.stdin.readline(); print(os.getcwd(),flush=True)"
+            with subprocess.Popen([sys.executable, '-u', '-c', source], cwd=workspace,
+                                  stdin=subprocess.PIPE, stdout=subprocess.PIPE, text=True) as child:
+                self.assertEqual(child.stdout.readline().strip(), 'ready')
+                self.assertEqual(reset(workspace), expected)
+                output, _ = child.communicate('check\n', timeout=2)
+                self.assertEqual(child.returncode, 0)
+                self.assertEqual(output.strip(), str(workspace.resolve()))
+            self.assertEqual(workspace.stat().st_ino, inode)
+            self.assertEqual([p.name for p in workspace.iterdir()], ['plan.py'])
 
     def test_cli_requires_explicit_model_opt_in(self):
         with patch('context_regression.cli.run_native_smoke') as run, redirect_stderr(io.StringIO()):

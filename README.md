@@ -26,7 +26,7 @@ python3 -B -m context_regression list --suite visible-policy
 
 ## Native compaction protocol preparation
 
-`acr native-plan --model gpt-6-sol` previews a separate, bounded native protocol: **2 real seed turns, 2 compactions and 4 continuations**, with both control and compact forks from each completed seed boundary. `acr native-run --allow-model` executes this fixed protocol with `gpt-6-astra`/low; native compaction results are pending the first bounded run. `acr native-preflight` validates the real app-server configuration, temporary read-only thread and four-tool MCP connection without model turns; one [real preflight passed](reports/native-preflight.json).
+`acr native-plan --model gpt-6-sol` previews a separate, bounded native protocol: **2 real seed turns, 2 compactions and 4 continuations**, with both control and compact forks from each completed seed boundary. `acr native-run --allow-model` executes this fixed protocol with `gpt-6-astra`/low; the [first setup attempt](reports/native-smoke-initial.md) stopped before any model request, and the cwd reset defect was repaired. Native compaction remains unverified. `acr native-preflight` validates the real app-server configuration, temporary read-only thread and four-tool MCP connection without model turns; one [real preflight passed](reports/native-preflight.json).
 
 The [protocol plan](docs/native-compaction.md) describes matching compaction completion evidence, fork validation, cancellation, usage coverage and the remaining completed-seed/fork/compaction gate. Scripted protocol tests and [real-sandbox A/B reference checks](reports/native-reference-check.json) cover this preparation. The existing quickstart below remains the reconstructed-context experiment.
 

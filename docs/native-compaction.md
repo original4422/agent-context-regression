@@ -1,6 +1,6 @@
 # Native compaction smoke: protocol preparation
 
-Status: **real no-model app-server/MCP preflight passed; native compaction has not been run.** The CLI exposes `native-plan`, `native-preflight`, and the explicitly opted-in `native-run --allow-model`. The complete eight-phase/ six-thread graph and scoped approvals pass fake-runtime tests; the first real batch remains the next gate.
+Status: **real no-model app-server/MCP preflight passed; native compaction has not been run.** The CLI exposes `native-plan`, `native-preflight`, and the explicitly opted-in `native-run --allow-model`. The complete eight-phase/ six-thread graph and scoped approvals pass fake-runtime tests; the first real setup attempt stopped before any model request ([failure and cwd repair](../reports/native-smoke-initial.md)). A repaired real batch remains the next gate.
 
 ```sh
 python3 -B -m context_regression native-plan --model gpt-6-sol --effort low

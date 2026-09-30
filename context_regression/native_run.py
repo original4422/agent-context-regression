@@ -33,9 +33,15 @@ def checkpoint(workspace):
 
 
 def reset(workspace):
-    if workspace.exists():
-        shutil.rmtree(workspace)
-    shutil.copytree(BUILTIN_TASKS / 'visible-policy-a/snapshot', workspace)
+    # The live app-server and bridge use this cwd. Preserve its inode while
+    # replacing only the contents of this harness-owned candidate directory.
+    workspace.mkdir(exist_ok=True)
+    for entry in workspace.iterdir():
+        if entry.is_dir() and not entry.is_symlink():
+            shutil.rmtree(entry)
+        else:
+            entry.unlink()
+    shutil.copytree(BUILTIN_TASKS / 'visible-policy-a/snapshot', workspace, dirs_exist_ok=True)
     return checkpoint(workspace)
 
 
