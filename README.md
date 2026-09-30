@@ -34,6 +34,8 @@ The four actual candidate files are now [public with an offline recheck](reports
 
 四份真实候选已按原字节公开。上述命令仅需 Python 3.11+，会先核对候选、任务和验证器 hash，再独立重算 8 份 oracle 判定并逐项比较；详见[中文复核说明](reports/native-candidates/README.md#中文说明)。原始日志与真实 rollout 身份仍保留私有。
 
+The separate [user-policy revision scenario](docs/native-policy-revision.md) uses two real prelude turns per direction, then forks at the correction boundary. Preview it with `acr native-plan --scenario policy-revision`; the default fixed-policy protocol remains unchanged.
+
 ## Check readiness and run
 
 ```sh

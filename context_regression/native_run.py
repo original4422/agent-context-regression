@@ -10,7 +10,7 @@ import time
 
 from .bridge import TOOLS
 from .checks import run_checks
-from .native import LIMITS, check_fork, digest, isolated_config, native_plan
+from .native import LIMITS, REVISION_FIXTURE, check_fork, digest, isolated_config, native_plan
 from .native_approval import approve_fixture
 from .native_client import AppServer
 from .native_preflight import PrivateTrace, check_effective, cleanup_observed, file_hash, identity, read_mcp
@@ -120,11 +120,14 @@ class LiveSession:
 
 
 def exercise_pairs(session, workspace, private, report, verify=run_checks):
-    """Fixed eight-stage graph, no retries; protocol failures stop both pairs."""
-    for pair in native_plan(MODEL, EFFORT)['pairs']:
-        label = pair['task'][-1].upper()
+    """Execute the frozen plan once; protocol failures stop both pairs."""
+    plan = report['plan'] if 'plan' in report else native_plan(MODEL, EFFORT)
+    for pair in plan['pairs']:
+        label = pair.get('case_id', pair['task'][-1].upper())
         expected = reset(workspace)
         row = {'task': pair['task'], 'seed': {}, 'arms': []}
+        if 'revision_text' in pair:
+            row.update(case_id=label, initial_task=pair['initial_task'])
         report['pairs'].append(row)
         seed = session.new_thread(label + '.seed')
         phase = session.phase('seed', seed['id'], pair['seed_text'])
@@ -133,9 +136,22 @@ def exercise_pairs(session, workspace, private, report, verify=run_checks):
             raise ValueError('seed:' + phase['status'])
         if checkpoint(workspace) != expected:
             raise ValueError('seed_modified_checkpoint')
+        prelude_ids = [phase['turn_id']]
+        if 'revision_text' in pair:
+            phase = session.phase('seed', seed['id'], pair['revision_text'], previous=phase['turn_id'])
+            row['revision'] = phase
+            if phase['status'] != 'completed':
+                raise ValueError('revision:' + phase['status'])
+            if phase['turn_id'] == prelude_ids[0]:
+                raise ValueError('revision_turn_reused')
+            prelude_ids.append(phase['turn_id'])
+            if checkpoint(workspace) != expected:
+                raise ValueError('revision_modified_checkpoint')
         boundary = session.read(seed['id'])
         if boundary['turns'][-1]['id'] != phase['turn_id']:
             raise ValueError('seed_completed_boundary_mismatch')
+        if 'revision_text' in pair and [turn['id'] for turn in boundary['turns']] != prelude_ids:
+            raise ValueError('revision_history_mismatch')
         branches = {}
         # Both forks exist before either continuation edits the candidate.
         for arm in ('control', 'native-compact'):
@@ -179,9 +195,10 @@ def exercise_pairs(session, workspace, private, report, verify=run_checks):
             accepted = [name for name, verdict in verdicts.items() if verdict['passed']]
             if len(accepted) > 1:
                 raise ValueError('oracle_policy_discriminator_broken')
+            own, opposite = ('latest_policy', 'superseded_policy') if 'revision_text' in pair else ('requested_policy', 'opposite_policy')
             arm_row.update(candidate_sha256=checkpoint(saved), cross_verification=verdicts,
                            shared_rules_pass=all(c['passed'] for v in verdicts.values() for c in v['checks'] if c['name'] != 'dependency_policy'),
-                           classification=('requested_policy' if accepted == [pair['task']] else 'opposite_policy' if accepted else 'neither_policy'))
+                           classification=(own if accepted == [pair['task']] else opposite if accepted else 'neither_policy'))
             save(private / 'results.json', report)
 
 
@@ -198,9 +215,12 @@ def public_report(report):
             'usage_snapshots': [{'sequence': e['sequence'], 'tokenUsage': e['notification']['tokenUsage']}
                                 for e in value.get('usage_events', [])]}
     for pair in report['pairs']:
-        label = pair['task'][-1].upper()
+        label = pair.get('case_id', pair['task'][-1].upper())
         row = {'task': pair['task'], 'seed': phase(pair['seed'], label + '.seed.turn'),
                'boundary_sha256': pair.get('boundary_sha256'), 'arms': []}
+        if 'case_id' in pair:
+            row.update(case_id=label, initial_task=pair['initial_task'],
+                       revision=phase(pair.get('revision', {}), label + '.revision.turn'))
         for arm in pair['arms']:
             alias = label + '.' + arm['arm']
             row['arms'].append({key: arm[key] for key in ('arm', 'checkpoint_sha256', 'candidate_sha256', 'shared_rules_pass', 'classification', 'cross_verification') if key in arm} | {
@@ -208,20 +228,23 @@ def public_report(report):
         result['pairs'].append(row)
     for arm in ('control', 'native-compact'):
         rows = [a for p in result['pairs'] for a in p['arms'] if a['arm'] == arm]
-        result[arm + '_both_policies_pass'] = (all(a.get('classification') == 'requested_policy' for a in rows)
+        result[arm + '_both_policies_pass'] = (all(a.get('classification') in ('requested_policy', 'latest_policy') for a in rows)
                                               if len(rows) == 2 and all('classification' in a for a in rows) else None)
     return result
 
 
-def run_native_smoke(private, codex='codex'):
+def run_native_smoke(private, codex='codex', scenario='fixed-policy'):
+    plan = native_plan(MODEL, EFFORT, scenario)
     private = Path(private).resolve()
     private.mkdir(parents=True, mode=0o700, exist_ok=False)
     private.chmod(0o700)
     binary = Path(shutil.which(codex) or codex).resolve()
     config_path = Path(os.environ.get('CODEX_HOME', str(Path.home() / '.codex'))) / 'config.toml'
     before = file_hash(config_path)
-    report = {'status': 'running', 'scope': 'Bounded native compaction smoke; eight phases maximum, no retries',
-              'model': MODEL, 'effort': EFFORT, 'plan': native_plan(MODEL, EFFORT), 'pairs': [], 'checks': {}}
+    scope = ('Bounded native policy revision; ten phases maximum, no retries' if scenario == 'policy-revision'
+             else 'Bounded native compaction smoke; eight phases maximum, no retries')
+    report = {'status': 'running', 'scope': scope,
+              'model': MODEL, 'effort': EFFORT, 'plan': plan, 'pairs': [], 'checks': {}}
     host = trace = session = None
     temporary = None
     mcp_trace = private / 'mcp.jsonl'
@@ -279,6 +302,8 @@ def run_native_smoke(private, codex='codex'):
             report['environment']['config_sha256_after'] = file_hash(config_path)
             report['checks']['runner_unchanged'] = report['environment']['source_sha256'] == {p.name: file_hash(p) for p in sorted(Path(__file__).parent.glob('*.py'))}
         report['checks']['tasks_unchanged'] = tasks_before == {name: load_task(BUILTIN_TASKS / name)['digest'] for name in tasks_before}
+        if scenario == 'policy-revision':
+            report['checks']['fixture_unchanged'] = plan['fixture_sha256'] == file_hash(REVISION_FIXTURE)
         if not all(report['checks'].values()):
             report['status'] = 'failed'
         save(private / 'results.json', report)

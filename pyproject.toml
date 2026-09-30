@@ -18,4 +18,4 @@ acr = "context_regression.cli:main"
 include = ["context_regression*"]
 
 [tool.setuptools.package-data]
-context_regression = ["tasks/*/*.json", "tasks/*/*.py", "tasks/*/snapshot/*"]
+context_regression = ["tasks/*/*.json", "tasks/*/*.py", "tasks/*/snapshot/*", "fixtures/*.json"]

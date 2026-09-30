@@ -5,18 +5,23 @@ Usage snapshots are evidence, not a billing sum.
 from copy import deepcopy
 import hashlib
 import json
+from pathlib import Path
 
 from .tasks import BUILTIN_TASKS, tasks_in
 
 LIMITS = {"seed": 60, "compact": 90, "continuation": 180}
 TOKEN_KEYS = ("inputTokens", "cachedInputTokens", "outputTokens", "reasoningOutputTokens", "totalTokens")
+SCENARIOS = ("fixed-policy", "policy-revision")
+REVISION_FIXTURE = Path(__file__).with_name('fixtures') / 'native-policy-revision.json'
 
 
 def digest(value):
     return hashlib.sha256(json.dumps(value, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
 
 
-def native_plan(model=None, effort="low"):
+def native_plan(model=None, effort="low", scenario="fixed-policy"):
+    if scenario not in SCENARIOS:
+        raise ValueError('unknown native scenario')
     tasks = {t["spec"]["id"]: t for t in tasks_in(BUILTIN_TASKS)}
     pairs = []
     for suffix, arms in (("a", ["control", "native-compact"]), ("b", ["native-compact", "control"])):
@@ -28,11 +33,27 @@ def native_plan(model=None, effort="low"):
         pairs.append({"task": task["spec"]["id"], "task_sha256": task["digest"], "arms": arms,
                       "seed_text": seed, "seed_sha256": hashlib.sha256(seed.encode()).hexdigest(),
                       "request": task["spec"]["request"], "request_sha256": hashlib.sha256(task["spec"]["request"].encode()).hexdigest()})
-    return {"protocol": "codex-native-compaction-smoke-v1", "execution": "plan-only",
+    plan = {"protocol": "codex-native-compaction-smoke-v1", "execution": "plan-only",
             "model": model, "effort": effort, "seeds": 2, "compactions": 2, "continuations": 4,
             "timeouts_seconds": LIMITS, "continuation_tool_budget": 16, "seed_tool_budget": 0,
             "cancellation_grace_seconds": 3, "model_phase_timeout_budget_seconds": 1020,
             "usage_contract": "unverified; phase usage null, arm total incomplete", "pairs": pairs}
+    if scenario == 'policy-revision':
+        fixture_bytes = REVISION_FIXTURE.read_bytes()
+        fixture = json.loads(fixture_bytes)
+        initial = {pair['task']: pair for pair in pairs}
+        revisions = []
+        for case in fixture['pairs']:
+            pair = deepcopy(initial[case['initial_task']])
+            pair.update(case, task_sha256=tasks[case['task']]['digest'],
+                        initial_task_sha256=tasks[case['initial_task']]['digest'],
+                        revision_sha256=hashlib.sha256(case['revision_text'].encode()).hexdigest(),
+                        request=fixture['request'], request_sha256=hashlib.sha256(fixture['request'].encode()).hexdigest())
+            revisions.append(pair)
+        plan.update(protocol='codex-native-policy-revision-v1', scenario=scenario,
+                    fixture_sha256=hashlib.sha256(fixture_bytes).hexdigest(), pairs=revisions,
+                    seeds=4, initial_turns=2, revision_turns=2, model_phase_timeout_budget_seconds=1140)
+    return plan
 
 
 def isolated_config(inherited, bridge_args, model, effort):

@@ -17,4 +17,6 @@ jobs:
       - run: acr plan --codex /missing/codex
       - run: acr run --dry-run --suite all --codex /missing/codex
       - run: acr native-plan
+      - run: acr native-plan --scenario policy-revision
+        working-directory: ${{ runner.temp }}
       - run: python -I -B scripts/recheck_native_candidates.py
