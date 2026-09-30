@@ -53,7 +53,7 @@ class AppServer:
                 self.sequence += 1
                 # Keep this ID set for the process lifetime: a timed-out
                 # config/read response is still sensitive when it arrives late.
-                if event.get("id") not in self.sensitive_ids:
+                if "method" in event or event.get("id") not in self.sensitive_ids:
                     self.trace.append({"direction": "receive", "sequence": self.sequence, "message": event})
                 self.messages.append((self.sequence, event))
 
@@ -83,6 +83,15 @@ class AppServer:
         """Serial, no-model preflight RPCs only; notifications remain observable."""
         if method not in {"initialize", "config/read", "thread/start", "mcpServer/tool/call"}:
             raise ValueError("unsupported_preflight_method")
+        return self._rpc(method, params, timeout)
+
+    def lifecycle(self, method, params, timeout=15):
+        """The two additional lifecycle calls needed by the live smoke."""
+        if method not in {"thread/read", "thread/fork"}:
+            raise ValueError("unsupported_lifecycle_method")
+        return self._rpc(method, params, timeout)
+
+    def _rpc(self, method, params, timeout):
         deadline = time.monotonic() + timeout
         try:
             request_id = self.send(method, params)
@@ -126,7 +135,7 @@ class AppServer:
                         raise RuntimeError("unexpected_server_request:" + event["method"])
                     self.notifications.append(event)
 
-    def phase(self, kind, thread_id, params, timeout, *, previous_turn_id=None, cancel=None, grace=3):
+    def phase(self, kind, thread_id, params, timeout, *, previous_turn_id=None, cancel=None, grace=3, approve=None):
         if self.stopped or (cancel and cancel.is_set()):
             self.close()
             raise RuntimeError("client_stopped")
@@ -152,9 +161,16 @@ class AppServer:
                 if received:
                     sequence, event = received
                     if "id" in event and "method" in event:
-                        phase.failure = "unexpected_server_request"
-                        break
-                    phase.consume(event, sequence)
+                        if approve is None or kind != "continuation":
+                            phase.failure = "unexpected_server_request"
+                            break
+                        result = approve(event, phase)
+                        response = {"id": event["id"], "result": result}
+                        self.trace.append({"direction": "send", "message": response})
+                        self.process.stdin.write((json.dumps(response) + "\n").encode())
+                        self.process.stdin.flush()
+                    else:
+                        phase.consume(event, sequence)
         except (TimeoutError, RuntimeError, ValueError, OSError) as error:
             phase.failure = str(error)
         except KeyboardInterrupt:

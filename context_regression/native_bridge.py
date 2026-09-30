@@ -17,7 +17,7 @@ def run():
     path = Path(sys.argv.pop())
     with open(path, 'a', opener=lambda p, flags: os.open(p, flags, 0o600)) as log:
         def record(kind, value):
-            log.write(json.dumps({'at_ns': time.monotonic_ns(), 'kind': kind, 'value': value}) + '\n')
+            log.write(json.dumps({'at_ns': time.monotonic_ns(), 'pid': os.getpid(), 'kind': kind, 'value': value}) + '\n')
             log.flush()
         record('start', {'pid': os.getpid(), 'ppid': os.getppid(), 'pgid': os.getpgrp(), 'nonce': uuid.uuid4().hex,
                          'started': subprocess.check_output(['ps', '-p', str(os.getpid()), '-o', 'lstart='], text=True).strip()})

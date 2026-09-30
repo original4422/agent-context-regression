@@ -1,6 +1,6 @@
-"""Offline contracts for the bounded Codex native-compaction smoke.
+"""Lifecycle contracts for the bounded Codex native-compaction smoke.
 
-No model runner is exposed yet. Usage snapshots are evidence, not a billing sum.
+Usage snapshots are evidence, not a billing sum.
 """
 from copy import deepcopy
 import hashlib
@@ -28,7 +28,7 @@ def native_plan(model=None, effort="low"):
         pairs.append({"task": task["spec"]["id"], "task_sha256": task["digest"], "arms": arms,
                       "seed_text": seed, "seed_sha256": hashlib.sha256(seed.encode()).hexdigest(),
                       "request": task["spec"]["request"], "request_sha256": hashlib.sha256(task["spec"]["request"].encode()).hexdigest()})
-    return {"protocol": "codex-native-compaction-smoke-v1", "execution": "offline-only",
+    return {"protocol": "codex-native-compaction-smoke-v1", "execution": "plan-only",
             "model": model, "effort": effort, "seeds": 2, "compactions": 2, "continuations": 4,
             "timeouts_seconds": LIMITS, "continuation_tool_budget": 16, "seed_tool_budget": 0,
             "cancellation_grace_seconds": 3, "model_phase_timeout_budget_seconds": 1020,
@@ -97,10 +97,12 @@ class Phase:
         self.start_sequence, self.previous_turn_id = start_sequence, previous_turn_id
         self.turn_id = None
         self.acked = False
+        self.evidence = []
         self.terminal = None
         self.failure = None
         self.compactions = set()
         self.tools = set()
+        self.pending_tools = {}
         self.usage_events = []
         self.usage_issue = "missing"
 
@@ -118,6 +120,7 @@ class Phase:
                 self.failure = "rpc_error"
             else:
                 self.acked = True
+                self.evidence.append({"sequence": sequence, "event": "rpc_ack"})
                 if self.kind != "compact":
                     self.bind(event["result"]["turn"]["id"])
             return
@@ -130,19 +133,28 @@ class Phase:
                 self.failure = "comparison_contaminated"
         if method == "turn/started":
             self.bind(p["turn"]["id"])
+            self.evidence.append({"sequence": sequence, "event": "turn_started", "turn_id": p["turn"]["id"]})
         turn_id = p.get("turnId") or p.get("turn", {}).get("id")
         if not self.turn_id or turn_id != self.turn_id:
             return
         if method == "turn/completed":
             self.terminal = p["turn"]["status"]
+            self.evidence.append({"sequence": sequence, "event": "turn_completed", "turn_id": self.turn_id, "status": self.terminal})
             if self.terminal != "completed":
                 self.failure = "turn_" + self.terminal
         elif method == "item/completed" and item.get("type") == "contextCompaction":
             self.compactions.add(item["id"])
+            self.evidence.append({"sequence": sequence, "event": "compaction_completed", "turn_id": self.turn_id, "item_id": item["id"]})
         elif method == "item/started" and item.get("type") in ("mcpToolCall", "commandExecution", "webSearch", "collabAgentToolCall"):
             self.tools.add(item["id"])
+            if item["type"] == "mcpToolCall":
+                self.pending_tools[item["id"]] = deepcopy(item)
             if len(self.tools) > (16 if self.kind == "continuation" else 0):
                 self.failure = "tool_budget"
+        elif method == "item/completed" and item.get("type") == "mcpToolCall":
+            self.pending_tools.pop(item["id"], None)
+            if item.get("status") == "failed" or item.get("error"):
+                self.failure = "tool_failed"
         elif method == "thread/tokenUsage/updated":
             self.usage_events.append({"sequence": sequence, "notification": deepcopy(p)})
             total = p["tokenUsage"].get("total", {})
@@ -161,7 +173,7 @@ class Phase:
 
     def report(self):
         return {"status": self.failure or ("completed" if self.completed else "incomplete"),
-                "request_id": self.request_id, "start_sequence": self.start_sequence,
+                "request_id": self.request_id, "start_sequence": self.start_sequence, "evidence": self.evidence,
                 "turn_id": self.turn_id, "terminal": self.terminal,
                 "compaction_item_ids": sorted(self.compactions), "tool_calls": len(self.tools),
                 "usage": None, "usage_coverage": "unavailable", "usage_issue": self.usage_issue,
