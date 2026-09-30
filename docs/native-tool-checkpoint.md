@@ -37,7 +37,7 @@ The runner fixes `gpt-6-astra`/low: one work turn (180 seconds / 8 tools), one c
 
 The public report uses a `work` phase, intermediate verification and anonymous tool-evidence hashes, plus each arm's final `verification`. Raw tool content and real identities remain private. Usage stays null/incomplete. `native-run` continues to report sampling completion through its exit status; final behavior is recorded separately.
 
-`native-accept` supports **only fixed-policy and policy-revision**, not tool-checkpoint. The published candidate recheck supports this release through `--scenario tool-checkpoint`, recomputing the partial checkpoint and two final candidates against their recorded results. Existing task/oracle bytes, reports and default plans remain unchanged.
+`acr native-accept FILE --scenario tool-checkpoint` now accepts saved runs through the [offline behavior gate](native-accept.md#tool-checkpoint-checks): 0 accepted, 1 complete final behavior failure, 2 invalid data, 3 incomplete comparison (including unmet work prerequisites). This support was added after the measured release. The published candidate recheck supports this release through `--scenario tool-checkpoint`, recomputing the partial checkpoint and two final candidates against their recorded results. Existing task/oracle bytes, reports and default plans remain unchanged.
 
 The source itself preserves completed work and public checks can be rerun. This protocol tests an actual coding-work boundary; it does not isolate memory as the only source of task information or estimate a general compression effect.
 
@@ -45,4 +45,4 @@ The source itself preserves completed work and public checks can be rerun. This 
 
 唯一真实四阶段组已完成，两臂最终六项检查全过；原始结果与源码见实测报告。Agent 先实际读取、修改 `retry.py` 并运行检查，外部 oracle 确认四项已完成、两项 429 行为未完成，才从真实终态建立双分支。前置不符就保存实际失败并停止，不重试挑样。两臂按同一真实中间产物原字节恢复，不能把 control 修改带给 native，也不能恢复最初 starter。
 
-续写提示不重复答案。原六项 oracle 分别验证最终源码，撤销 method gate 即使 public 检查通过仍会被拒绝。固定一组四阶段、三个线程，630 秒阶段上限；无新增模型摘要、重试或扩样。原 `native-accept` 仍只支持既有两个政策场景；公开候选 recheck 的 `--scenario tool-checkpoint` 可重算三份实际源码。代码也保存进度，因此结果只说明这一实际工具工作流，不说明纯记忆保留、速度收益或普遍压缩无损。
+续写提示不重复答案。原六项 oracle 分别验证最终源码，撤销 method gate 即使 public 检查通过仍会被拒绝。固定一组四阶段、三个线程，630 秒阶段上限；无新增模型摘要、重试或扩样。`native-accept --scenario tool-checkpoint` 已支持保存结果行为验收；公开候选 recheck 的 `--scenario tool-checkpoint` 可重算三份实际源码。代码也保存进度，因此结果只说明这一实际工具工作流，不说明纯记忆保留、速度收益或普遍压缩无损。

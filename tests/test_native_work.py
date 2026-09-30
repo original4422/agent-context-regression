@@ -1,4 +1,4 @@
-from contextlib import redirect_stderr, redirect_stdout
+from contextlib import redirect_stdout
 from copy import deepcopy
 import io
 import json
@@ -70,7 +70,7 @@ class NativeWorkTests(unittest.TestCase):
         report = {'status': 'running', 'plan': native_plan(scenario='tool-checkpoint'), 'pairs': []}
         return session, workspace, private, report
 
-    def test_plan_and_cli_keep_accept_scope(self):
+    def test_plan_and_cli_accept_work_result(self):
         with patch('subprocess.Popen', side_effect=AssertionError('execution')), redirect_stdout(io.StringIO()) as output:
             main(['native-plan', '--scenario', 'tool-checkpoint'])
         plan = json.loads(output.getvalue())
@@ -79,9 +79,11 @@ class NativeWorkTests(unittest.TestCase):
         self.assertEqual(plan['work_tool_budget'], 8)
         self.assertNotIn('429', plan['pairs'][0]['request'])
         self.assertNotIn('POST', plan['pairs'][0]['request'])
-        with redirect_stderr(io.StringIO()), self.assertRaises(SystemExit) as error:
-            main(['native-accept', 'unused.json', '--scenario', 'tool-checkpoint'])
-        self.assertEqual(error.exception.code, 2)
+        with redirect_stdout(io.StringIO()) as output, self.assertRaises(SystemExit) as error:
+            report = Path(__file__).resolve().parents[1] / 'reports/native-tool-checkpoint.json'
+            main(['native-accept', str(report), '--scenario', 'tool-checkpoint'])
+        self.assertEqual(error.exception.code, 0)
+        self.assertEqual(json.loads(output.getvalue())['expected_candidates'], 2)
 
     def test_reference_discriminates_partial_and_lost_work(self):
         with tempfile.TemporaryDirectory() as root:

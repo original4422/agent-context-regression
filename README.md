@@ -47,7 +47,7 @@ acr native-accept /path/to/run/public.json --scenario policy-revision
 # Also accepts the same run's private results.json; fixed-policy is supported.
 ```
 
-For **fixed-policy and policy-revision only**, the gate requires the complete fixed group and checks both oracles' individual results for all four candidates. It ignores classification and pass-summary booleans. Exit codes are **0 accepted, 1 behavior failed, 2 invalid/unsupported result, 3 run incomplete**. It consumes stable fields shared by public/private reports without outputting private identities. It does not run candidates, verify raw wire events or reproduce native compaction. [Contract and examples](docs/native-accept.md).
+The gate supports **fixed-policy, policy-revision and tool-checkpoint**. The policy contracts require four candidates and both oracles' individual results. Tool-checkpoint requires the recorded four-pass/two-fail work prerequisite, then all six checks passing for each of two final candidates; an unmet work prerequisite returns 3. It ignores classification and pass-summary booleans. Exit codes are **0 accepted, 1 behavior failed, 2 invalid/unsupported result, 3 run incomplete**. It consumes stable fields shared by public/private reports without outputting private identities. It does not run candidates, verify raw wire events or reproduce native compaction. [Contract and examples](docs/native-accept.md).
 
 中文：采样完成不等于行为通过。`native-accept` 只读已保存结果，依据完整固定组和逐项 oracle 判定返回 0/1/2/3；不相信汇总标签，不调用模型或重跑 oracle。旧 `native-run` 与公开候选 `recheck` 的退出语义保持不变。
 

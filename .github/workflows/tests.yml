@@ -25,6 +25,8 @@ jobs:
         working-directory: ${{ runner.temp }}
       - run: acr native-accept "${{ github.workspace }}/reports/native-revision.json" --scenario policy-revision
         working-directory: ${{ runner.temp }}
+      - run: acr native-accept "${{ github.workspace }}/reports/native-tool-checkpoint.json" --scenario tool-checkpoint
+        working-directory: ${{ runner.temp }}
       - run: python -I -B scripts/recheck_native_candidates.py
       - run: python -I -B scripts/recheck_native_candidates.py --scenario policy-revision
       - run: python -I -B scripts/recheck_native_candidates.py --scenario tool-checkpoint
