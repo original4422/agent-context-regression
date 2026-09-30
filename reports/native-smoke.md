@@ -28,7 +28,7 @@ These sequence numbers refer to the dedicated app-server trace; the public resul
 
 Each thread had one observed ACR bridge identity, one MCP initialize and one tools/list: six total connections, each exposing exactly the same four fixture tools. The 13 continuation calls received exact, single-use approvals tied to current thread/turn, one pending call, actual tool name and arguments. No approval persisted and no server-wide approval was configured.
 
-All arms began from identical bytes at the same neutral candidate path. Independent trusted verifiers outside that editable directory evaluated each candidate under a separate read-only sandbox process against both policies. Private candidate snapshots and six owned rollout snapshots retain their hashes and identities for audit.
+All arms began from identical bytes at the same neutral candidate path. Independent trusted verifiers outside that editable directory evaluated each candidate under a separate read-only sandbox process against both policies. Original private candidate snapshots and six owned rollout snapshots retain their hashes and identities for audit. Exact copies of only the four reviewed fictional `plan.py` files are now [public](native-candidates/README.md).
 
 ## Usage and integrity
 
@@ -41,3 +41,7 @@ The embedded `plan.execution: "plan-only"` describes the static plan generator. 
 ## Separate setup records
 
 The [first attempt](native-smoke-initial.md), frozen at `0f6ccc3`, stopped at thread/start before any seed, compact or continuation request: removing and recreating the live app-server cwd invalidated its directory inode. That failure is retained unchanged. The repair at `ec67f5d` resets only owned directory contents. A deterministic Python child regression and the [separate real no-model probe](native-reset-probe.json) confirmed stable cwd and persistent legacy thread/start/catalog before this batch was scheduled. The probe issued zero turn/fork/compact requests. Neither setup record is counted as an additional successful model sample.
+
+## Offline behavior recheck
+
+Run `python3 -B scripts/recheck_native_candidates.py` from the repository root with Python 3.11+. It checks the frozen hashes, executes four published candidates through the existing Python JSON worker against both trusted oracles, and compares every returned check with this report's unchanged JSON. Codex, credentials, network and extra packages are unnecessary. Only the four candidate source files were released from the private run; raw logs and rollout identities remain private. This command rechecks code behavior, not native compaction, the original OS sandbox or timing. [English / 中文使用说明](native-candidates/README.md).

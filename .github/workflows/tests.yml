@@ -17,3 +17,4 @@ jobs:
       - run: acr plan --codex /missing/codex
       - run: acr run --dry-run --suite all --codex /missing/codex
       - run: acr native-plan
+      - run: python -I -B scripts/recheck_native_candidates.py

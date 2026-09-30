@@ -30,6 +30,10 @@ A separate [real native smoke](reports/native-smoke.md) completed **2 real seed 
 
 `acr native-plan --model gpt-6-astra --effort low` previews the protocol; its model options affect only the plan. `acr native-run --allow-model` executes the fixed `gpt-6-astra`/low batch. `acr native-preflight` checks real configuration and the four-tool MCP connection without model turns. The [protocol](docs/native-compaction.md) covers boundaries, scoped approvals, cancellation and evidence. The [first setup failure](reports/native-smoke-initial.md), [no-model cwd repair probe](reports/native-reset-probe.json), and successful batch are separate records. The existing quickstart below remains the reconstructed-context experiment.
 
+The four actual candidate files are now [public with an offline recheck](reports/native-candidates/README.md). With Python 3.11+, run `python3 -B scripts/recheck_native_candidates.py` to recompute all eight oracle verdicts without Codex, credentials or network. The script verifies frozen input hashes before execution and compares every check to the unchanged historical result. This rechecks candidate behavior using Python subprocesses; it does not repeat native compaction or its timings.
+
+四份真实候选已按原字节公开。上述命令仅需 Python 3.11+，会先核对候选、任务和验证器 hash，再独立重算 8 份 oracle 判定并逐项比较；详见[中文复核说明](reports/native-candidates/README.md#中文说明)。原始日志与真实 rollout 身份仍保留私有。
+
 ## Check readiness and run
 
 ```sh
