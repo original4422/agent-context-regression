@@ -4,7 +4,9 @@ import json
 from pathlib import Path
 import statistics
 
-from .runner import STRATEGIES, run_batch
+from .runner import STRATEGIES, execution_plan, run_batch
+from .planning import SUITE_NAMES, describe_plan, select_tasks
+from .doctor import format_doctor, inspect_environment
 from .tasks import BUILTIN_TASKS, tasks_in
 
 
@@ -31,47 +33,71 @@ def summarize(report):
     return "\n".join(lines) + "\n"
 
 
-def main():
+def add_run_options(command):
+    command.add_argument("--tasks", type=Path, default=BUILTIN_TASKS)
+    selection = command.add_mutually_exclusive_group()
+    selection.add_argument("--suite", choices=SUITE_NAMES, help="Select a named built-in suite")
+    selection.add_argument("--task", action="append", help="Select a task id; repeat to select more")
+    command.add_argument("--model", help="Required for execution; held fixed for both phases")
+    command.add_argument("--effort", choices=["low", "medium", "high"], default="low")
+    command.add_argument("--repetitions", type=int, help="Default: 1 for implicit quickstart; 2 for explicit selections")
+    command.add_argument("--seed", type=int, default=20260930)
+    command.add_argument("--recent-turns", type=int, default=1)
+    command.add_argument("--summary-chars", type=int, default=4096)
+    command.add_argument("--timeout", type=int, default=180, help="Continuation wall-clock seconds per attempt")
+    command.add_argument("--summary-timeout", type=int, default=90)
+    command.add_argument("--max-tools", type=int, default=16)
+    command.add_argument("--codex", default="codex")
+    command.add_argument("--private-dir", type=Path, help="New private result directory; previews never create it")
+
+
+def main(argv=None):
     parser = argparse.ArgumentParser(description="Executable checks for coding tasks after controlled context compression")
     commands = parser.add_subparsers(dest="command", required=True)
     listing = commands.add_parser("list", help="List built-in or external tasks")
     listing.add_argument("--tasks", type=Path, default=BUILTIN_TASKS)
-    run = commands.add_parser("run", help="Run a serial, seeded comparison using the existing Codex login")
-    run.add_argument("--tasks", type=Path, default=BUILTIN_TASKS)
-    run.add_argument("--task", action="append", help="Select a task id; repeat to select more")
-    run.add_argument("--model", required=True, help="Explicit Codex model; held fixed for both phases")
-    run.add_argument("--effort", choices=["low", "medium", "high"], default="low")
-    run.add_argument("--repetitions", type=int, default=2)
-    run.add_argument("--seed", type=int, default=20260930)
-    run.add_argument("--recent-turns", type=int, default=1)
-    run.add_argument("--summary-chars", type=int, default=4096)
-    run.add_argument("--timeout", type=int, default=180, help="Continuation wall-clock seconds per attempt")
-    run.add_argument("--summary-timeout", type=int, default=90)
-    run.add_argument("--max-tools", type=int, default=16)
-    run.add_argument("--codex", default="codex")
-    run.add_argument("--private-dir", type=Path, help="New private results directory; must not exist")
+    listing.add_argument("--suite", choices=SUITE_NAMES)
+    plan = commands.add_parser("plan", help="Preview the exact task schedule without Codex or result directories")
+    add_run_options(plan)
+    run = commands.add_parser("run", help="Run a serial comparison; defaults to the 6+2 quickstart")
+    add_run_options(run)
+    run.add_argument("--dry-run", action="store_true", help="Print the same offline preview as plan")
+    doctor = commands.add_parser("doctor", help="Check local prerequisites without a model request")
+    doctor.add_argument("--codex", default="codex")
     summary = commands.add_parser("summarize", help="Create a report from the machine-readable results")
     summary.add_argument("results", type=Path)
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
     if args.command == "summarize":
         print(summarize(json.loads(args.results.read_text())), end="")
         return
-    tasks = tasks_in(args.tasks)
-    if not tasks:
-        parser.error("No tasks found")
+    if args.command == "doctor":
+        report = inspect_environment(args.codex)
+        print(format_doctor(report))
+        raise SystemExit(0 if report["ready"] else 1)
     if args.command == "list":
+        try:
+            tasks = select_tasks(args.tasks, args.suite)[0] if args.suite else tasks_in(args.tasks)
+        except ValueError as error:
+            parser.error(str(error))
+        if not tasks:
+            parser.error("No tasks found")
         for task in tasks:
             print(f"{task['spec']['id']}: {task['spec']['title']}")
         return
-    if args.task:
-        unknown = set(args.task) - {task["spec"]["id"] for task in tasks}
-        if unknown:
-            parser.error(f"Unknown tasks: {', '.join(sorted(unknown))}")
-        tasks = [task for task in tasks if task["spec"]["id"] in args.task]
-    for key in ("repetitions", "recent_turns", "summary_chars", "timeout", "summary_timeout", "max_tools"):
+    try:
+        tasks, args.repetitions, selection = select_tasks(args.tasks, args.suite, args.task, args.repetitions)
+    except ValueError as error:
+        parser.error(str(error))
+    for key in ("repetitions", "recent_turns", "summary_chars", "summary_timeout", "timeout", "max_tools"):
         if getattr(args, key) < 1:
             parser.error(f"{key} must be positive")
-    config = {key: getattr(args, key) for key in ("model", "effort", "repetitions", "seed", "recent_turns", "summary_chars", "timeout", "summary_timeout", "max_tools", "codex")}
+    preview = args.command == "plan" or args.dry_run
+    if not preview and not args.model:
+        parser.error("run requires --model; use plan or run --dry-run for an offline preview")
+    config = {key: getattr(args, key) for key in ("model", "effort", "repetitions", "seed", "recent_turns", "summary_chars", "summary_timeout", "timeout", "max_tools", "codex")}
+    print(describe_plan(execution_plan(tasks, config), config, selection))
+    if preview:
+        return
     private = args.private_dir or Path.home() / ".local/state/agent-context-regression" / datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S.%fZ")
     print(f"Private traces and results: {private}", flush=True)
     report = run_batch(tasks, config, private)

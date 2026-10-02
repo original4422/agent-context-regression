@@ -1,0 +1,25 @@
+{
+  "pair": [
+    "wave-policy-a",
+    "wave-policy-b"
+  ],
+  "only_differing_history_message_index": 2,
+  "common_inputs_sha256": {
+    "recent_continuation_prompt": "01210ee320f9ecf0a94f6e039bec1213b29ccbc63c1a2659beb3a878fa65f873",
+    "snapshot_plan.py": "e3a91ab80eae8d59ac9304a0ea3cddf0a188653a2efc0f3d2cd9f9c8d1fd05a4",
+    "public.py": "41fcfe54d62551a9a48ef50f236fceda58c248fe430de84bea7af9a10a1fdbe3",
+    "tool_metadata": "a9f9721a1c657c1b4b3a7ec88ecd770da67496c1f0edb66c9afca635e24a261a",
+    "editable_files": "22b8c55b5acaf5d00e3cd8d7ce1f6ef8bdafa01603de9fc9acc1a2bb5c3d673d",
+    "task_spec_without_id": "5ab8272518197f0a49aaf6a30b81eeb96e7befc49aac42899c3401b6b9c864a2",
+    "history_without_policy_decision": "dad8eed24a0a9ce7d9fd8840e13fe9982e6ba1b5ccd7e07cc60c6a4dc9dc707e"
+  },
+  "policy_decision_sha256": {
+    "wave-policy-a": "648e21d0f83907ad78ecf873009101ac0938f4bcbbad6096a6ed9d7305ffc364",
+    "wave-policy-b": "f2ee8ea68f98a3185317a950d02d4b26ac9ccbcc3f516b7c3268fc7e95f51c1f"
+  },
+  "task_sha256": {
+    "wave-policy-a": "c073ca040f260db4ce49c3fa0d83974c18ab0f5ec7a2b03a063d8d3bf0bab8de",
+    "wave-policy-b": "be45641792949080735602e55a2d590ac335b61a212552dc639780bf8209d5a0"
+  },
+  "model_surface": "The prompt omits task id/title. MCP tools expose only neutral file names/content and policy-neutral public check outcomes. Per-attempt working directories use random acr- names; task paths in CLI process configuration are not tool metadata."
+}

@@ -1,0 +1,10 @@
+{
+  "measured_commit": "5cbc3254bda5855cbb269817e24f0d4d4b864e88",
+  "platform": "Darwin",
+  "os_version": "15.7.8",
+  "architecture": "arm64",
+  "python": "3.14.7",
+  "codex": "codex-cli 0.155.1",
+  "isolation": "Serial exclusive model window; no concurrent browser benchmark or local MLX serving model.",
+  "validation": "12 candidates cross-scored against both oracles; own verdicts match. 16 single turn.completed usage records reconciled; actual recent prompts byte-identical; frozen task and runner fingerprints matched."
+}

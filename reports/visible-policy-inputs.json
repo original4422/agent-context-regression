@@ -1,0 +1,25 @@
+{
+  "pair": [
+    "visible-policy-a",
+    "visible-policy-b"
+  ],
+  "only_differing_history_message_index": 2,
+  "common_inputs_sha256": {
+    "recent_continuation_prompt": "ccbdb2aaa28d55d314f7e1bd1f56bcff66c8d8159326dac157c2b82cf92e8901",
+    "snapshot_plan.py": "f8f49c6800997f256f79c32470d49cee5932a74d18043833f58a29330b8d7b84",
+    "public.py": "41fcfe54d62551a9a48ef50f236fceda58c248fe430de84bea7af9a10a1fdbe3",
+    "tool_metadata": "a9f9721a1c657c1b4b3a7ec88ecd770da67496c1f0edb66c9afca635e24a261a",
+    "editable_files": "22b8c55b5acaf5d00e3cd8d7ce1f6ef8bdafa01603de9fc9acc1a2bb5c3d673d",
+    "task_spec_without_id": "03afe688657e3139ef91d60903b433236bfe4fd41253c30c332fc969013ce72e",
+    "history_without_policy_decision": "69c3977cbee8794b15b79cf574238f40a024cfce9176046969ba9e3d72efaa35"
+  },
+  "policy_decision_sha256": {
+    "visible-policy-a": "648e21d0f83907ad78ecf873009101ac0938f4bcbbad6096a6ed9d7305ffc364",
+    "visible-policy-b": "f2ee8ea68f98a3185317a950d02d4b26ac9ccbcc3f516b7c3268fc7e95f51c1f"
+  },
+  "task_sha256": {
+    "visible-policy-a": "a9315bdb24bfae2739dccc5493c8ad0fdf172bcc097394463c444d60dbe755de",
+    "visible-policy-b": "6b670ec3e5e85ccb217e373ec3102c93114d4269c2a860c4e4776e4b65d9142a"
+  },
+  "model_surface": "The prompt omits task id/title. MCP tools expose only neutral file names/content and policy-neutral public check outcomes. Per-attempt working directories use random acr- names; task paths in CLI process configuration are not tool metadata."
+}

@@ -4,7 +4,81 @@ Does a coding agent still produce the correct change after its context is shorte
 
 This CLI resumes small coding tasks from fixed source checkpoints under three context strategies. Independent executable checks evaluate the resulting code. It measures corrected requirements that were lost, task success, total tokens, and elapsed time—including automatic summary generation.
 
-The built-in suite contains **four hand-authored Python microtasks with reconstructed conversations**. It tests controlled context reconstruction, not Codex's native compaction or production conversation memory.
+The built-in suite contains **ten hand-authored Python tasks with reconstructed conversations**: four microtasks, two software-policy checkpoints and two counterfactual policy pairs. It tests controlled context reconstruction, not Codex's native compaction or production conversation memory.
+
+## Try it without a model
+
+Python 3.11+ is enough to inspect a run. The package uses only the standard library.
+
+```sh
+git clone https://github.com/original4422/agent-context-regression.git
+cd agent-context-regression
+python3 -B -m context_regression plan
+```
+
+The preview lists the exact task ids, seeded execution order, strategies, repetitions, phase counts and configured limits. The default is the visible-contract A/B pair, one repetition: **6 continuations + 2 summaries**. It does not need Codex, login or a model name, and creates no result directory. `run --dry-run` produces the same preview.
+
+```sh
+python3 -B -m context_regression plan --suite micro
+python3 -B -m context_regression run --dry-run --suite all
+python3 -B -m context_regression list --suite visible-policy
+```
+
+## Check readiness and run
+
+```sh
+# No model request: checks Python, CLI flags, existing login and read-only sandbox.
+python3 -B -m context_regression doctor
+
+# Uses your existing Codex login. Choose a model available to your account.
+python3 -B -m context_regression run --model gpt-6-sol
+```
+
+`doctor` runs `codex --version`, `codex exec --help`, `codex login status`, and a temporary sandbox probe that verifies reading succeeds while writing is blocked. It does not install anything, log in, modify global configuration or invoke a model. Exit **0** means local prerequisites are ready; **1** means a check is not ready; CLI argument errors use **2**. Model availability and the complete MCP interaction are exercised by `run`. The real doctor passed on macOS 15.7.8 / Python 3.14.7 / Codex CLI 0.155.1; Linux model execution has not been measured.
+
+The run prints the same plan before starting. Each continuation has a 180-second timeout and 16-tool-call budget; each summary has 90 seconds and a 4,096-character limit. The quickstart's configured model-phase timeout budget totals 1,260 seconds, plus independent verification limits. These sums describe phase limits, not expected running time or token usage; process startup and cleanup are additional. Infrastructure failures abort the batch; failed code checks remain valid outcomes.
+
+Raw prompts, events, summaries and candidates stay in the printed private directory under `~/.local/state/agent-context-regression/`, with mode 0700. To render its metrics:
+
+```sh
+python3 -B -m context_regression summarize /path/from/run/results.json
+
+# Optional installation provides the same commands through acr.
+python3 -m pip install .
+acr plan
+```
+
+## Select a comparison
+
+| Selection | Tasks | Default repetitions | Continuations + summaries |
+| --- | ---: | ---: | ---: |
+| No selector: quickstart | Visible-contract pair | 1 | 6 + 2 |
+| `--suite micro` | Original four microtasks | 2 | 24 + 8 |
+| `--suite software-policy` | Two software-policy tasks | 2 | 12 + 4 |
+| `--suite paired` | First counterfactual pair | 2 | 12 + 4 |
+| `--suite visible-policy` | Visible-contract pair | 2 | 12 + 4 |
+| `--suite all` | All ten tasks | 2 | 60 + 20 |
+
+**The default changed from all ten tasks/two repetitions to the 6+2 quickstart.** Explicit `--task` selections keep their two-repetition default. `--repetitions` overrides either default. `--suite` and `--task` are mutually exclusive. An external `--tasks /path` directory still selects all its tasks with two repetitions unless filtered with `--task`; named suites select built-in tasks only.
+
+```sh
+# Preview the old full default explicitly.
+acr plan --suite all --repetitions 2
+
+# Run just one chosen task, once.
+acr run --model gpt-6-sol --task retry-method-policy --repetitions 1
+```
+
+Historical samples and protocols remain unchanged. These explicit selections retain their task fingerprints and seeded order on the current runner:
+
+```sh
+acr plan --suite micro --repetitions 2 --seed 20260930
+acr plan --suite software-policy --repetitions 2 --seed 20260930
+acr plan --suite paired --repetitions 2 --seed 20260930
+acr plan --suite visible-policy --repetitions 2 --seed 20260930
+```
+
+The reports link the measured commits (`d6274f6`, `af4840c`, `5cbc325`, `63f6054`). Check out the relevant commit and use its explicit task/repetition command to reproduce that runner fingerprint; current runner changes do not rewrite historical measurements. Tests verify that current explicit selections preserve the archived task fingerprints and execution orders.
 
 ## Measured pilot
 
@@ -18,34 +92,17 @@ Codex CLI 0.155.1, `gpt-6-sol`, low reasoning, two repetitions per task:
 
 On these short histories, the automatic summary preserved correctness but **increased total tokens and latency**. Truncation lost casing, window-boundary and retry-policy requirements; both truncation runs passed the configuration task. One slug failure concerned separator handling rather than the designated corrected requirement.
 
-[Full results and accounting](reports/README.md) include all 24 continuations, all 8 summary generations, input/cached-input/output breakdowns, and the initial aborted integration batch. All 24 saved candidates were subsequently [rechecked with process-isolated verification](reports/isolated-verifier-recheck.json), with identical outcomes. The timing table records the original runner. The 26 deterministic tests cover candidate outcomes, process isolation, usage accounting, failure handling and sandbox protection of acceptance files.
+[Full results and accounting](reports/README.md) include all 24 continuations, all 8 summary generations, input/cached-input/output breakdowns, and the initial aborted integration batch. All 24 saved candidates were subsequently [rechecked with process-isolated verification](reports/isolated-verifier-recheck.json), with identical outcomes. The timing table records the original runner. The 43 deterministic tests cover candidate outcomes, process isolation, usage accounting, failure handling and sandbox protection of acceptance files.
 
-## Run
+## Software-policy extension
 
-Requires Python 3.11+, a logged-in Codex CLI supporting `exec --ignore-user-config`, and its working OS sandbox. The measured platform is macOS; Linux execution has not been measured. Python code uses only the standard library.
+Two additional tasks cover deployment admission and scoped authorization. In a separate fixed batch, **full passed 4/4, recent 3/4, and structured 4/4**. All designated historical corrections passed; the one failure omitted wildcard-tenant matching. More business rules did not by themselves create a strong retention discriminator. Summary generation again added time and tokens. [Protocol, complete results and phase accounting](reports/software-policy.md) explain the near-saturated outcome and a proposed paired-policy follow-up.
 
-```sh
-git clone https://github.com/original4422/agent-context-regression.git
-cd agent-context-regression
-python3 -m context_regression list
-python3 -m unittest discover -s tests -v
+## Counterfactual policy pair
 
-# Existing Codex login; no separate model API key is used.
-# Choose a model available to your account; it is held fixed for all phases.
-python3 -m context_regression run --model gpt-6-sol
-```
+A second fixed batch holds the checkpoint, schema, latest request and public checks identical while reversing an earlier decision: concurrent release wave versus sequential plan. Full and structured passed both versions in both repetitions; recent passed neither complete contract. Cross-scoring shows the recent candidates chose sequential dependency behavior but also violated shared ordering rules. [The paired report](reports/paired-policy.md) includes input fingerprints, every cross-score, costs, and the remaining causal distinction.
 
-Defaults run 4 tasks × 3 strategies × 2 repetitions: **24 continuations plus 8 summary generations**, serially. Each continuation has a 180-second timeout and 16-tool-call budget; each summary has 90 seconds and a 4,096-character limit. Infrastructure failures abort the batch; failed code checks remain valid outcomes and do not stop it.
-
-The CLI prints a private result directory under `~/.local/state/agent-context-regression/`. Raw prompts, events, summaries and candidate files stay there, behind a mode-0700 directory. To render the metrics:
-
-```sh
-python3 -m context_regression summarize /path/from/run/results.json
-
-# Optional installation provides the equivalent `acr` command.
-python3 -m pip install .
-acr list
-```
+The [visible-contract follow-up](reports/visible-policy.md) keeps all shared rules executable and asks the agent to fill only the historical policy predicate. All 12 candidates pass shared rules; full and structured recover both policies (4/4 each), while recent chooses sequential behavior throughout (2/4 requested policies, 0/2 pairs). This separates an opposite-policy implementation from broken shared code.
 
 ## Comparison
 
@@ -71,6 +128,16 @@ The file tools and sandbox prevent candidates from rewriting acceptance scripts;
 | Explicit empty overrides | Implement `None` inheritance | Keep empty strings, `0` and `False` |
 | Retry method policy | Add rate-limit retries and finish policy | Respect the exact method allowlist |
 | Event window order | Add deduplication and finish window selection | Exclude the right endpoint; keep ingestion order |
+| Rollout dependency admission | Finish shared capacity budget | Completed-before-batch dependencies, approval scope, stable priority, skip-and-continue |
+| Scoped policy precedence | Finish expiration support | Tenant boundaries, deny precedence, empty roles, half-open validity |
+| Release-policy pair (A/B) | Finish a shared capacity budget | Explicit concurrent-wave versus sequential-plan dependency semantics |
+| Visible-contract pair (A/B) | Complete only the dependency predicate | Same opposing policies, with all shared rules already implemented |
+
+[Visible-contract protocol](reports/visible-policy.md) narrows the follow-up to recovering the historical policy decision in a shared executable framework.
+
+[Counterfactual pair protocol](reports/paired-policy.md) holds the model-visible recent input fixed while reversing one earlier business decision.
+
+[Software-policy protocol](reports/software-policy.md) distinguishes the final incremental request from earlier corrections and documents the counterexamples used to validate acceptance checks.
 
 Acceptance checks return named booleans. A task passes only when every check passes. `regressions` lists failures of designated corrected requirements; it reports observable behavior, not an inference about the model's internal memory. No LLM judge is used.
 
@@ -78,7 +145,7 @@ Token totals include summary and continuation phases. Cached input is reported s
 
 ## Add a task
 
-Pass `--tasks /path/to/tasks` to `list` or `run`. Each child directory contains:
+Pass `--tasks /path/to/tasks` to `list`, `plan` or `run`. Each child directory contains:
 
 ```text
 my-task/
@@ -98,7 +165,7 @@ acr run --model gpt-6-sol --task retry-method-policy --repetitions 1
 acr run --model gpt-6-sol --recent-turns 2 --seed 42 --effort medium
 ```
 
-The microtasks intentionally contain requirements that are easy to lose. Results describe these tasks and this constrained tool surface; four tasks and two repetitions are a regression pilot, not a general ranking of compression methods.
+The microtasks intentionally contain requirements that are easy to lose. Results describe the selected tasks and this constrained tool surface. The historical four-task pilot and the two-task software-policy extension are separate batches, each with two repetitions; neither establishes a general ranking of compression methods.
 
 ## Related work and attribution
 

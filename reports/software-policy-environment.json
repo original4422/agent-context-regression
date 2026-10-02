@@ -1,0 +1,10 @@
+{
+  "measured_commit": "af4840cdb50b9507ccad6f000c49dbf48b241edd",
+  "platform": "Darwin",
+  "os_version": "15.7.8",
+  "architecture": "arm64",
+  "python": "3.14.7",
+  "codex": "codex-cli 0.155.1",
+  "isolation": "All phases serial; started after browser comparison finished and MLX serving experiment stopped its server.",
+  "validation": "All 12 saved candidates rechecked with identical outcomes; 16 single turn.completed usage events reconciled; frozen task and runner fingerprints matched."
+}

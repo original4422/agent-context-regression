@@ -1,0 +1,1266 @@
+{
+  "results_sha256": "784f58a818ab5acd114aa13b0089b4200a9c51b4026c0f14529ee5e81649a766",
+  "runner_sha256": "3dfe8e7f324b01c4792fe3aeb55f4ac8f7f0359d49adeaf2504fbb190fbb144c",
+  "phase_usage_records_reconciled": 16,
+  "actual_recent_prompt_sha256": "01210ee320f9ecf0a94f6e039bec1213b29ccbc63c1a2659beb3a878fa65f873",
+  "actual_recent_prompts_identical": true,
+  "all_own_oracle_rechecks_match": true,
+  "pair_outcomes": [
+    {
+      "strategy": "full",
+      "repeat": 1,
+      "both_requested_policies_pass": true
+    },
+    {
+      "strategy": "full",
+      "repeat": 2,
+      "both_requested_policies_pass": true
+    },
+    {
+      "strategy": "recent",
+      "repeat": 1,
+      "both_requested_policies_pass": false
+    },
+    {
+      "strategy": "recent",
+      "repeat": 2,
+      "both_requested_policies_pass": false
+    },
+    {
+      "strategy": "structured",
+      "repeat": 1,
+      "both_requested_policies_pass": true
+    },
+    {
+      "strategy": "structured",
+      "repeat": 2,
+      "both_requested_policies_pass": true
+    }
+  ],
+  "candidates": [
+    {
+      "index": 1,
+      "task": "wave-policy-a",
+      "strategy": "structured",
+      "repeat": 2,
+      "source_sha256": "76be871985763913e515e627fa74f5c6d5ba115070babd0ad8f02f7066ba4650",
+      "classification": "requested_policy",
+      "cross_verification": {
+        "wave-policy-a": {
+          "status": "completed",
+          "passed": true,
+          "checks": [
+            {
+              "name": "dependency_policy",
+              "passed": true
+            },
+            {
+              "name": "no_revisit",
+              "passed": true
+            },
+            {
+              "name": "blocked_prerequisite",
+              "passed": true
+            },
+            {
+              "name": "unknown_dependency",
+              "passed": true
+            },
+            {
+              "name": "all_dependencies_required",
+              "passed": true
+            },
+            {
+              "name": "previously_completed",
+              "passed": true
+            },
+            {
+              "name": "manual_gate",
+              "passed": true
+            },
+            {
+              "name": "stable_priority_budget",
+              "passed": true
+            },
+            {
+              "name": "skip_and_exact_fit",
+              "passed": true
+            },
+            {
+              "name": "empty",
+              "passed": true
+            }
+          ]
+        },
+        "wave-policy-b": {
+          "status": "completed",
+          "passed": false,
+          "checks": [
+            {
+              "name": "dependency_policy",
+              "passed": false
+            },
+            {
+              "name": "no_revisit",
+              "passed": true
+            },
+            {
+              "name": "blocked_prerequisite",
+              "passed": true
+            },
+            {
+              "name": "unknown_dependency",
+              "passed": true
+            },
+            {
+              "name": "all_dependencies_required",
+              "passed": true
+            },
+            {
+              "name": "previously_completed",
+              "passed": true
+            },
+            {
+              "name": "manual_gate",
+              "passed": true
+            },
+            {
+              "name": "stable_priority_budget",
+              "passed": true
+            },
+            {
+              "name": "skip_and_exact_fit",
+              "passed": true
+            },
+            {
+              "name": "empty",
+              "passed": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "index": 2,
+      "task": "wave-policy-a",
+      "strategy": "recent",
+      "repeat": 2,
+      "source_sha256": "acc782b61c2fb9332d40e53ca69ad0c4548d46729ebaa0c07216d99ccfecb527",
+      "classification": "neither_policy",
+      "cross_verification": {
+        "wave-policy-a": {
+          "status": "completed",
+          "passed": false,
+          "checks": [
+            {
+              "name": "dependency_policy",
+              "passed": false
+            },
+            {
+              "name": "no_revisit",
+              "passed": false
+            },
+            {
+              "name": "blocked_prerequisite",
+              "passed": true
+            },
+            {
+              "name": "unknown_dependency",
+              "passed": true
+            },
+            {
+              "name": "all_dependencies_required",
+              "passed": true
+            },
+            {
+              "name": "previously_completed",
+              "passed": true
+            },
+            {
+              "name": "manual_gate",
+              "passed": true
+            },
+            {
+              "name": "stable_priority_budget",
+              "passed": true
+            },
+            {
+              "name": "skip_and_exact_fit",
+              "passed": true
+            },
+            {
+              "name": "empty",
+              "passed": true
+            }
+          ]
+        },
+        "wave-policy-b": {
+          "status": "completed",
+          "passed": false,
+          "checks": [
+            {
+              "name": "dependency_policy",
+              "passed": true
+            },
+            {
+              "name": "no_revisit",
+              "passed": false
+            },
+            {
+              "name": "blocked_prerequisite",
+              "passed": true
+            },
+            {
+              "name": "unknown_dependency",
+              "passed": true
+            },
+            {
+              "name": "all_dependencies_required",
+              "passed": true
+            },
+            {
+              "name": "previously_completed",
+              "passed": true
+            },
+            {
+              "name": "manual_gate",
+              "passed": true
+            },
+            {
+              "name": "stable_priority_budget",
+              "passed": true
+            },
+            {
+              "name": "skip_and_exact_fit",
+              "passed": true
+            },
+            {
+              "name": "empty",
+              "passed": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "index": 3,
+      "task": "wave-policy-a",
+      "strategy": "full",
+      "repeat": 2,
+      "source_sha256": "2e627fcfaeaf0d8fd8715d946c4b536699fb8947b99c345db59179ff8050b411",
+      "classification": "requested_policy",
+      "cross_verification": {
+        "wave-policy-a": {
+          "status": "completed",
+          "passed": true,
+          "checks": [
+            {
+              "name": "dependency_policy",
+              "passed": true
+            },
+            {
+              "name": "no_revisit",
+              "passed": true
+            },
+            {
+              "name": "blocked_prerequisite",
+              "passed": true
+            },
+            {
+              "name": "unknown_dependency",
+              "passed": true
+            },
+            {
+              "name": "all_dependencies_required",
+              "passed": true
+            },
+            {
+              "name": "previously_completed",
+              "passed": true
+            },
+            {
+              "name": "manual_gate",
+              "passed": true
+            },
+            {
+              "name": "stable_priority_budget",
+              "passed": true
+            },
+            {
+              "name": "skip_and_exact_fit",
+              "passed": true
+            },
+            {
+              "name": "empty",
+              "passed": true
+            }
+          ]
+        },
+        "wave-policy-b": {
+          "status": "completed",
+          "passed": false,
+          "checks": [
+            {
+              "name": "dependency_policy",
+              "passed": false
+            },
+            {
+              "name": "no_revisit",
+              "passed": true
+            },
+            {
+              "name": "blocked_prerequisite",
+              "passed": true
+            },
+            {
+              "name": "unknown_dependency",
+              "passed": true
+            },
+            {
+              "name": "all_dependencies_required",
+              "passed": true
+            },
+            {
+              "name": "previously_completed",
+              "passed": true
+            },
+            {
+              "name": "manual_gate",
+              "passed": true
+            },
+            {
+              "name": "stable_priority_budget",
+              "passed": true
+            },
+            {
+              "name": "skip_and_exact_fit",
+              "passed": true
+            },
+            {
+              "name": "empty",
+              "passed": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "index": 4,
+      "task": "wave-policy-a",
+      "strategy": "recent",
+      "repeat": 1,
+      "source_sha256": "56f9702d6741fd348d1f9443efb5ef26934b730abb467347fcd1051a80113257",
+      "classification": "neither_policy",
+      "cross_verification": {
+        "wave-policy-a": {
+          "status": "completed",
+          "passed": false,
+          "checks": [
+            {
+              "name": "dependency_policy",
+              "passed": false
+            },
+            {
+              "name": "no_revisit",
+              "passed": false
+            },
+            {
+              "name": "blocked_prerequisite",
+              "passed": true
+            },
+            {
+              "name": "unknown_dependency",
+              "passed": true
+            },
+            {
+              "name": "all_dependencies_required",
+              "passed": true
+            },
+            {
+              "name": "previously_completed",
+              "passed": true
+            },
+            {
+              "name": "manual_gate",
+              "passed": false
+            },
+            {
+              "name": "stable_priority_budget",
+              "passed": false
+            },
+            {
+              "name": "skip_and_exact_fit",
+              "passed": true
+            },
+            {
+              "name": "empty",
+              "passed": true
+            }
+          ]
+        },
+        "wave-policy-b": {
+          "status": "completed",
+          "passed": false,
+          "checks": [
+            {
+              "name": "dependency_policy",
+              "passed": true
+            },
+            {
+              "name": "no_revisit",
+              "passed": false
+            },
+            {
+              "name": "blocked_prerequisite",
+              "passed": true
+            },
+            {
+              "name": "unknown_dependency",
+              "passed": true
+            },
+            {
+              "name": "all_dependencies_required",
+              "passed": true
+            },
+            {
+              "name": "previously_completed",
+              "passed": true
+            },
+            {
+              "name": "manual_gate",
+              "passed": false
+            },
+            {
+              "name": "stable_priority_budget",
+              "passed": false
+            },
+            {
+              "name": "skip_and_exact_fit",
+              "passed": true
+            },
+            {
+              "name": "empty",
+              "passed": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "index": 5,
+      "task": "wave-policy-a",
+      "strategy": "structured",
+      "repeat": 1,
+      "source_sha256": "415d5d5d96ce6d63ee06c1bea0f0a34cfb08dd324f79e96ae13594ae9a3ec84f",
+      "classification": "requested_policy",
+      "cross_verification": {
+        "wave-policy-a": {
+          "status": "completed",
+          "passed": true,
+          "checks": [
+            {
+              "name": "dependency_policy",
+              "passed": true
+            },
+            {
+              "name": "no_revisit",
+              "passed": true
+            },
+            {
+              "name": "blocked_prerequisite",
+              "passed": true
+            },
+            {
+              "name": "unknown_dependency",
+              "passed": true
+            },
+            {
+              "name": "all_dependencies_required",
+              "passed": true
+            },
+            {
+              "name": "previously_completed",
+              "passed": true
+            },
+            {
+              "name": "manual_gate",
+              "passed": true
+            },
+            {
+              "name": "stable_priority_budget",
+              "passed": true
+            },
+            {
+              "name": "skip_and_exact_fit",
+              "passed": true
+            },
+            {
+              "name": "empty",
+              "passed": true
+            }
+          ]
+        },
+        "wave-policy-b": {
+          "status": "completed",
+          "passed": false,
+          "checks": [
+            {
+              "name": "dependency_policy",
+              "passed": false
+            },
+            {
+              "name": "no_revisit",
+              "passed": true
+            },
+            {
+              "name": "blocked_prerequisite",
+              "passed": true
+            },
+            {
+              "name": "unknown_dependency",
+              "passed": true
+            },
+            {
+              "name": "all_dependencies_required",
+              "passed": true
+            },
+            {
+              "name": "previously_completed",
+              "passed": true
+            },
+            {
+              "name": "manual_gate",
+              "passed": true
+            },
+            {
+              "name": "stable_priority_budget",
+              "passed": true
+            },
+            {
+              "name": "skip_and_exact_fit",
+              "passed": true
+            },
+            {
+              "name": "empty",
+              "passed": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "index": 6,
+      "task": "wave-policy-a",
+      "strategy": "full",
+      "repeat": 1,
+      "source_sha256": "47c75b1c3d1cc70711542728546a5a849eb0f470e07d11193d622c3bd7b59109",
+      "classification": "requested_policy",
+      "cross_verification": {
+        "wave-policy-a": {
+          "status": "completed",
+          "passed": true,
+          "checks": [
+            {
+              "name": "dependency_policy",
+              "passed": true
+            },
+            {
+              "name": "no_revisit",
+              "passed": true
+            },
+            {
+              "name": "blocked_prerequisite",
+              "passed": true
+            },
+            {
+              "name": "unknown_dependency",
+              "passed": true
+            },
+            {
+              "name": "all_dependencies_required",
+              "passed": true
+            },
+            {
+              "name": "previously_completed",
+              "passed": true
+            },
+            {
+              "name": "manual_gate",
+              "passed": true
+            },
+            {
+              "name": "stable_priority_budget",
+              "passed": true
+            },
+            {
+              "name": "skip_and_exact_fit",
+              "passed": true
+            },
+            {
+              "name": "empty",
+              "passed": true
+            }
+          ]
+        },
+        "wave-policy-b": {
+          "status": "completed",
+          "passed": false,
+          "checks": [
+            {
+              "name": "dependency_policy",
+              "passed": false
+            },
+            {
+              "name": "no_revisit",
+              "passed": true
+            },
+            {
+              "name": "blocked_prerequisite",
+              "passed": true
+            },
+            {
+              "name": "unknown_dependency",
+              "passed": true
+            },
+            {
+              "name": "all_dependencies_required",
+              "passed": true
+            },
+            {
+              "name": "previously_completed",
+              "passed": true
+            },
+            {
+              "name": "manual_gate",
+              "passed": true
+            },
+            {
+              "name": "stable_priority_budget",
+              "passed": true
+            },
+            {
+              "name": "skip_and_exact_fit",
+              "passed": true
+            },
+            {
+              "name": "empty",
+              "passed": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "index": 7,
+      "task": "wave-policy-b",
+      "strategy": "structured",
+      "repeat": 1,
+      "source_sha256": "85c67b36b8014860c74510d5d85f37afc2e8221c3e47c1cbe6c9e0fd56e5749e",
+      "classification": "requested_policy",
+      "cross_verification": {
+        "wave-policy-a": {
+          "status": "completed",
+          "passed": false,
+          "checks": [
+            {
+              "name": "dependency_policy",
+              "passed": false
+            },
+            {
+              "name": "no_revisit",
+              "passed": true
+            },
+            {
+              "name": "blocked_prerequisite",
+              "passed": true
+            },
+            {
+              "name": "unknown_dependency",
+              "passed": true
+            },
+            {
+              "name": "all_dependencies_required",
+              "passed": true
+            },
+            {
+              "name": "previously_completed",
+              "passed": true
+            },
+            {
+              "name": "manual_gate",
+              "passed": true
+            },
+            {
+              "name": "stable_priority_budget",
+              "passed": true
+            },
+            {
+              "name": "skip_and_exact_fit",
+              "passed": true
+            },
+            {
+              "name": "empty",
+              "passed": true
+            }
+          ]
+        },
+        "wave-policy-b": {
+          "status": "completed",
+          "passed": true,
+          "checks": [
+            {
+              "name": "dependency_policy",
+              "passed": true
+            },
+            {
+              "name": "no_revisit",
+              "passed": true
+            },
+            {
+              "name": "blocked_prerequisite",
+              "passed": true
+            },
+            {
+              "name": "unknown_dependency",
+              "passed": true
+            },
+            {
+              "name": "all_dependencies_required",
+              "passed": true
+            },
+            {
+              "name": "previously_completed",
+              "passed": true
+            },
+            {
+              "name": "manual_gate",
+              "passed": true
+            },
+            {
+              "name": "stable_priority_budget",
+              "passed": true
+            },
+            {
+              "name": "skip_and_exact_fit",
+              "passed": true
+            },
+            {
+              "name": "empty",
+              "passed": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "index": 8,
+      "task": "wave-policy-b",
+      "strategy": "full",
+      "repeat": 1,
+      "source_sha256": "60217612f3d090f67976d8c4af9b3d1d1efd2eaf9df17a6619c4302f341fbce5",
+      "classification": "requested_policy",
+      "cross_verification": {
+        "wave-policy-a": {
+          "status": "completed",
+          "passed": false,
+          "checks": [
+            {
+              "name": "dependency_policy",
+              "passed": false
+            },
+            {
+              "name": "no_revisit",
+              "passed": true
+            },
+            {
+              "name": "blocked_prerequisite",
+              "passed": true
+            },
+            {
+              "name": "unknown_dependency",
+              "passed": true
+            },
+            {
+              "name": "all_dependencies_required",
+              "passed": true
+            },
+            {
+              "name": "previously_completed",
+              "passed": true
+            },
+            {
+              "name": "manual_gate",
+              "passed": true
+            },
+            {
+              "name": "stable_priority_budget",
+              "passed": true
+            },
+            {
+              "name": "skip_and_exact_fit",
+              "passed": true
+            },
+            {
+              "name": "empty",
+              "passed": true
+            }
+          ]
+        },
+        "wave-policy-b": {
+          "status": "completed",
+          "passed": true,
+          "checks": [
+            {
+              "name": "dependency_policy",
+              "passed": true
+            },
+            {
+              "name": "no_revisit",
+              "passed": true
+            },
+            {
+              "name": "blocked_prerequisite",
+              "passed": true
+            },
+            {
+              "name": "unknown_dependency",
+              "passed": true
+            },
+            {
+              "name": "all_dependencies_required",
+              "passed": true
+            },
+            {
+              "name": "previously_completed",
+              "passed": true
+            },
+            {
+              "name": "manual_gate",
+              "passed": true
+            },
+            {
+              "name": "stable_priority_budget",
+              "passed": true
+            },
+            {
+              "name": "skip_and_exact_fit",
+              "passed": true
+            },
+            {
+              "name": "empty",
+              "passed": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "index": 9,
+      "task": "wave-policy-b",
+      "strategy": "recent",
+      "repeat": 1,
+      "source_sha256": "471a17ca8a968fd79684ab0ab225a46c6f17e8a58ed500a6999c6d469d1b38a5",
+      "classification": "neither_policy",
+      "cross_verification": {
+        "wave-policy-a": {
+          "status": "completed",
+          "passed": false,
+          "checks": [
+            {
+              "name": "dependency_policy",
+              "passed": false
+            },
+            {
+              "name": "no_revisit",
+              "passed": false
+            },
+            {
+              "name": "blocked_prerequisite",
+              "passed": true
+            },
+            {
+              "name": "unknown_dependency",
+              "passed": true
+            },
+            {
+              "name": "all_dependencies_required",
+              "passed": true
+            },
+            {
+              "name": "previously_completed",
+              "passed": true
+            },
+            {
+              "name": "manual_gate",
+              "passed": true
+            },
+            {
+              "name": "stable_priority_budget",
+              "passed": true
+            },
+            {
+              "name": "skip_and_exact_fit",
+              "passed": true
+            },
+            {
+              "name": "empty",
+              "passed": true
+            }
+          ]
+        },
+        "wave-policy-b": {
+          "status": "completed",
+          "passed": false,
+          "checks": [
+            {
+              "name": "dependency_policy",
+              "passed": true
+            },
+            {
+              "name": "no_revisit",
+              "passed": false
+            },
+            {
+              "name": "blocked_prerequisite",
+              "passed": true
+            },
+            {
+              "name": "unknown_dependency",
+              "passed": true
+            },
+            {
+              "name": "all_dependencies_required",
+              "passed": true
+            },
+            {
+              "name": "previously_completed",
+              "passed": true
+            },
+            {
+              "name": "manual_gate",
+              "passed": true
+            },
+            {
+              "name": "stable_priority_budget",
+              "passed": true
+            },
+            {
+              "name": "skip_and_exact_fit",
+              "passed": true
+            },
+            {
+              "name": "empty",
+              "passed": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "index": 10,
+      "task": "wave-policy-b",
+      "strategy": "structured",
+      "repeat": 2,
+      "source_sha256": "b46d6cb06ed55aab6c1cd66f3d96014b1af84a2e8a16666d43100ec244a20f00",
+      "classification": "requested_policy",
+      "cross_verification": {
+        "wave-policy-a": {
+          "status": "completed",
+          "passed": false,
+          "checks": [
+            {
+              "name": "dependency_policy",
+              "passed": false
+            },
+            {
+              "name": "no_revisit",
+              "passed": true
+            },
+            {
+              "name": "blocked_prerequisite",
+              "passed": true
+            },
+            {
+              "name": "unknown_dependency",
+              "passed": true
+            },
+            {
+              "name": "all_dependencies_required",
+              "passed": true
+            },
+            {
+              "name": "previously_completed",
+              "passed": true
+            },
+            {
+              "name": "manual_gate",
+              "passed": true
+            },
+            {
+              "name": "stable_priority_budget",
+              "passed": true
+            },
+            {
+              "name": "skip_and_exact_fit",
+              "passed": true
+            },
+            {
+              "name": "empty",
+              "passed": true
+            }
+          ]
+        },
+        "wave-policy-b": {
+          "status": "completed",
+          "passed": true,
+          "checks": [
+            {
+              "name": "dependency_policy",
+              "passed": true
+            },
+            {
+              "name": "no_revisit",
+              "passed": true
+            },
+            {
+              "name": "blocked_prerequisite",
+              "passed": true
+            },
+            {
+              "name": "unknown_dependency",
+              "passed": true
+            },
+            {
+              "name": "all_dependencies_required",
+              "passed": true
+            },
+            {
+              "name": "previously_completed",
+              "passed": true
+            },
+            {
+              "name": "manual_gate",
+              "passed": true
+            },
+            {
+              "name": "stable_priority_budget",
+              "passed": true
+            },
+            {
+              "name": "skip_and_exact_fit",
+              "passed": true
+            },
+            {
+              "name": "empty",
+              "passed": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "index": 11,
+      "task": "wave-policy-b",
+      "strategy": "recent",
+      "repeat": 2,
+      "source_sha256": "7f919c9049b3ce2072cac4559627ff2ee7241c7100823e77abec82f4181449c6",
+      "classification": "neither_policy",
+      "cross_verification": {
+        "wave-policy-a": {
+          "status": "completed",
+          "passed": false,
+          "checks": [
+            {
+              "name": "dependency_policy",
+              "passed": false
+            },
+            {
+              "name": "no_revisit",
+              "passed": false
+            },
+            {
+              "name": "blocked_prerequisite",
+              "passed": true
+            },
+            {
+              "name": "unknown_dependency",
+              "passed": true
+            },
+            {
+              "name": "all_dependencies_required",
+              "passed": true
+            },
+            {
+              "name": "previously_completed",
+              "passed": true
+            },
+            {
+              "name": "manual_gate",
+              "passed": false
+            },
+            {
+              "name": "stable_priority_budget",
+              "passed": false
+            },
+            {
+              "name": "skip_and_exact_fit",
+              "passed": true
+            },
+            {
+              "name": "empty",
+              "passed": true
+            }
+          ]
+        },
+        "wave-policy-b": {
+          "status": "completed",
+          "passed": false,
+          "checks": [
+            {
+              "name": "dependency_policy",
+              "passed": true
+            },
+            {
+              "name": "no_revisit",
+              "passed": false
+            },
+            {
+              "name": "blocked_prerequisite",
+              "passed": true
+            },
+            {
+              "name": "unknown_dependency",
+              "passed": true
+            },
+            {
+              "name": "all_dependencies_required",
+              "passed": true
+            },
+            {
+              "name": "previously_completed",
+              "passed": true
+            },
+            {
+              "name": "manual_gate",
+              "passed": false
+            },
+            {
+              "name": "stable_priority_budget",
+              "passed": false
+            },
+            {
+              "name": "skip_and_exact_fit",
+              "passed": true
+            },
+            {
+              "name": "empty",
+              "passed": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "index": 12,
+      "task": "wave-policy-b",
+      "strategy": "full",
+      "repeat": 2,
+      "source_sha256": "8590168a316e0dc9f6fb0bc3e233b000edd3ade7b0521a90e073bfd13b397635",
+      "classification": "requested_policy",
+      "cross_verification": {
+        "wave-policy-a": {
+          "status": "completed",
+          "passed": false,
+          "checks": [
+            {
+              "name": "dependency_policy",
+              "passed": false
+            },
+            {
+              "name": "no_revisit",
+              "passed": true
+            },
+            {
+              "name": "blocked_prerequisite",
+              "passed": true
+            },
+            {
+              "name": "unknown_dependency",
+              "passed": true
+            },
+            {
+              "name": "all_dependencies_required",
+              "passed": true
+            },
+            {
+              "name": "previously_completed",
+              "passed": true
+            },
+            {
+              "name": "manual_gate",
+              "passed": true
+            },
+            {
+              "name": "stable_priority_budget",
+              "passed": true
+            },
+            {
+              "name": "skip_and_exact_fit",
+              "passed": true
+            },
+            {
+              "name": "empty",
+              "passed": true
+            }
+          ]
+        },
+        "wave-policy-b": {
+          "status": "completed",
+          "passed": true,
+          "checks": [
+            {
+              "name": "dependency_policy",
+              "passed": true
+            },
+            {
+              "name": "no_revisit",
+              "passed": true
+            },
+            {
+              "name": "blocked_prerequisite",
+              "passed": true
+            },
+            {
+              "name": "unknown_dependency",
+              "passed": true
+            },
+            {
+              "name": "all_dependencies_required",
+              "passed": true
+            },
+            {
+              "name": "previously_completed",
+              "passed": true
+            },
+            {
+              "name": "manual_gate",
+              "passed": true
+            },
+            {
+              "name": "stable_priority_budget",
+              "passed": true
+            },
+            {
+              "name": "skip_and_exact_fit",
+              "passed": true
+            },
+            {
+              "name": "empty",
+              "passed": true
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

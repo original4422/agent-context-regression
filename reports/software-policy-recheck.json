@@ -1,0 +1,105 @@
+{
+  "results_sha256": "1a5fb0306c10ced2da4639c491e6f3bb4dddee6ec7ac0e44c8ed36af30a1b7e7",
+  "runner_sha256": "3dfe8e7f324b01c4792fe3aeb55f4ac8f7f0359d49adeaf2504fbb190fbb144c",
+  "phase_usage_records_reconciled": 16,
+  "turn_completed_events_per_phase": 1,
+  "all_candidate_outcomes_match": true,
+  "candidates": [
+    {
+      "index": 1,
+      "task": "rollout-dependency-admission",
+      "strategy": "structured",
+      "repeat": 2,
+      "candidate_sha256": "6e382d45157d35d8748ba73a87e748de46d381cddbfca82bde4fdca405b0fcab",
+      "same_outcome": true
+    },
+    {
+      "index": 2,
+      "task": "rollout-dependency-admission",
+      "strategy": "recent",
+      "repeat": 2,
+      "candidate_sha256": "ca7ce51f5490ef16a19225f6a7c15f7a7f6ee450b010d1d9556bb36513d1caf7",
+      "same_outcome": true
+    },
+    {
+      "index": 3,
+      "task": "rollout-dependency-admission",
+      "strategy": "full",
+      "repeat": 2,
+      "candidate_sha256": "5b69b9e2e6c0d89b96e2e8243a84e04ee98c52e14bce196a0af38c2aae6f7b7b",
+      "same_outcome": true
+    },
+    {
+      "index": 4,
+      "task": "rollout-dependency-admission",
+      "strategy": "recent",
+      "repeat": 1,
+      "candidate_sha256": "7994032ad75b80faaaaa69134764935045d8e3b52f48c075795b0b37a59f6884",
+      "same_outcome": true
+    },
+    {
+      "index": 5,
+      "task": "rollout-dependency-admission",
+      "strategy": "structured",
+      "repeat": 1,
+      "candidate_sha256": "002141f439383a902c0d6fd9050442063c4e127d65ff8dd7a08da86ed526efd1",
+      "same_outcome": true
+    },
+    {
+      "index": 6,
+      "task": "rollout-dependency-admission",
+      "strategy": "full",
+      "repeat": 1,
+      "candidate_sha256": "21179cb63a15994f70b3b49778358b8a5c296b992effc52ec06cf277c660dc47",
+      "same_outcome": true
+    },
+    {
+      "index": 7,
+      "task": "scoped-policy-precedence",
+      "strategy": "structured",
+      "repeat": 1,
+      "candidate_sha256": "f894fd7633749e9504371a2862e66ec5ccaf99298e05c617538f5aa6837bff2d",
+      "same_outcome": true
+    },
+    {
+      "index": 8,
+      "task": "scoped-policy-precedence",
+      "strategy": "full",
+      "repeat": 1,
+      "candidate_sha256": "8ae64c3dbc401ccca4a13f05cac0a9a463675361128c66d8379f8ef7639e9611",
+      "same_outcome": true
+    },
+    {
+      "index": 9,
+      "task": "scoped-policy-precedence",
+      "strategy": "recent",
+      "repeat": 1,
+      "candidate_sha256": "c1b3895cdbda3a49f40bf697170439b2c8b9178db1c3d94db64df5aad7a0a597",
+      "same_outcome": true
+    },
+    {
+      "index": 10,
+      "task": "scoped-policy-precedence",
+      "strategy": "structured",
+      "repeat": 2,
+      "candidate_sha256": "5325d44a801beca9152f6885edc03aea525123056a76c3f9750fb7468f309e34",
+      "same_outcome": true
+    },
+    {
+      "index": 11,
+      "task": "scoped-policy-precedence",
+      "strategy": "recent",
+      "repeat": 2,
+      "candidate_sha256": "901fa64da87ad2a22d622bb2694d0c67e443f9eac78b34c0406be546243a5678",
+      "same_outcome": true
+    },
+    {
+      "index": 12,
+      "task": "scoped-policy-precedence",
+      "strategy": "full",
+      "repeat": 2,
+      "candidate_sha256": "61c06619be325b651139f2bcf93100a9c3bcdb48e7e45967501a58da929c2af7",
+      "same_outcome": true
+    }
+  ]
+}
