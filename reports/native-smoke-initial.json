@@ -1,0 +1,146 @@
+{
+  "status": "failed",
+  "model": "gpt-6-astra",
+  "effort": "low",
+  "scope": "Bounded native compaction smoke; eight phases maximum, no retries",
+  "plan": {
+    "protocol": "codex-native-compaction-smoke-v1",
+    "execution": "plan-only",
+    "model": "gpt-6-astra",
+    "effort": "low",
+    "seeds": 2,
+    "compactions": 2,
+    "continuations": 4,
+    "timeouts_seconds": {
+      "seed": 60,
+      "compact": 90,
+      "continuation": 180
+    },
+    "continuation_tool_budget": 16,
+    "seed_tool_budget": 0,
+    "cancellation_grace_seconds": 3,
+    "model_phase_timeout_budget_seconds": 1020,
+    "usage_contract": "unverified; phase usage null, arm total incomplete",
+    "pairs": [
+      {
+        "task": "visible-policy-a",
+        "task_sha256": "a9315bdb24bfae2739dccc5493c8ad0fdf172bcc097394463c444d60dbe755de",
+        "arms": [
+          "control",
+          "native-compact"
+        ],
+        "seed_text": "Implement select_plan(jobs, completed, capacity) for our release planner. It returns ordered selected job ids without modifying inputs. Job ids are unique strings, needs is a list of prerequisite ids, priority is an integer (larger first), cost is a nonnegative integer, manual/approved are booleans. completed contains ids successfully deployed before this call; capacity is a nonnegative shared budget. These input fields are schema-valid.\n\nChoose the concurrent launch wave. A dependency is satisfied only if its id is in completed before this call. A prerequisite selected earlier in this plan is not yet complete, so its dependent must wait for a later call. This helper feeds a launcher that starts every returned job immediately; treating selection as completion would launch dependents too soon.\n\nRemember this decision for the later coding task. Do not call tools or modify files yet. Confirm briefly and wait.",
+        "seed_sha256": "c5bc1cd4f6b733889536a8c2d6dab4485637aa6b52f5588518afa895f975af11",
+        "request": "Implement the missing dependency predicate in plan.py using the earlier decision. Run the public checks.",
+        "request_sha256": "90aac72700cda2818cffd05e29658fae76894fd7df11f163bb846576fe617b18"
+      },
+      {
+        "task": "visible-policy-b",
+        "task_sha256": "6b670ec3e5e85ccb217e373ec3102c93114d4269c2a860c4e4776e4b65d9142a",
+        "arms": [
+          "native-compact",
+          "control"
+        ],
+        "seed_text": "Implement select_plan(jobs, completed, capacity) for our release planner. It returns ordered selected job ids without modifying inputs. Job ids are unique strings, needs is a list of prerequisite ids, priority is an integer (larger first), cost is a nonnegative integer, manual/approved are booleans. completed contains ids successfully deployed before this call; capacity is a nonnegative shared budget. These input fields are schema-valid.\n\nChoose the sequential execution plan. A dependency is satisfied if its id is in completed before this call OR was selected earlier in this plan. The executor waits for each returned job to succeed before starting the next and stops on failure; including a dependent after its selected prerequisite is intended. This helper does not execute the jobs itself.\n\nRemember this decision for the later coding task. Do not call tools or modify files yet. Confirm briefly and wait.",
+        "seed_sha256": "5f7cb5526dca6892fa15a49776e48d0c2656970e84629f14bbff87f1e7112deb",
+        "request": "Implement the missing dependency predicate in plan.py using the earlier decision. Run the public checks.",
+        "request_sha256": "90aac72700cda2818cffd05e29658fae76894fd7df11f163bb846576fe617b18"
+      }
+    ]
+  },
+  "environment": {
+    "binary_sha256": "8eaf1ad12fe6bf89b1710330f58900014322c7c5af677e43be116d8ac5fc0a9e",
+    "codex_version": "codex-cli 0.155.1",
+    "schema_bundle_sha256": "3030f71054766db7af3e687d57638096f0100504b05337776c618eb15b56445e",
+    "source_sha256": {
+      "__init__.py": "0d48668ead458161df84c33e8cff3a648a65f2f0b98637c630830ab85c9f36c1",
+      "__main__.py": "6d8b7d7846a845059d7a3107143f11131f63c5511d669b44085b15ec5e3d2279",
+      "bridge.py": "8338821a412dfd46845a8e69b5230589879cf52217b1669fbafd06a23bf020c3",
+      "checks.py": "bccaf59ccdb055072233d30985a6d739184750e665cb180dd9aae99ba0dfd074",
+      "cli.py": "3e45043efb74f78bdd650ce920aa1dad2ec7a32be088e0673aeb2e028120a175",
+      "doctor.py": "f33fe4d46979baa4e41ec79665944154f9955bf5ec7fc7515808b02ed57d7335",
+      "native.py": "9c9e497a00fd159e50d1014ed6e08a493ffe78f11a48b93c44997982d34cff22",
+      "native_approval.py": "2b7d0a1195915caaa16642937f9cea6562fdb94b36e6d7a753bdbe5b12da8a05",
+      "native_bridge.py": "11d236db27bde595e714904f4542eeea0b32581a6ceeda78ffa1e74ae212c45b",
+      "native_client.py": "674717bf2adad7329ac180c0252d5479cfdcb9c946d8d53256c2bd81a7dab09a",
+      "native_preflight.py": "465e0d809e98835e2439b09cf1389b8764d0563c07673e16427e199e108c2b54",
+      "native_run.py": "37716784e8bd9121f4a3e869aced4549bee1d5609c3f7d9769613bde68a1da0d",
+      "planning.py": "8c812a2c770e9b2b63792660f6ef6067f433167c09cd0bcecb693faf1cab064d",
+      "release_checks.py": "c9b960b86c8e95b25d57c673d739d4a9d1a6e426ca4c74c0061733a185266b78",
+      "runner.py": "3c4fa813ebba7c61c094aae7d6f7e53db7c8a4009e56f9796026dd19cd432dd5",
+      "tasks.py": "a48cad540d113eac69cae50533eca16bad923d63c1fa3061fb5cb6c639e83828",
+      "verify.py": "7042e6b1f387976df4e6b301de57b75e447379fe0ee78a324f02f530ffef72d0",
+      "worker.py": "5eb239ca826b675f8c59e61539f4af54223483ef59e4defda256e3c86992d0d9"
+    },
+    "developer_instructions_sha256": "dcce56344ee0c71f2f30740b6dfe6e270f6cd0ad4338b348fbbcf2679b684c6f",
+    "config_sha256_before": "d36f56bb99da0a2d2533a84ff8e5e3234d6c51edc2650b730c40a09168c407ed",
+    "effective_config": {
+      "disabled_features": [
+        "apps",
+        "plugins",
+        "hooks",
+        "skill_search",
+        "skill_mcp_dependency_install",
+        "shell_tool",
+        "multi_agent"
+      ],
+      "approval_policy": "on-request",
+      "approvals_reviewer": "user",
+      "sandbox_mode": "read-only",
+      "web_search": "disabled",
+      "unrelated_mcp_disabled": 2,
+      "plugins_disabled": 12
+    },
+    "config_sha256_after": "d36f56bb99da0a2d2533a84ff8e5e3234d6c51edc2650b730c40a09168c407ed"
+  },
+  "checks": {
+    "app_server_reaped": true,
+    "bridges_cleaned": true,
+    "candidate_cleaned": true,
+    "config_unchanged": true,
+    "runner_unchanged": true,
+    "tasks_unchanged": true
+  },
+  "error": "rpc_error:thread/start",
+  "usage": null,
+  "usage_coverage": "incomplete",
+  "pairs": [
+    {
+      "task": "visible-policy-a",
+      "seed": {
+        "kind": null,
+        "status": null,
+        "elapsed_seconds": null,
+        "tool_calls": null,
+        "single_call_approvals": null,
+        "terminal": null,
+        "cancellation": null,
+        "usage_issue": null,
+        "request_id": null,
+        "turn": null,
+        "start_sequence": null,
+        "evidence": [],
+        "compaction_item_fingerprints": [],
+        "usage": null,
+        "usage_coverage": "unavailable",
+        "usage_snapshots": []
+      },
+      "boundary_sha256": null,
+      "arms": []
+    }
+  ],
+  "control_both_policies_pass": null,
+  "native-compact_both_policies_pass": null,
+  "attempt_audit": {
+    "measured_commit": "0f6ccc3ee0096e417022deebff798326ca448b81",
+    "model_requests_sent": 0,
+    "seed_turns_sent": 0,
+    "compaction_requests_sent": 0,
+    "last_rpc_error": {
+      "code": -32600,
+      "message": "failed to load configuration: No such file or directory (os error 2)"
+    },
+    "returned_thread_identities": 0,
+    "observed_mcp_starts": 0
+  }
+}

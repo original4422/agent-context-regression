@@ -1,0 +1,242 @@
+{
+  "scope": "Trusted references only; real read-only sandbox, no model or native compaction run",
+  "codex_version": "codex-cli 0.155.1",
+  "task_sha256": {
+    "visible-policy-a": "a9315bdb24bfae2739dccc5493c8ad0fdf172bcc097394463c444d60dbe755de",
+    "visible-policy-b": "6b670ec3e5e85ccb217e373ec3102c93114d4269c2a860c4e4776e4b65d9142a"
+  },
+  "source_sha256": {
+    "context_regression/__init__.py": "0d48668ead458161df84c33e8cff3a648a65f2f0b98637c630830ab85c9f36c1",
+    "context_regression/__main__.py": "6d8b7d7846a845059d7a3107143f11131f63c5511d669b44085b15ec5e3d2279",
+    "context_regression/bridge.py": "016ec49f67e767ceadcf5bee2f091644ba9035fe1409fe4256fc373309cd5a4f",
+    "context_regression/checks.py": "bccaf59ccdb055072233d30985a6d739184750e665cb180dd9aae99ba0dfd074",
+    "context_regression/cli.py": "9adb33ca586123ee0aaed061d2f6f3854cd77297f6b237435bd7e666287b0b10",
+    "context_regression/doctor.py": "f33fe4d46979baa4e41ec79665944154f9955bf5ec7fc7515808b02ed57d7335",
+    "context_regression/native.py": "8fe8a6f23275be86bbc5ceae2586feb19c36d990c6abcf189e2d4864af47344e",
+    "context_regression/native_client.py": "9af6e7541cf04c4983f5cf4d58931e5dcc95cf3c5e1d6b08f25c81fda42c5ff1",
+    "context_regression/planning.py": "8c812a2c770e9b2b63792660f6ef6067f433167c09cd0bcecb693faf1cab064d",
+    "context_regression/release_checks.py": "c9b960b86c8e95b25d57c673d739d4a9d1a6e426ca4c74c0061733a185266b78",
+    "context_regression/runner.py": "3c4fa813ebba7c61c094aae7d6f7e53db7c8a4009e56f9796026dd19cd432dd5",
+    "context_regression/tasks.py": "a48cad540d113eac69cae50533eca16bad923d63c1fa3061fb5cb6c639e83828",
+    "context_regression/verify.py": "7042e6b1f387976df4e6b301de57b75e447379fe0ee78a324f02f530ffef72d0",
+    "context_regression/worker.py": "5eb239ca826b675f8c59e61539f4af54223483ef59e4defda256e3c86992d0d9",
+    "scripts/check_native_references.py": "723ff7d1e179d5d4e676fd789c79287c79d6f125e5f814d024b3a422e1a45696",
+    "tests/visible_fixtures.py": "79dd7dcebc62debf1a2ee3f66cc8653cfb4cf7dce153e7ba3eec8c57aad28730"
+  },
+  "references": [
+    {
+      "reference": "visible-policy-a",
+      "source_sha256": "ae907fc796343009d22d962e811f23ca68bd43349fe4fbd8d883611a81241703",
+      "shared_rules_pass": true,
+      "cross_verification": {
+        "visible-policy-a": {
+          "status": "completed",
+          "passed": true,
+          "checks": [
+            {
+              "name": "no_revisit",
+              "passed": true
+            },
+            {
+              "name": "blocked_prerequisite",
+              "passed": true
+            },
+            {
+              "name": "unknown_dependency",
+              "passed": true
+            },
+            {
+              "name": "all_dependencies_required",
+              "passed": true
+            },
+            {
+              "name": "previously_completed",
+              "passed": true
+            },
+            {
+              "name": "manual_gate",
+              "passed": true
+            },
+            {
+              "name": "stable_priority_budget",
+              "passed": true
+            },
+            {
+              "name": "skip_and_exact_fit",
+              "passed": true
+            },
+            {
+              "name": "zero_capacity",
+              "passed": true
+            },
+            {
+              "name": "empty",
+              "passed": true
+            },
+            {
+              "name": "dependency_policy",
+              "passed": true
+            }
+          ]
+        },
+        "visible-policy-b": {
+          "status": "completed",
+          "passed": false,
+          "checks": [
+            {
+              "name": "no_revisit",
+              "passed": true
+            },
+            {
+              "name": "blocked_prerequisite",
+              "passed": true
+            },
+            {
+              "name": "unknown_dependency",
+              "passed": true
+            },
+            {
+              "name": "all_dependencies_required",
+              "passed": true
+            },
+            {
+              "name": "previously_completed",
+              "passed": true
+            },
+            {
+              "name": "manual_gate",
+              "passed": true
+            },
+            {
+              "name": "stable_priority_budget",
+              "passed": true
+            },
+            {
+              "name": "skip_and_exact_fit",
+              "passed": true
+            },
+            {
+              "name": "zero_capacity",
+              "passed": true
+            },
+            {
+              "name": "empty",
+              "passed": true
+            },
+            {
+              "name": "dependency_policy",
+              "passed": false
+            }
+          ]
+        }
+      }
+    },
+    {
+      "reference": "visible-policy-b",
+      "source_sha256": "ce5c1e40679deb6a48c498661a3b01c91820f278d284bef95c8a08d009ccdb06",
+      "shared_rules_pass": true,
+      "cross_verification": {
+        "visible-policy-a": {
+          "status": "completed",
+          "passed": false,
+          "checks": [
+            {
+              "name": "no_revisit",
+              "passed": true
+            },
+            {
+              "name": "blocked_prerequisite",
+              "passed": true
+            },
+            {
+              "name": "unknown_dependency",
+              "passed": true
+            },
+            {
+              "name": "all_dependencies_required",
+              "passed": true
+            },
+            {
+              "name": "previously_completed",
+              "passed": true
+            },
+            {
+              "name": "manual_gate",
+              "passed": true
+            },
+            {
+              "name": "stable_priority_budget",
+              "passed": true
+            },
+            {
+              "name": "skip_and_exact_fit",
+              "passed": true
+            },
+            {
+              "name": "zero_capacity",
+              "passed": true
+            },
+            {
+              "name": "empty",
+              "passed": true
+            },
+            {
+              "name": "dependency_policy",
+              "passed": false
+            }
+          ]
+        },
+        "visible-policy-b": {
+          "status": "completed",
+          "passed": true,
+          "checks": [
+            {
+              "name": "no_revisit",
+              "passed": true
+            },
+            {
+              "name": "blocked_prerequisite",
+              "passed": true
+            },
+            {
+              "name": "unknown_dependency",
+              "passed": true
+            },
+            {
+              "name": "all_dependencies_required",
+              "passed": true
+            },
+            {
+              "name": "previously_completed",
+              "passed": true
+            },
+            {
+              "name": "manual_gate",
+              "passed": true
+            },
+            {
+              "name": "stable_priority_budget",
+              "passed": true
+            },
+            {
+              "name": "skip_and_exact_fit",
+              "passed": true
+            },
+            {
+              "name": "zero_capacity",
+              "passed": true
+            },
+            {
+              "name": "empty",
+              "passed": true
+            },
+            {
+              "name": "dependency_policy",
+              "passed": true
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

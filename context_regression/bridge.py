@@ -52,7 +52,7 @@ TOOLS = [
 ]
 
 
-def main():
+def main(observe=None):
     workspace = Workspace(load_task(sys.argv[1]), sys.argv[2], sys.argv[3])
     # If a timed-out runner exits, do not leave a detached MCP server alive.
     parent = int(sys.argv[4])
@@ -66,6 +66,8 @@ def main():
     threading.Thread(target=watch_parent, daemon=True).start()
     for line in sys.stdin:
         request = json.loads(line)
+        if observe:
+            observe("request", request)
         if "id" not in request:
             continue
         method = request["method"]
@@ -84,7 +86,10 @@ def main():
                 raise ValueError(f"Unsupported MCP method: {method}")
         except (ValueError, KeyError, OSError, RuntimeError) as error:
             result = {"content": [{"type": "text", "text": str(error)}], "isError": True}
-        print(json.dumps({"jsonrpc": "2.0", "id": request["id"], "result": result}), flush=True)
+        response = {"jsonrpc": "2.0", "id": request["id"], "result": result}
+        if observe:
+            observe("response", response)
+        print(json.dumps(response), flush=True)
 
 
 if __name__ == "__main__":

@@ -1,0 +1,22 @@
+{
+  "kind": "no-model stable-cwd thread/start probe",
+  "status": "completed",
+  "config_before": "d36f56bb99da0a2d2533a84ff8e5e3234d6c51edc2650b730c40a09168c407ed",
+  "same_candidate_inode": true,
+  "thread_started": true,
+  "history_mode": "legacy",
+  "persistent": true,
+  "catalog_checked": true,
+  "app_server_exit": -9,
+  "bridges_cleaned": true,
+  "rpc_methods": [
+    "config/read",
+    "initialize",
+    "thread/start"
+  ],
+  "model_or_fork_requests": 0,
+  "config_unchanged": true,
+  "candidate_cleaned": true,
+  "native_run_sha256": "20f473dd3048b333e818aa1cfcf5e9989fbba561b6f17a64a5d61fdc2562de0a",
+  "source_commit": "ec67f5da4592b3225441d1638a9d92e9dbf5e6f5"
+}
