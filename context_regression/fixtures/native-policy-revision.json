@@ -1,0 +1,25 @@
+{
+  "request": "Implement the missing dependency predicate in plan.py using the latest agreed decision. Run the public checks.",
+  "pairs": [
+    {
+      "case_id": "A-to-B",
+      "initial_task": "visible-policy-a",
+      "task": "visible-policy-b",
+      "revision_text": "I am changing my earlier product decision. Replace the concurrent launch wave policy with a sequential execution plan. The earlier rule that a prerequisite must already be in completed is superseded.\n\nA dependency is now satisfied if its id is in completed before this call OR was selected earlier in this plan. The executor waits for each selected job to succeed before starting the next and stops on failure; including a dependent after its selected prerequisite is intended. This helper does not execute the jobs itself.\n\nOnly this dependency policy changes. Keep every other input, ordering, approval, capacity and purity requirement. Do not call tools or modify files yet. Confirm briefly and wait.",
+      "arms": [
+        "control",
+        "native-compact"
+      ]
+    },
+    {
+      "case_id": "B-to-A",
+      "initial_task": "visible-policy-b",
+      "task": "visible-policy-a",
+      "revision_text": "I am changing my earlier product decision. Replace the sequential execution plan policy with a concurrent launch wave. The earlier rule that a selected prerequisite can satisfy a dependency is superseded.\n\nA dependency is now satisfied only if its id is in completed before this call. A prerequisite selected earlier in this plan is not yet complete, so its dependent must wait for a later call. The launcher starts every returned job immediately; treating selection as completion would launch dependents too soon.\n\nOnly this dependency policy changes. Keep every other input, ordering, approval, capacity and purity requirement. Do not call tools or modify files yet. Confirm briefly and wait.",
+      "arms": [
+        "native-compact",
+        "control"
+      ]
+    }
+  ]
+}

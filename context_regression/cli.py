@@ -6,9 +6,10 @@ import statistics
 
 from .runner import STRATEGIES, execution_plan, run_batch
 from .planning import SUITE_NAMES, describe_plan, select_tasks
-from .native import native_plan
+from .native import SCENARIOS, native_plan
 from .native_preflight import preflight
 from .native_run import run_native_smoke
+from .native_accept import EXIT_CODES, InvalidResult, accept_result, result as acceptance_result, unique_object
 from .doctor import format_doctor, inspect_environment
 from .tasks import BUILTIN_TASKS, tasks_in
 
@@ -60,13 +61,18 @@ def main(argv=None):
     native = commands.add_parser("native-plan", help="Offline native-compaction protocol preparation; no model execution")
     native.add_argument("--model")
     native.add_argument("--effort", choices=["low", "medium", "high"], default="low")
+    native.add_argument("--scenario", choices=SCENARIOS, default="fixed-policy")
     native_check = commands.add_parser("native-preflight", help="Validate real app-server/MCP isolation without model requests")
     native_check.add_argument("--codex", default="codex")
     native_check.add_argument("--private-dir", type=Path)
-    native_run = commands.add_parser("native-run", help="Run the fixed eight-phase native smoke with explicit model opt-in")
+    native_run = commands.add_parser("native-run", help="Run one bounded native scenario with explicit model opt-in")
+    native_run.add_argument("--scenario", choices=SCENARIOS, default="fixed-policy")
     native_run.add_argument("--allow-model", action="store_true")
     native_run.add_argument("--codex", default="codex")
     native_run.add_argument("--private-dir", type=Path)
+    native_accept = commands.add_parser("native-accept", help="Accept saved native outcomes; no oracle or model execution")
+    native_accept.add_argument("results", type=Path)
+    native_accept.add_argument("--scenario", choices=SCENARIOS, required=True)
     listing = commands.add_parser("list", help="List built-in or external tasks")
     listing.add_argument("--tasks", type=Path, default=BUILTIN_TASKS)
     listing.add_argument("--suite", choices=SUITE_NAMES)
@@ -80,11 +86,23 @@ def main(argv=None):
     summary = commands.add_parser("summarize", help="Create a report from the machine-readable results")
     summary.add_argument("results", type=Path)
     args = parser.parse_args(argv)
+    if args.command == 'native-accept':
+        try:
+            saved = json.loads(args.results.read_text(), object_pairs_hook=unique_object)
+        except InvalidResult as error:
+            acceptance = acceptance_result('invalid_result', args.scenario, 0, [error.reason])
+        except (OSError, UnicodeError, json.JSONDecodeError):
+            acceptance = acceptance_result('invalid_result', args.scenario, 0, [{'code': 'unreadable_json'}])
+        else:
+            acceptance = accept_result(saved, args.scenario)
+        print(json.dumps(acceptance, indent=2))
+        raise SystemExit(EXIT_CODES[acceptance['verdict']])
     if args.command == "native-run":
         if not args.allow_model:
             parser.error("native-run requires --allow-model; native-plan and native-preflight make no model requests")
-        private = args.private_dir or Path.home() / ".local/state/agent-context-regression" / ("native-smoke-" + datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S.%fZ"))
-        result = run_native_smoke(private, args.codex)
+        prefix = 'native-revision-' if args.scenario == 'policy-revision' else 'native-smoke-'
+        private = args.private_dir or Path.home() / ".local/state/agent-context-regression" / (prefix + datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S.%fZ"))
+        result = run_native_smoke(private, args.codex, args.scenario)
         print(json.dumps(result, indent=2))
         raise SystemExit(0 if result["status"] == "completed" else 1)
     if args.command == "native-preflight":
@@ -93,7 +111,7 @@ def main(argv=None):
         print(json.dumps(report, indent=2))
         raise SystemExit(0 if report["status"] == "completed" else 1)
     if args.command == "native-plan":
-        print(json.dumps(native_plan(args.model, args.effort), indent=2))
+        print(json.dumps(native_plan(args.model, args.effort, args.scenario), indent=2))
         return
     if args.command == "summarize":
         print(summarize(json.loads(args.results.read_text())), end="")
