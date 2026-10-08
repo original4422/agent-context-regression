@@ -1,0 +1,7 @@
+{
+  "task": "retry-method-policy",
+  "case_id": "retry-work",
+  "arms": ["control", "native-compact"],
+  "work_text": "Finish a pure retry decision helper for an internal HTTP client. The final behavior retries only status 429, 500, 502, 503 and 504, and only methods GET, HEAD and PUT, case-insensitively. POST and DELETE must never retry. Inputs are integer status codes and string methods; no networking or delay logic belongs in the helper.\n\nWe will do this in two steps with a checkpoint between them. In this turn, read retry.py and implement only the method gate, preserving the current server-status set. Do not add 429 in this turn. Write the change, run the public checks after your last write, and stop. The rate-limit check is expected to remain failing at this checkpoint. In the next turn we will finish the remaining work. Briefly report the completed change and the observed check results.",
+  "request": "Continue the remaining work from the current checkpoint and observed check results. Preserve completed behavior and run the public checks."
+}
